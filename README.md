@@ -2,6 +2,9 @@
 
 A full-stack decentralized application built on **Stellar Soroban** that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them without needing a wallet.
 
+### 🎥 Live Video Demo
+▶️ [Watch the full CertChain dApp Demo on Loom](https://www.loom.com/share/e91247c07fcb47348ba4b8ac09a8f8d1)
+
 ---
 
 ## 🔗 Smart Contract Info
@@ -107,6 +110,29 @@ When a certificate is issued:
 3. Backend sends a styled HTML email via **Brevo API** with:
    - Student name, course, issuer
    - **Certificate hash** (to verify later)
+
+> **💡 Terminal Logs:** You can monitor the real-time email sending status directly in the backend terminal, which logs successful email deliveries and any errors.
+
+---
+
+## 🌟 Example: Successful Issuance
+
+When a certificate is successfully issued and verified, you get a verifiable transaction hash and an automated email confirmation:
+
+**1. Transaction Hash (On-Chain Record):**
+```text
+TX: KI8YBE7ZX56WNDZMZHNPIVECX4JLUMY9...
+```
+
+**2. Backend Email Log:**
+```text
+✅ Email sent to shindeakanksha069@gmail.com | ID: <202603261532.75669541366@smtp-relay.mailin.fr>
+```
+
+**3. Verified Certificate View:**
+![Verified Certificate](./certificate.png)
+
+*(Note: Save your uploaded certificate screenshot as `certificate.png` in the project folder to display it here).*
 
 ---
 
