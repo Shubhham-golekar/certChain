@@ -121,7 +121,8 @@ export default function App() {
       // Send Email via EmailJS
       // Send Email via Custom Node Backend
       try {
-        const response = await fetch("http://localhost:5000/send-email", {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+        const response = await fetch(`${backendUrl}/send-email`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
