@@ -193,6 +193,13 @@ cargo test
 
 ---
 
+## 📝 User Data & Feedback
+
+We actively collect user feedback and maintain logs of interactions to improve the CertChain dApp experience. You can view the live feedback and user tracking records here:
+📊 **[View Feedback & User Data Spreadsheet](https://docs.google.com/spreadsheets/d/1Y0ffMgeOnohf2w6RSOmydhu7mUuuAlPFOkO9Ya2yLuM/edit?usp=sharing)**
+
+---
+
 ## 👨‍💻 Author
 
 Built as a Level 5 project — Shubham
