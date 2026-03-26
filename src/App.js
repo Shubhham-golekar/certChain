@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { buildIssueCertOp, server } from "./hooks/useSoroban";
-import { TransactionBuilder, Networks, Operation, Account } from "@stellar/stellar-sdk";
+import { TransactionBuilder, Networks } from "@stellar/stellar-sdk";
 import "./styles/global.css";
 
 import Header from "./components/Header";
