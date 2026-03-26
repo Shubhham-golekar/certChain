@@ -132,10 +132,11 @@ TX: KI8YBE7ZX56WNDZMZHNPIVECX4JLUMY9...
 ✅ Email sent to shindeakanksha069@gmail.com | ID: <202603261532.75669541366@smtp-relay.mailin.fr>
 ```
 
-**3. Verified Certificate View:**
-![Verified Certificate](./certificate.png)
+**3. Verified Certificat
+e View:**
+<img width="1075" height="616" alt="Screenshot 2026-03-26 210514" src="https://github.com/user-attachments/assets/ad0e8d13-4a8e-4735-9d90-5b961cfb069c" />
 
-*(Note: Save your uploaded certificate screenshot as `certificate.png` in the project folder to display it here).*
+
 
 ---
 
