@@ -2,6 +2,8 @@
 
 A full-stack decentralized application built on **Stellar Soroban** that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them without needing a wallet.
 
+![Dashboard]<img width="1902" height="885" alt="Screenshot 2026-03-30 152710" src="https://github.com/user-attachments/assets/59078d7b-f210-468a-b971-c5074f0c4c97" />
+
 ### 🌐 Live Application
 🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-c2x1.vercel.app/)**
 
