@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { QRCodeCanvas } from 'qrcode.react';
 
 export default function CertificatePreview({ cert }) {
   const [copied, setCopied] = useState(false);
@@ -12,6 +13,8 @@ export default function CertificatePreview({ cert }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const hashVal = cert.fullHash || cert.txHash || "";
+
   return (
     <div style={styles.wrap}>
       {["tl", "tr", "bl", "br"].map((pos) => <div key={pos} style={{ ...styles.corner, ...styles[pos] }} />)}
@@ -23,11 +26,24 @@ export default function CertificatePreview({ cert }) {
       <div style={styles.course}>{cert.course}</div>
       <div style={styles.date}>Issued on {cert.date}</div>
       <div style={styles.divider} />
-      <div style={styles.hashWrap}>
-        <div style={styles.hash}>🔗 TX: {cert.fullHash?.slice(0, 32)}...</div>
-        <button onClick={handleCopy} style={styles.copyBtn}>
-          {copied ? "Copied!" : "Copy Full Hash"}
-        </button>
+
+      <div style={styles.footerWrap}>
+        <div style={styles.qrColumn}>
+          <QRCodeCanvas
+            value={hashVal}
+            size={64}
+            bgColor="#1a1a2e"
+            fgColor="#ffd700"
+            level="L"
+            includeMargin={false}
+          />
+        </div>
+        <div style={styles.hashWrap}>
+          <div style={styles.hash}>🔗 TX: {hashVal.slice(0, 32)}...</div>
+          <button onClick={handleCopy} style={styles.copyBtn}>
+            {copied ? "Copied!" : "Copy Full Hash"}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -66,7 +82,9 @@ const styles = {
   course: { fontSize: 16, color: "var(--accent2)", fontWeight: 600, marginBottom: 6 },
   date: { fontSize: 11, color: "var(--muted)", marginBottom: 24 },
   divider: { width: 120, height: 1, background: "linear-gradient(90deg,transparent,rgba(255,215,0,0.4),transparent)", margin: "0 auto 20px" },
-  hashWrap: { display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 20 },
+  footerWrap: { display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginTop: 20 },
+  qrColumn: { padding: 4, background: "rgba(255, 255, 255, 0.05)", borderRadius: 8, display: "flex" },
+  hashWrap: { display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8 },
   hash: { fontSize: 10, color: "var(--muted)", wordBreak: "break-all", padding: "8px 16px", background: "rgba(0,0,0,0.3)", borderRadius: 6, display: "inline-block" },
   copyBtn: {
     background: "rgba(0,212,170,0.1)", border: "1px solid rgba(0,212,170,0.3)",
