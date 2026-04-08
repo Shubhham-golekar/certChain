@@ -1,6 +1,14 @@
 # 🎓 CertChain — Blockchain Certificate Issuance & Verification dApp
 
-A full-stack decentralized application built on **Stellar Soroban** that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them without needing a wallet.
+## Overview
+Cert-Chain is a full-stack, decentralized web application for issuing, managing, and verifying tamper-proof certificates using the Soroban smart contracts on the Stellar blockchain.
+
+### 🚀 Production Ready Features
+- **Live Metrics Dashboard**: Real-time visualization of issued certificates by course.
+- **Data Indexing**: Fast off-chain querying utilizing a localized SQLite DB synchronization.
+- **Advanced Verification (QR)**: Instantly verify off-chain via embedded certificate QR codes.
+- **Enterprise Security**: Rate-limiting, Helmet active security headers.
+- **Live Monitoring**: Express Status Monitor mapped to `/status`.
 
 ### 🌐 Live Application
 🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-c2x1.vercel.app/)**
