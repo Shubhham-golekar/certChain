@@ -9,6 +9,7 @@ import StatsRow from "./components/StatsRow";
 import IssueTab from "./components/IssueTab";
 import VerifyTab from "./components/VerifyTab";
 import RecordsTab from "./components/RecordsTab";
+import DashboardTab from "./components/DashboardTab";
 import ToastContainer from "./components/ToastContainer";
 
 import { useWallet } from "./hooks/useWallet";
@@ -16,6 +17,7 @@ import { useToast } from "./hooks/useToast";
 import { MOCK_CERTS, DEFAULT_FORM, generateTxHash } from "./utils/constants";
 
 const TABS = [
+  { id: "dashboard", label: "📊 Dashboard" },
   { id: "issue", label: "📤 Issue Certificate" },
   { id: "verify", label: "🔍 Verify" },
   { id: "records", label: "📋 Records" },
@@ -25,7 +27,7 @@ export default function App() {
   const { connected, address, publicKey, loading, error, connect, disconnect, sign } = useWallet();
   const { toasts, addToast } = useToast();
 
-  const [tab, setTab] = useState("issue");
+  const [tab, setTab] = useState("dashboard");
   const [certs, setCerts] = useState(MOCK_CERTS);
   const [form, setForm] = useState(DEFAULT_FORM);
   const [isIssuing, setIsIssuing] = useState(false);
@@ -118,7 +120,6 @@ export default function App() {
         fullHash,
       };
 
-      // Send Email via EmailJS
       // Send Email via Custom Node Backend
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
@@ -195,6 +196,7 @@ export default function App() {
           ))}
         </div>
 
+        {tab === "dashboard" && <DashboardTab />}
         {tab === "issue" && (
           <IssueTab
             walletConnected={connected}
