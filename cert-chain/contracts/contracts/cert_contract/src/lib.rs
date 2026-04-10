@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, Env, String, Address, Vec};
+use soroban_sdk::{contract, contractimpl, contracttype, Env, String, Address};
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -13,28 +13,14 @@ pub enum CertStatus {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CertInfo {
     pub issuer: Address,
-    pub student_id: String,
     pub student_wallet: Address,
     pub course: String,
-    pub issue_date: u64,
-    pub expiry_date: u64,
+    pub issue_date: String,
     pub status: CertStatus,
 }
 
 #[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct CertData {
-    pub hash: String,
-    pub student_id: String,
-    pub student_wallet: Address,
-    pub course: String,
-    pub expiry_date: u64,
-}
-
-#[contracttype]
 pub enum DataKey {
-    Admin,
-    Issuer(Address),
     Cert(String),
 }
 
@@ -47,10 +33,9 @@ impl CertContract {
         env: Env,
         issuer: Address,
         cert_hash: String,
-        student_id: String,
         student_wallet: Address,
         course: String,
-        expiry_date: u64,
+        issue_date: String,
     ) {
         issuer.require_auth();
 
@@ -60,11 +45,9 @@ impl CertContract {
 
         let cert = CertInfo {
             issuer: issuer.clone(),
-            student_id,
             student_wallet,
             course,
-            issue_date: env.ledger().timestamp(),
-            expiry_date,
+            issue_date,
             status: CertStatus::Active,
         };
 
