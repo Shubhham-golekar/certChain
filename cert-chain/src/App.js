@@ -14,7 +14,7 @@ import ToastContainer from "./components/ToastContainer";
 
 import { useWallet } from "./hooks/useWallet";
 import { useToast } from "./hooks/useToast";
-import { MOCK_CERTS, DEFAULT_FORM, generateTxHash } from "./utils/constants";
+import { DEFAULT_FORM, generateTxHash } from "./utils/constants";
 
 const TABS = [
   { id: "dashboard", label: "📊 Dashboard" },
