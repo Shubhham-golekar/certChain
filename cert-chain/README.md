@@ -62,7 +62,7 @@ contracts/                   ← Soroban Rust Smart Contract
 
 ## 📜 Smart Contract Functions
 
-### `issue_cert(env, issuer, cert_hash, student_email, course, date)`
+### `issue_cert(env, issuer, cert_hash, student_wallet, course, date)`
 - Issues a certificate and stores it on-chain using `cert_hash` as the key
 - Requires **issuer wallet auth** (Freighter)
 - Panics if the same hash already exists (duplicate prevention)
@@ -76,7 +76,7 @@ contracts/                   ← Soroban Rust Smart Contract
 ```rust
 pub struct CertInfo {
     pub issuer: Address,
-    pub student_email: String,
+    pub student_wallet: Address,
     pub course: String,
     pub date: String,
     pub valid: bool,
@@ -113,16 +113,15 @@ node index.js
 
 ---
 
-## ✉️ Email Flow
+## 🗃️ Data Indexing & Dashboard
 
 When a certificate is issued:
-1. Soroban contract stores the cert on-chain
-2. Frontend calls `POST /send-email` on the backend
-3. Backend sends a styled HTML email via **Brevo API** with:
-   - Student name, course, issuer
-   - **Certificate hash** (to verify later)
+1. Soroban contract stores the cert on-chain, associating it with the Student's Wallet Address.
+2. Frontend calls `POST /api/index-cert` on the backend.
+3. Backend securely lists this into its robust SQLite database mapping the student's wallet address.
+4. The React dashboard instantly pulls the indexed dataset and renders interactive charts using `recharts`!
 
-> **💡 Terminal Logs:** You can monitor the real-time email sending status directly in the backend terminal, which logs successful email deliveries and any errors.
+> **💡 Terminal Logs:** You can monitor the backend SQL injection indexing rate directly via terminal, as well as the `/status` resource monitor mapping server resources.
 
 ---
 
@@ -135,9 +134,9 @@ When a certificate is successfully issued and verified, you get a verifiable tra
 TX: KI8YBE7ZX56WNDZMZHNPIVECX4JLUMY9...
 ```
 
-**2. Backend Email Log:**
+**2. Backend Index Log:**
 ```text
-✅ Email sent to shindeakanksha069@gmail.com | ID: <202603261532.75669541366@smtp-relay.mailin.fr>
+✅ Certificate indexed for: GBXUQ...9B
 ```
 
 **3. Verified Certificate View:**
@@ -172,9 +171,8 @@ Update the new Contract ID in `src/utils/constants.js` → `CONTRACT_ID`.
 | Smart Contract | Rust + Soroban SDK v25 |
 | Blockchain | Stellar Testnet |
 | Wallet | Freighter Extension |
-| Frontend | React + Vite |
-| Backend | Node.js + Express |
-| Email | Brevo HTTP API |
+| Frontend | React + Vite + Recharts |
+| Backend | Node.js + Express + SQLite |
 | Stellar RPC | `https://soroban-testnet.stellar.org` |
 
 ---
@@ -195,7 +193,7 @@ cargo test
 | `src/utils/constants.js` | Contract ID & cert type constants |
 | `src/hooks/useStellar.js` | Issue & verify cert via Soroban |
 | `src/hooks/useWallet.js` | Freighter wallet connect/sign |
-| `cert-chain-backend/index.js` | Email sending API |
+| `cert-chain-backend/index.js` | Data indexer & sqlite database |
 | `cert-chain-backend/cert_contract.rs` | Rust contract source (reference) |
 | `contracts/contracts/cert_contract/src/lib.rs` | Live Rust contract |
 

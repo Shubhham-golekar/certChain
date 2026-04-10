@@ -34,7 +34,7 @@ export default function VerifyTab({ certs = [] }) {
         setResult({
           valid: true,
           studentName: localMatch.studentName || "Verified Holder",
-          studentEmail: localMatch.studentEmail || "",
+          studentWallet: localMatch.studentWallet || "",
           course: localMatch.course || "",
           issuer: localMatch.issuer || "",
           date: localMatch.date || "",
@@ -69,7 +69,7 @@ export default function VerifyTab({ certs = [] }) {
       setResult({
         valid: certData.valid !== undefined ? certData.valid : true,
         studentName: "Verified Blockchain Record",
-        studentEmail: certData.student_email || certData[1] || "",
+        studentWallet: certData.student_wallet || certData[1] || "",
         course: certData.course || certData[2] || "",
         issuer: certData.issuer || certData[0] || "",
         date: certData.date || certData[3] || "",

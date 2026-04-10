@@ -40,7 +40,7 @@ export default function RecordsTab({ certs }) {
                 <span style={{ color: "var(--accent2)", marginRight: 12 }}>{cert.course}</span>
                 {cert.issuer} · {cert.date}
               </div>
-              <div style={{ ...styles.meta, marginTop: 4 }}>Email: {cert.studentEmail}</div>
+              <div style={{ ...styles.meta, marginTop: 4 }}>Wallet: {cert.studentWallet}</div>
               <div style={{ ...styles.meta, marginTop: 4, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 TX: {cert.txHash}
                 <CopyHash hash={cert.fullHash || cert.txHash} />

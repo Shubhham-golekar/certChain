@@ -5,7 +5,7 @@ import { CERT_TYPES } from "../utils/constants";
 export default function IssueTab({ walletConnected, onIssue, isIssuing, previewCert, form, onChange }) {
   const fields = [
     { name: "studentName", label: "Student Full Name *", placeholder: "e.g. Shubham Golekar" },
-    { name: "studentEmail", label: "Student Email Address *", placeholder: "e.g. shubham@example.com" },
+    { name: "studentWallet", label: "Student Wallet Address *", placeholder: "e.g. G..." },
     { name: "issuer", label: "Issuing Institution *", placeholder: "e.g. IIT Bombay" },
     { name: "grade", label: "Grade / Score (optional)", placeholder: "e.g. A+, 95/100" },
   ];

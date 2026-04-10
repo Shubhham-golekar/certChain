@@ -1,31 +1,27 @@
-# Contributing to Cert-Chain
+# Contributing to CertChain
 
-We welcome community contributions! Cert-Chain is an open-source, blockchain-based academic credential application, and we’d love your help to make it better.
+First off, thank you for considering contributing to CertChain! It's people like you that make it a great tool for decentralized education.
 
 ## How to Contribute
-1. **Fork the Repository**
-   Fork the repository to your own GitHub account.
-2. **Clone**
-   Clone your fork locally: `git clone https://github.com/your-username/cert-chain.git`
-3. **Install Dependencies**
-   Frontend: `cd cert-chain && npm install`
-   Backend: `cd cert-chain-backend && npm install`
-4. **Create a Branch**
-   `git checkout -b feature/your-feature-name`
-5. **Make your changes**
-   Follow our UI/UX guidelines and ensure all tests pass.
-6. **Commit**
-   Make atomic, meaningful commits (we value commit history readability).
-7. **Submit a Pull Request**
-   Push to your fork and submit a PR against our `main` branch.
+### 1. Report Bugs
+Create an issue on GitHub. Include:
+- A quick summary and/or background
+- Steps to reproduce
+- What you expected would happen
+- What actually happens
+- Notes (possibly including why you think this might be happening)
 
-## Bug Reports
-If you find a bug, please create an Issue outlining:
-- The steps to reproduce
-- What was expected
-- System context (Node version, OS, Browser)
+### 2. Suggest Enhancements
+Suggest features using the issue tracker. Please include your motivation and how it benefits the ecosystem.
 
-## Advanced Features
-If you want to introduce an advanced feature (e.g., new charts, external wallet integration), please discuss it on an Issue first before doing the heavy lifting.
+### 3. Pull Requests
+- Fork the repository and create your branch from `main`.
+- If you've added code that should be tested, add tests.
+- Update documentation if applicable.
+- Ensure your code follows the existing style, specifically adhering to standard React hook practices and Soroban SDK patterns.
+- Create your PR and wait for a review from `Shubhham-golekar`.
 
-Thank you for helping us grow! 🚀
+## Development Setup
+- Use `npm install` for Node.js modules.
+- Ensure you have `stellar-cli` installed and configured if contributing to `contracts/`.
+- Ensure tests pass with `cargo test`.

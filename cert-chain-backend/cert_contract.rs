@@ -5,7 +5,7 @@ use soroban_sdk::{contract, contractimpl, contracttype, Env, String, Address};
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CertInfo {
     pub issuer: Address,
-    pub student_email: String,
+    pub student_wallet: Address,
     pub course: String,
     pub date: String,
     pub valid: bool,
@@ -20,7 +20,7 @@ impl CertContract {
         env: Env,
         issuer: Address,
         cert_hash: String,
-        student_email: String,
+        student_wallet: Address,
         course: String,
         date: String,
     ) {
@@ -32,7 +32,7 @@ impl CertContract {
 
         let cert = CertInfo {
             issuer: issuer.clone(),
-            student_email: student_email.clone(),
+            student_wallet: student_wallet.clone(),
             course: course.clone(),
             date: date.clone(),
             valid: true,

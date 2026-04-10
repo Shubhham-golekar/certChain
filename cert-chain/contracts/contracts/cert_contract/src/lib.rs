@@ -14,7 +14,7 @@ pub enum CertStatus {
 pub struct CertInfo {
     pub issuer: Address,
     pub student_id: String,
-    pub student_email: String,
+    pub student_wallet: Address,
     pub course: String,
     pub issue_date: u64,
     pub expiry_date: u64,
@@ -26,7 +26,7 @@ pub struct CertInfo {
 pub struct CertData {
     pub hash: String,
     pub student_id: String,
-    pub student_email: String,
+    pub student_wallet: Address,
     pub course: String,
     pub expiry_date: u64,
 }
@@ -68,7 +68,7 @@ impl CertContract {
         issuer: Address,
         cert_hash: String,
         student_id: String,
-        student_email: String,
+        student_wallet: Address,
         course: String,
         expiry_date: u64,
     ) {
@@ -87,7 +87,7 @@ impl CertContract {
         let cert = CertInfo {
             issuer: issuer.clone(),
             student_id,
-            student_email,
+            student_wallet,
             course,
             issue_date: env.ledger().timestamp(),
             expiry_date,
@@ -154,7 +154,7 @@ impl CertContract {
             let cert = CertInfo {
                 issuer: issuer.clone(),
                 student_id: cert_data.student_id.clone(),
-                student_email: cert_data.student_email.clone(),
+                student_wallet: cert_data.student_wallet.clone(),
                 course: cert_data.course.clone(),
                 issue_date: env.ledger().timestamp(),
                 expiry_date: cert_data.expiry_date,

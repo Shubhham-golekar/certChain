@@ -25,7 +25,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
         db.run(`CREATE TABLE IF NOT EXISTS certificates (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             to_name TEXT,
-            to_email TEXT,
+            student_wallet TEXT,
             course TEXT,
             issuer TEXT,
             hash TEXT UNIQUE,
@@ -42,80 +42,26 @@ const emailLimiter = rateLimit({
     message: { error: 'Too many requests, please try again later.' }
 });
 
-function sendBrevoEmail({ to_email, to_name, course, issuer, hash }) {
-    return new Promise((resolve, reject) => {
-        const body = JSON.stringify({
-            sender: { name: 'CertChain', email: 'aabc57743@gmail.com' },
-            to: [{ email: to_email, name: to_name || 'Student' }],
-            subject: `Your Certificate for ${course} is Ready! 🎓`,
-            htmlContent: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #4CAF50;">Congratulations ${to_name}! 🎉</h2>
-          <p>You have been issued a blockchain-verified certificate for <strong>${course}</strong> by <strong>${issuer}</strong>.</p>
-          <p style="margin-top:16px;">Your permanent Certificate Hash:</p>
-          <div style="background: #f4f4f4; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 13px; word-break: break-all; margin: 12px 0; border-left: 4px solid #4CAF50;">
-            <strong>${hash}</strong>
-          </div>
-          <p>Paste this hash in the <strong>CertChain Verify tab</strong> to verify your certificate anytime.</p>
-          <hr style="border:0;border-top:1px solid #eee;margin:24px 0;" />
-          <p style="font-size:12px;color:#888;">Powered by Stellar Soroban · CertChain dApp</p>
-        </div>
-      `,
-        });
+app.post('/api/index-cert', emailLimiter, async (req, res) => {
+    const { to_name, student_wallet, course, issuer, hash } = req.body;
 
-        const options = {
-            hostname: 'api.brevo.com',
-            path: '/v3/smtp/email',
-            method: 'POST',
-            headers: {
-                'accept': 'application/json',
-                'api-key': process.env.BREVO_API_KEY,
-                'content-type': 'application/json',
-                'content-length': Buffer.byteLength(body),
-            },
-        };
-
-        const req = https.request(options, (res) => {
-            let data = '';
-            res.on('data', (chunk) => { data += chunk; });
-            res.on('end', () => {
-                if (res.statusCode >= 200 && res.statusCode < 300) {
-                    resolve(JSON.parse(data));
-                } else {
-                    reject(new Error(`Brevo API error ${res.statusCode}: ${data}`));
-                }
-            });
-        });
-
-        req.on('error', reject);
-        req.write(body);
-        req.end();
-    });
-}
-
-app.post('/send-email', emailLimiter, async (req, res) => {
-    const { to_email, to_name, course, issuer, hash } = req.body;
-
-    if (!to_email || !hash || !to_name || !course || !issuer) {
+    if (!student_wallet || !hash || !to_name || !course || !issuer) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
     try {
-        const result = await sendBrevoEmail({ to_email, to_name, course, issuer, hash });
-        console.log(`✅ Email sent to ${to_email} | ID: ${result.messageId}`);
-
         // Log to database indexing
-        db.run(`INSERT INTO certificates (to_name, to_email, course, issuer, hash) VALUES (?, ?, ?, ?, ?)`,
-            [to_name, to_email, course, issuer, hash],
+        db.run(`INSERT INTO certificates (to_name, student_wallet, course, issuer, hash) VALUES (?, ?, ?, ?, ?)`,
+            [to_name, student_wallet, course, issuer, hash],
             (err) => {
                 if (err) console.error('Failed to index certificate to DB:', err.message);
                 else console.log('✅ Certificate indexed in DB:', hash.slice(0, 10));
             }
         );
 
-        res.status(200).json({ message: 'Email sent successfully & certificate indexed!', messageId: result.messageId });
+        res.status(200).json({ message: 'Certificate indexed successfully!' });
     } catch (err) {
-        console.error('Email error:', err.message);
+        console.error('Index error:', err.message);
         res.status(500).json({ error: err.message });
     }
 });

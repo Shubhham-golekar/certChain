@@ -1,6 +1,6 @@
 {
   "generators": {
-    "address": 4,
+    "address": 5,
     "nonce": 0,
     "mux_id": 0
   },
@@ -50,7 +50,7 @@
                   "string": "S123"
                 },
                 {
-                  "string": "test@example.com"
+                  "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
                 },
                 {
                   "string": "Blockchain 101"
@@ -166,18 +166,18 @@
                   },
                   {
                     "key": {
-                      "symbol": "student_email"
-                    },
-                    "val": {
-                      "string": "test@example.com"
-                    }
-                  },
-                  {
-                    "key": {
                       "symbol": "student_id"
                     },
                     "val": {
                       "string": "S123"
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "student_wallet"
+                    },
+                    "val": {
+                      "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
                     }
                   }
                 ]

@@ -17,7 +17,7 @@ export const MOCK_CERTS = [
     issuer: "MIT OpenCourseWare",
     date: "2024-11-15",
     txHash: "GXYZ9...K3M2",
-    studentEmail: "priya@example.com",
+    studentWallet: "GB...MOCK1",
   },
   {
     id: "cert_002",
@@ -26,7 +26,7 @@ export const MOCK_CERTS = [
     issuer: "IIT Bombay",
     date: "2024-12-01",
     txHash: "GABC1...R7N8",
-    studentEmail: "rahul@example.com",
+    studentWallet: "GB...MOCK2",
   },
 ];
 
@@ -39,11 +39,11 @@ export function generateTxHash() {
 
 export const DEFAULT_FORM = {
   studentName: "",
-  studentEmail: "",
+  studentWallet: "",
   course: "",
   issuer: "",
   date: new Date().toISOString().split("T")[0],
   grade: "",
 };
 
-export const CONTRACT_ID = "CCM2BQ54L4RVOH73DC73JXTYMYVO5V7IHTZGWBWJ4NINQJ22TBFQWNVL";
+export const CONTRACT_ID = "CB752L5T2AM2YSL7OMP7SMRV75Z547GTLH3BTMLSQEF7BLQHTTI2SDKT";

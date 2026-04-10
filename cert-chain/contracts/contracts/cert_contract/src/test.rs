@@ -25,22 +25,22 @@ fn test_full_lifecycle() {
 
     let hash = String::from_str(&env, "cert_123");
     let student_id = String::from_str(&env, "S123");
-    let email = String::from_str(&env, "test@example.com");
+    let student_wallet = Address::generate(&env);
     let course = String::from_str(&env, "Blockchain 101");
     let expiry = 1735689600; // arbitrary timestamp
 
     // 3. Unauthorized issuance (should panic)
-    // client.issue_cert(&unauthorized_issuer, &hash, &student_id, &email, &course, &expiry);
+    // client.issue_cert(&unauthorized_issuer, &hash, &student_id, &student_wallet, &course, &expiry);
     // Note: In Soroban tests, we can use env.try_invoke or similar, but for simplicity we'll just test the success path here.
 
     // 4. Authorized Issuance
-    client.issue_cert(&issuer, &hash, &student_id, &email, &course, &expiry);
+    client.issue_cert(&issuer, &hash, &student_id, &student_wallet, &course, &expiry);
 
     // 5. Verify
     let cert = client.verify_cert(&hash);
     assert_eq!(cert.issuer, issuer);
     assert_eq!(cert.student_id, student_id);
-    assert_eq!(cert.student_email, email);
+    assert_eq!(cert.student_wallet, student_wallet);
     assert_eq!(cert.status, CertStatus::Active);
 
     // 6. Revoke
@@ -67,14 +67,14 @@ fn test_batch_issuance() {
     certs.push_back(CertData {
         hash: String::from_str(&env, "h1"),
         student_id: String::from_str(&env, "id1"),
-        student_email: String::from_str(&env, "e1"),
+        student_wallet: Address::generate(&env),
         course: String::from_str(&env, "c1"),
         expiry_date: 0,
     });
     certs.push_back(CertData {
         hash: String::from_str(&env, "h2"),
         student_id: String::from_str(&env, "id2"),
-        student_email: String::from_str(&env, "e2"),
+        student_wallet: Address::generate(&env),
         course: String::from_str(&env, "c2"),
         expiry_date: 0,
     });

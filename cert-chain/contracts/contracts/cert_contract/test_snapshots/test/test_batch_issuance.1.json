@@ -1,6 +1,6 @@
 {
   "generators": {
-    "address": 3,
+    "address": 5,
     "nonce": 0,
     "mux_id": 0
   },
@@ -71,18 +71,18 @@
                         },
                         {
                           "key": {
-                            "symbol": "student_email"
-                          },
-                          "val": {
-                            "string": "e1"
-                          }
-                        },
-                        {
-                          "key": {
                             "symbol": "student_id"
                           },
                           "val": {
                             "string": "id1"
+                          }
+                        },
+                        {
+                          "key": {
+                            "symbol": "student_wallet"
+                          },
+                          "val": {
+                            "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
                           }
                         }
                       ]
@@ -115,18 +115,18 @@
                         },
                         {
                           "key": {
-                            "symbol": "student_email"
-                          },
-                          "val": {
-                            "string": "e2"
-                          }
-                        },
-                        {
-                          "key": {
                             "symbol": "student_id"
                           },
                           "val": {
                             "string": "id2"
+                          }
+                        },
+                        {
+                          "key": {
+                            "symbol": "student_wallet"
+                          },
+                          "val": {
+                            "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
                           }
                         }
                       ]
@@ -219,18 +219,18 @@
                   },
                   {
                     "key": {
-                      "symbol": "student_email"
-                    },
-                    "val": {
-                      "string": "e1"
-                    }
-                  },
-                  {
-                    "key": {
                       "symbol": "student_id"
                     },
                     "val": {
                       "string": "id1"
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "student_wallet"
+                    },
+                    "val": {
+                      "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
                     }
                   }
                 ]
@@ -307,18 +307,18 @@
                   },
                   {
                     "key": {
-                      "symbol": "student_email"
-                    },
-                    "val": {
-                      "string": "e2"
-                    }
-                  },
-                  {
-                    "key": {
                       "symbol": "student_id"
                     },
                     "val": {
                       "string": "id2"
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "student_wallet"
+                    },
+                    "val": {
+                      "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
                     }
                   }
                 ]

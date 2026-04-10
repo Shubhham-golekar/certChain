@@ -48,7 +48,7 @@ export default function App() {
   };
 
   const handleIssue = async () => {
-    if (!form.studentName || !form.studentEmail || !form.course || !form.issuer) {
+    if (!form.studentName || !form.studentWallet || !form.course || !form.issuer) {
       addToast("Please fill all required fields", "error");
       return;
     }
@@ -67,7 +67,7 @@ export default function App() {
           fee: "10000",
           networkPassphrase: Networks.TESTNET,
         })
-          .addOperation(buildIssueCertOp(publicKey, fullHash, form.studentEmail, form.course, form.date))
+          .addOperation(buildIssueCertOp(publicKey, fullHash, form.studentWallet, form.course, form.date))
           .setTimeout(30)
           .build();
 
@@ -115,36 +115,36 @@ export default function App() {
         issuer: form.issuer,
         date: form.date,
         txHash: fullHash.slice(0, 8) + "..." + fullHash.slice(-6),
-        studentEmail: form.studentEmail,
+        studentWallet: form.studentWallet,
         grade: form.grade,
         fullHash,
       };
 
-      // Send Email via Custom Node Backend
+      // Index Certificate via Custom Node Backend
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-        const response = await fetch(`${backendUrl}/send-email`, {
+        const response = await fetch(`${backendUrl}/api/index-cert`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             to_name: form.studentName,
-            to_email: form.studentEmail,
+            student_wallet: form.studentWallet,
             course: form.course,
             issuer: form.issuer,
             hash: fullHash,
           }),
         });
 
-        if (!response.ok) throw new Error("Backend email failed");
-        console.log("✅ Certificate successfully emailed to:", form.studentEmail);
-      } catch (emailErr) {
-        console.error("Failed to send email. Ensure cert-chain-backend is running!", emailErr);
-        addToast("Warning: Certificate issued, but failed to send email.", "error");
+        if (!response.ok) throw new Error("Backend index failed");
+        console.log("✅ Certificate successfully indexed for:", form.studentWallet);
+      } catch (err) {
+        console.error("Failed to index cert. Ensure cert-chain-backend is running!", err);
+        addToast("Warning: Certificate issued, but failed to index on backend.", "error");
       }
 
       setCerts((c) => [newCert, ...c]);
       setPreviewCert(newCert);
-      addToast("🎓 Certificate Issued & Email Sent!");
+      addToast("🎓 Certificate Issued Successfully!");
       setForm(DEFAULT_FORM);
     } catch (err) {
       console.error("Issuance Error:", err);
