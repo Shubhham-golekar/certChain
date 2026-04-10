@@ -17,6 +17,11 @@ A full-stack decentralized application built on **Stellar Soroban** that allows 
 
 *(Please save your dashboard screenshot as `metrics-screenshot.png` in the root folder so it appears here!)*
 
+### 📈 Active Server Monitoring
+![Monitoring Active](./monitoring-screenshot.png)
+
+*(Please save your `/status` monitoring screenshot as `monitoring-screenshot.png` in the root folder so it appears here!)*
+
 ---
 
 ## 🔗 Smart Contract Info
