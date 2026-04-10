@@ -5,7 +5,7 @@ A full-stack decentralized application built on **Stellar Soroban** that allows 
 ![Dashboard]<img width="1902" height="885" alt="Screenshot 2026-03-30 152710" src="https://github.com/user-attachments/assets/59078d7b-f210-468a-b971-c5074f0c4c97" />
 
 ### 🌐 Live Application
-🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-c2x1.vercel.app/)**
+🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-a8e7.vercel.app/)**
 
 ### 🎥 Live Video Demo
 ▶️ [Watch the full CertChain dApp Demo on Loom](https://www.loom.com/share/e91247c07fcb47348ba4b8ac09a8f8d1)
