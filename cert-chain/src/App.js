@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { buildIssueCertOp, server } from "./hooks/useSoroban";
 import { TransactionBuilder, Networks } from "@stellar/stellar-sdk";
 import "./styles/global.css";
@@ -28,10 +28,37 @@ export default function App() {
   const { toasts, addToast } = useToast();
 
   const [tab, setTab] = useState("dashboard");
-  const [certs, setCerts] = useState(MOCK_CERTS);
+  const [certs, setCerts] = useState([]);
   const [form, setForm] = useState(DEFAULT_FORM);
   const [isIssuing, setIsIssuing] = useState(false);
   const [previewCert, setPreviewCert] = useState(null);
+
+  useEffect(() => {
+    const fetchCerts = async () => {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+        const response = await fetch(`${backendUrl}/api/certificates`);
+        if (response.ok) {
+          const data = await response.json();
+          const formatted = data.certificates.map(c => ({
+            id: "cert_" + c.id,
+            studentName: c.to_name,
+            course: c.course,
+            issuer: c.issuer,
+            date: c.created_at ? new Date(c.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            txHash: c.hash ? (c.hash.slice(0, 8) + "..." + c.hash.slice(-6)) : "",
+            studentWallet: c.student_wallet,
+            fullHash: c.hash,
+          }));
+          setCerts(formatted);
+        }
+      } catch (err) {
+        console.error("Failed to fetch certificates from backend:", err);
+      }
+    };
+    fetchCerts();
+  }, []);
+
 
   const handleConnect = async () => {
     await connect();
