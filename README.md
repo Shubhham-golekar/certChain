@@ -12,6 +12,13 @@ A full-stack decentralized application built on **Stellar Soroban** that allows 
 
 ---
 
+### 📊 Live Metrics Dashboard
+![Live Metrics Dashboard](./metrics-screenshot.png)
+
+*(Please save your dashboard screenshot as `metrics-screenshot.png` in the root folder so it appears here!)*
+
+---
+
 ## 🔗 Smart Contract Info
 
 | Field | Value |
