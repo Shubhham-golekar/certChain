@@ -28,6 +28,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
             student_wallet TEXT,
             course TEXT,
             issuer TEXT,
+            grade TEXT,
+            status TEXT DEFAULT 'Active',
             hash TEXT UNIQUE,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
@@ -43,16 +45,16 @@ const emailLimiter = rateLimit({
 });
 
 app.post('/api/index-cert', emailLimiter, async (req, res) => {
-    const { to_name, student_wallet, course, issuer, hash } = req.body;
+    const { to_name, student_wallet, course, issuer, hash, grade } = req.body;
 
-    if (!student_wallet || !hash || !to_name || !course || !issuer) {
+    if (!student_wallet || !hash || !to_name || !course || !issuer || !grade) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
     try {
         // Log to database indexing
-        db.run(`INSERT INTO certificates (to_name, student_wallet, course, issuer, hash) VALUES (?, ?, ?, ?, ?)`,
-            [to_name, student_wallet, course, issuer, hash],
+        db.run(`INSERT INTO certificates (to_name, student_wallet, course, issuer, grade, hash) VALUES (?, ?, ?, ?, ?, ?)`,
+            [to_name, student_wallet, course, issuer, grade, hash],
             (err) => {
                 if (err) console.error('Failed to index certificate to DB:', err.message);
                 else console.log('✅ Certificate indexed in DB:', hash.slice(0, 10));

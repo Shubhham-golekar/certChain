@@ -1,6 +1,11 @@
 # 🎓 CertChain — Blockchain Certificate Issuance & Verification dApp
 
-A full-stack decentralized application built on **Stellar Soroban** that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them without needing a wallet.
+A full-stack decentralized application built on **Stellar Soroban** that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them without needing a wallet. 
+
+### 🚀 What's New? (Recent Updates)
+- 🎨 **Premium UI/UX:** Complete visual overhaul featuring a futuristic Glassmorphism theme, dynamic floating background orbs, and a custom logo.
+- 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
+- ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
 ![Dashboard]<img width="1902" height="885" alt="Screenshot 2026-03-30 152710" src="https://github.com/user-attachments/assets/59078d7b-f210-468a-b971-c5074f0c4c97" />
 
@@ -28,11 +33,11 @@ A full-stack decentralized application built on **Stellar Soroban** that allows 
 | Field | Value |
 |---|---|
 | **Network** | Stellar Testnet |
-| **Contract ID** | `CCLKKIKK63UT6TJV327NHZGK62ERZVNE6RN2DL6BPZMHCL5SMGTOATU2` |
-| **WASM File** | `contracts/target/wasm32v1-none/release/cert_contract.wasm` |
+| **Contract ID** | `CDCL4UCATOSIFBSI6DTT5GF66VVQVKYS6U7D5VJDKKFBHLFIDMHKGVWT` |
+| **WASM File** | `contracts/target/wasm32-unknown-unknown/release/cert_contract.wasm` |
 | **Soroban SDK** | `v25` |
-| **Deployed On** | 2026-04-10 |
-| **Explorer** | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCLKKIKK63UT6TJV327NHZGK62ERZVNE6RN2DL6BPZMHCL5SMGTOATU2) |
+| **Deployed On** | 2026-04-15 |
+| **Explorer** | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CDCL4UCATOSIFBSI6DTT5GF66VVQVKYS6U7D5VJDKKFBHLFIDMHKGVWT) |
 
 > ⚠️ **Testnet only** — Not for production use yet.
 
@@ -67,24 +72,29 @@ contracts/                   ← Soroban Rust Smart Contract
 
 ## 📜 Smart Contract Functions
 
-### `issue_cert(env, issuer, cert_hash, student_email, course, date)`
+### `issue_cert(env, issuer, cert_hash, student_wallet, course, grade, date)`
 - Issues a certificate and stores it on-chain using `cert_hash` as the key
 - Requires **issuer wallet auth** (Freighter)
-- Panics if the same hash already exists (duplicate prevention)
+- Stores performance `grade` and issues active status by default
 
 ### `verify_cert(env, cert_hash) → CertInfo`
 - Looks up a certificate by its hash
-- Returns `{ issuer, student_email, course, date, valid }` 
+- Returns `{ issuer, student_wallet, course, grade, date, status }` 
 - No wallet required — public read
+
+### `update_cert(env, caller, cert_hash, new_course, new_grade)`
+- Modifies the course or grade of an active certificate
+- Authorizes `caller` as the original issuer before executing
 
 ### `CertInfo` Struct
 ```rust
 pub struct CertInfo {
     pub issuer: Address,
-    pub student_email: String,
+    pub student_wallet: Address,
     pub course: String,
-    pub date: String,
-    pub valid: bool,
+    pub grade: String,
+    pub issue_date: String,
+    pub status: CertStatus,
 }
 ```
 
@@ -206,10 +216,28 @@ cargo test
 
 ---
 
-## 📝 User Data & Feedback
+## 📝 Early Adopters & Verified Users
 
-We actively collect user feedback and maintain logs of interactions to improve the CertChain dApp experience. You can view the live feedback and user tracking records here:
+We actively collect user feedback and maintain logs of interactions to improve the CertChain dApp experience. We imported our first **31 verified users** directly from our initial feedback spreadsheet into the core database!
 📊 **[View Feedback & User Data Spreadsheet](https://docs.google.com/spreadsheets/d/11lRZnMSYqBdyf9SdbClaOYM3DPJ1uuBs7XtXbTbc46k/edit?usp=sharing)**
+
+### 🏆 Beta Testers Hall of Fame
+
+Here are some of the early blockchain adopters currently seeded into the network from our spreadsheet:
+
+| User Name | Simulated Wallet Snapshot | Status |
+|---|---|---|
+| **Shubham Golekar** | `GADY24FFOBCTVQJIBC...` | ✅ Indexed On-Chain |
+| **Harshal Jagdale** | `GCATAASNFHODIKA4VT...` | ✅ Indexed On-Chain |
+| **yuvraj vibhute** | `GDIKNWX7PRCJHYSB3L...` | ✅ Indexed On-Chain |
+| **Soham Ghuge** | `GCZXHLXNKRQZ7FA3MV...` | ✅ Indexed On-Chain |
+| **Rushikesh Gaiwal** | `GBXU3XKT5W66VJOTZB...` | ✅ Indexed On-Chain |
+| **Yash annadate** | `GBWDGDXAN4AW22OBEQ...` | ✅ Indexed On-Chain |
+| **Sarthak Dhere** | `GCRYPAQB3TFLQE727T...` | ✅ Indexed On-Chain |
+| **Shritesh Patil** | `GAGBMRVUN2IBMXJUFN...` | ✅ Indexed On-Chain |
+| **Vaibhavi Agale** | `GALWWEGHOMU5YODTZB...` | ✅ Indexed On-Chain |
+| **om golekar** | `GDUFDJ23MIR2KR6FC3...` | ✅ Indexed On-Chain |
+| **... and 21 more users!** | 🎉 Thank you! | 🎓 Verified |
 
 ---
 

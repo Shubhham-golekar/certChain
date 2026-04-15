@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <header style={styles.header}>
       <div style={styles.logo}>
-        <div style={styles.logoIcon}>📜</div>
+        <img src="/logo.png" alt="CertChain Logo" style={styles.logoImage} />
         <div style={styles.logoText}>
           Cert<span style={{ color: "var(--accent)" }}>Chain</span>
         </div>
@@ -27,16 +27,16 @@ const styles = {
     justifyContent: "space-between",
   },
   logo: { display: "flex", alignItems: "center", gap: 12 },
-  logoIcon: {
-    width: 40, height: 40,
-    background: "linear-gradient(135deg, var(--accent), var(--accent2))",
-    borderRadius: 10,
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 20,
+  logoImage: {
+    width: 48, height: 48,
+    borderRadius: 12,
+    objectFit: "cover",
+    boxShadow: "var(--shadow-glow)",
   },
   logoText: {
-    fontFamily: "'Syne', sans-serif",
-    fontWeight: 800, fontSize: 18, letterSpacing: "-0.5px",
+    fontFamily: "var(--font-primary)",
+    fontWeight: 800, fontSize: 24, letterSpacing: "-0.5px",
+    textShadow: "0 2px 10px rgba(0,0,0,0.5)",
   },
   badge: {
     display: "flex", alignItems: "center", gap: 8,

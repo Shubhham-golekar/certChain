@@ -94,7 +94,7 @@ export default function App() {
           fee: "10000",
           networkPassphrase: Networks.TESTNET,
         })
-          .addOperation(buildIssueCertOp(publicKey, fullHash, form.studentWallet, form.course, form.date))
+          .addOperation(buildIssueCertOp(publicKey, fullHash, form.studentWallet, form.course, form.grade, form.date))
           .setTimeout(30)
           .build();
 
@@ -158,6 +158,7 @@ export default function App() {
             student_wallet: form.studentWallet,
             course: form.course,
             issuer: form.issuer,
+            grade: form.grade,
             hash: fullHash,
           }),
         });
@@ -247,35 +248,39 @@ const styles = {
   app: { minHeight: "100vh", background: "var(--bg)", position: "relative", overflow: "hidden" },
   gridBg: {
     position: "fixed", inset: 0,
-    backgroundImage: "linear-gradient(rgba(108,99,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,0.04) 1px,transparent 1px)",
-    backgroundSize: "40px 40px", pointerEvents: "none", zIndex: 0,
+    backgroundImage: "linear-gradient(rgba(108,99,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,0.03) 1px,transparent 1px)",
+    backgroundSize: "60px 60px", pointerEvents: "none", zIndex: 0,
   },
   glowOrb: {
-    position: "fixed", width: 600, height: 600, borderRadius: "50%",
-    filter: "blur(120px)", pointerEvents: "none", zIndex: 0,
+    position: "fixed", width: 800, height: 800, borderRadius: "50%",
+    filter: "blur(150px)", pointerEvents: "none", zIndex: 0,
+    animation: "floatOrb 10s ease-in-out infinite",
   },
-  container: { maxWidth: 960, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 },
-  hero: { textAlign: "center", marginBottom: 56 },
+  container: { maxWidth: 960, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "slideInUp 0.8s ease-out" },
+  hero: { textAlign: "center", marginBottom: 64 },
   heroTag: {
-    display: "inline-block", background: "rgba(108,99,255,0.12)",
-    border: "1px solid rgba(108,99,255,0.25)", borderRadius: 4,
-    padding: "4px 12px", fontSize: 11, letterSpacing: 2,
-    textTransform: "uppercase", color: "var(--accent)", marginBottom: 20,
+    display: "inline-block", background: "rgba(108,99,255,0.15)",
+    border: "1px solid rgba(108,99,255,0.3)", borderRadius: 8,
+    padding: "6px 16px", fontSize: 12, letterSpacing: 3, fontWeight: 600,
+    textTransform: "uppercase", color: "var(--accent-light)", marginBottom: 24,
+    backdropFilter: "blur(4px)",
   },
-  h1: { fontFamily: "'Syne',sans-serif", fontSize: 52, fontWeight: 800, lineHeight: 1.1, letterSpacing: -1.5, marginBottom: 16 },
+  h1: { fontFamily: "var(--font-primary)", fontSize: 64, fontWeight: 800, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: 18 },
   highlight: {
-    background: "linear-gradient(90deg,var(--accent),var(--accent2))",
+    background: "linear-gradient(135deg, var(--accent), var(--accent2))",
     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
   },
-  heroP: { color: "var(--muted)", fontSize: 14, maxWidth: 480, margin: "0 auto", lineHeight: 1.8 },
+  heroP: { color: "var(--text-muted)", fontSize: 16, maxWidth: 520, margin: "0 auto", lineHeight: 1.6, fontWeight: 300 },
   tabs: {
-    display: "flex", gap: 4, background: "var(--surface)",
-    border: "1px solid var(--border)", borderRadius: 12, padding: 4, marginBottom: 40,
+    display: "flex", gap: 8, background: "rgba(17,17,24,0.6)", backdropFilter: "blur(12px)",
+    border: "1px solid var(--surface-border)", borderRadius: 16, padding: 6, marginBottom: 48,
+    boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
   },
   tab: {
-    flex: 1, padding: "10px 16px", border: "none", borderRadius: 8,
-    background: "transparent", color: "var(--muted)",
-    fontFamily: "'DM Mono',monospace", fontSize: 12, cursor: "pointer", letterSpacing: "0.5px",
+    flex: 1, padding: "12px 20px", border: "none", borderRadius: 12,
+    background: "transparent", color: "var(--text-muted)",
+    fontFamily: "var(--font-primary)", fontWeight: 500, fontSize: 14, cursor: "pointer", letterSpacing: "0.5px",
+    transition: "all 0.3s ease",
   },
-  tabActive: { background: "var(--surface2)", color: "var(--text)", border: "1px solid var(--border)" },
+  tabActive: { background: "var(--accent)", color: "#fff", boxShadow: "0 4px 12px rgba(108,99,255,0.3)" },
 };

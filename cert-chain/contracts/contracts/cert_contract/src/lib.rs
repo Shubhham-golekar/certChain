@@ -15,6 +15,7 @@ pub struct CertInfo {
     pub issuer: Address,
     pub student_wallet: Address,
     pub course: String,
+    pub grade: String,
     pub issue_date: String,
     pub status: CertStatus,
 }
@@ -35,6 +36,7 @@ impl CertContract {
         cert_hash: String,
         student_wallet: Address,
         course: String,
+        grade: String,
         issue_date: String,
     ) {
         issuer.require_auth();
@@ -47,6 +49,7 @@ impl CertContract {
             issuer: issuer.clone(),
             student_wallet,
             course,
+            grade,
             issue_date,
             status: CertStatus::Active,
         };
@@ -75,6 +78,34 @@ impl CertContract {
         cert.status = CertStatus::Revoked;
         env.storage().persistent().set(&DataKey::Cert(cert_hash.clone()), &cert);
         env.events().publish(("cert_revoked", caller), cert_hash);
+    }
+
+    pub fn update_cert(
+        env: Env,
+        caller: Address,
+        cert_hash: String,
+        new_course: String,
+        new_grade: String,
+    ) {
+        caller.require_auth();
+
+        let mut cert: CertInfo = env.storage().persistent()
+            .get(&DataKey::Cert(cert_hash.clone()))
+            .unwrap_or_else(|| panic!("Certificate not found"));
+
+        if caller != cert.issuer {
+            panic!("Unauthorized to update this certificate");
+        }
+        
+        if cert.status != CertStatus::Active {
+            panic!("Cannot update an inactive certificate");
+        }
+
+        cert.course = new_course;
+        cert.grade = new_grade;
+        
+        env.storage().persistent().set(&DataKey::Cert(cert_hash.clone()), &cert);
+        env.events().publish(("cert_updated", caller), cert_hash);
     }
 }
 
