@@ -158,7 +158,7 @@ TX: KI8YBE7ZX56WNDZMZHNPIVECX4JLUMY9...
 **3. Verified Certificate View:**
 ![Verified Certificate](./certificate.png)
 
-*(Note: Save your uploaded certificate screenshot as `certificate.png` in the project folder to display it here).*
+
 
 ---
 
