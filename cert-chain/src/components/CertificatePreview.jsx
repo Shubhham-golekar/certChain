@@ -18,31 +18,40 @@ export default function CertificatePreview({ cert }) {
   return (
     <div style={styles.wrap}>
       {["tl", "tr", "bl", "br"].map((pos) => <div key={pos} style={{ ...styles.corner, ...styles[pos] }} />)}
-      <div style={styles.seal}>🏛️</div>
-      <div style={styles.issuer}>{cert.issuer}</div>
-      <div style={styles.subtitle}>This is to certify that</div>
-      <div style={styles.name}>{cert.studentName}</div>
-      <div style={styles.completed}>has successfully completed</div>
-      <div style={styles.course}>{cert.course}</div>
-      <div style={styles.date}>Issued on {cert.date}</div>
-      <div style={styles.divider} />
+      
+      {/* Decorative Aura */}
+      <div style={{ ...styles.aura, top: -50, left: -50, background: "rgba(168, 85, 247, 0.4)" }} />
+      <div style={{ ...styles.aura, bottom: -50, right: -50, background: "rgba(6, 182, 212, 0.3)" }} />
 
-      <div style={styles.footerWrap}>
-        <div style={styles.qrColumn}>
-          <QRCodeCanvas
-            value={hashVal}
-            size={64}
-            bgColor="#1a1a2e"
-            fgColor="#ffd700"
-            level="L"
-            includeMargin={false}
-          />
-        </div>
-        <div style={styles.hashWrap}>
-          <div style={styles.hash}>🔗 TX: {hashVal.slice(0, 32)}...</div>
-          <button onClick={handleCopy} style={styles.copyBtn}>
-            {copied ? "Copied!" : "Copy Full Hash"}
-          </button>
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={styles.seal}>🎯</div>
+        <div style={styles.issuer}>{cert.issuer}</div>
+        <div style={styles.subtitle}>This is to certify that</div>
+        <div style={styles.name}>{cert.studentName}</div>
+        <div style={styles.completed}>has successfully completed</div>
+        <div style={styles.course}>{cert.course}</div>
+        <div style={styles.date}>Issued on {cert.date}</div>
+        
+        <div style={styles.divider} />
+
+        <div style={styles.footerWrap}>
+            <div style={styles.qrColumn}>
+            <QRCodeCanvas
+                value={hashVal}
+                size={80}
+                bgColor="transparent"
+                fgColor="#f8fafc"
+                level="L"
+                includeMargin={false}
+            />
+            </div>
+            <div style={styles.hashWrap}>
+            <div style={styles.hashLabel}>VERIFICATION HASH</div>
+            <div style={styles.hash}>🔗 TX: {hashVal.slice(0, 32)}...</div>
+            <button onClick={handleCopy} style={styles.copyBtn}>
+                {copied ? "Copied!" : "Copy Full Hash"}
+            </button>
+            </div>
         </div>
       </div>
     </div>
@@ -51,44 +60,52 @@ export default function CertificatePreview({ cert }) {
 
 const styles = {
   wrap: {
-    background: "linear-gradient(135deg,#0d0d1a 0%,#1a1a2e 50%,#0d0d1a 100%)",
-    border: "1px solid rgba(108,99,255,0.3)", borderRadius: 16,
-    padding: 40, textAlign: "center", position: "relative",
-    overflow: "hidden", marginTop: 32,
+    background: "rgba(15, 10, 30, 0.8)",
+    backdropFilter: "blur(40px) saturate(200%)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    borderRadius: 24, padding: "48px 40px", 
+    textAlign: "center", position: "relative", overflow: "hidden", 
+    marginTop: 40, boxShadow: "0 20px 50px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2)",
+  },
+  aura: {
+    position: "absolute", width: 200, height: 200, borderRadius: "50%",
+    filter: "blur(60px)", pointerEvents: "none", zIndex: 0,
   },
   corner: {
-    position: "absolute", width: 60, height: 60,
-    borderColor: "rgba(255,215,0,0.3)", borderStyle: "solid",
+    position: "absolute", width: 80, height: 80,
+    borderColor: "rgba(255,255,255,0.1)", borderStyle: "solid", zIndex: 1
   },
-  tl: { top: 16, left: 16, borderWidth: "2px 0 0 2px", borderRadius: "4px 0 0 0" },
-  tr: { top: 16, right: 16, borderWidth: "2px 2px 0 0", borderRadius: "0 4px 0 0" },
-  bl: { bottom: 16, left: 16, borderWidth: "0 0 2px 2px", borderRadius: "0 0 0 4px" },
-  br: { bottom: 16, right: 16, borderWidth: "0 2px 2px 0", borderRadius: "0 0 4px 0" },
+  tl: { top: 20, left: 20, borderWidth: "2px 0 0 2px", borderRadius: "8px 0 0 0" },
+  tr: { top: 20, right: 20, borderWidth: "2px 2px 0 0", borderRadius: "0 8px 0 0" },
+  bl: { bottom: 20, left: 20, borderWidth: "0 0 2px 2px", borderRadius: "0 0 0 8px" },
+  br: { bottom: 20, right: 20, borderWidth: "0 2px 2px 0", borderRadius: "0 0 8px 0" },
   seal: {
-    width: 64, height: 64, borderRadius: "50%",
-    background: "linear-gradient(135deg,#ffd700,#ffb300)",
+    width: 72, height: 72, borderRadius: "50%",
+    background: "linear-gradient(135deg, var(--neon-purple), var(--neon-pink))",
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 28, margin: "0 auto 20px",
-    boxShadow: "0 0 30px rgba(255,215,0,0.3)",
+    fontSize: 32, margin: "0 auto 24px",
+    boxShadow: "0 0 30px rgba(236, 72, 153, 0.4)",
   },
-  issuer: { fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: "var(--accent2)", marginBottom: 8 },
-  subtitle: { fontFamily: "'Syne',sans-serif", fontSize: 11, letterSpacing: 4, textTransform: "uppercase", color: "var(--muted)", marginBottom: 12 },
+  issuer: { fontSize: 13, fontWeight: 800, letterSpacing: 4, textTransform: "uppercase", color: "var(--neon-cyan)", marginBottom: 12 },
+  subtitle: { fontFamily: "'Space Grotesk',sans-serif", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 16 },
   name: {
-    fontFamily: "'Syne',sans-serif", fontSize: 32, fontWeight: 800, marginBottom: 12,
-    background: "linear-gradient(90deg,#ffd700,#fff,#ffd700)",
+    fontFamily: "'Space Grotesk',sans-serif", fontSize: 44, fontWeight: 800, marginBottom: 16,
+    background: "linear-gradient(90deg, #fff, #f1f5f9)",
     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+    textShadow: "0 4px 20px rgba(255,255,255,0.2)"
   },
-  completed: { fontSize: 14, color: "var(--text)", marginBottom: 6 },
-  course: { fontSize: 16, color: "var(--accent2)", fontWeight: 600, marginBottom: 6 },
-  date: { fontSize: 11, color: "var(--muted)", marginBottom: 24 },
-  divider: { width: 120, height: 1, background: "linear-gradient(90deg,transparent,rgba(255,215,0,0.4),transparent)", margin: "0 auto 20px" },
-  footerWrap: { display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginTop: 20 },
-  qrColumn: { padding: 4, background: "rgba(255, 255, 255, 0.05)", borderRadius: 8, display: "flex" },
-  hashWrap: { display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8 },
-  hash: { fontSize: 10, color: "var(--muted)", wordBreak: "break-all", padding: "8px 16px", background: "rgba(0,0,0,0.3)", borderRadius: 6, display: "inline-block" },
+  completed: { fontSize: 15, color: "var(--text-muted)", marginBottom: 8 },
+  course: { fontSize: 22, color: "var(--neon-pink)", fontWeight: 700, marginBottom: 12, letterSpacing: 1 },
+  date: { fontSize: 13, color: "var(--text-muted)", marginBottom: 32 },
+  divider: { width: 200, height: 1, background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)", margin: "0 auto 30px" },
+  footerWrap: { display: "flex", alignItems: "center", justifyContent: "center", gap: 30, background: "rgba(0,0,0,0.3)", padding: 20, borderRadius: 16, border: "1px solid rgba(255,255,255,0.05)" },
+  qrColumn: { padding: 8, background: "rgba(255, 255, 255, 0.05)", borderRadius: 12, display: "flex", border: "1px solid rgba(255,255,255,0.1)" },
+  hashWrap: { display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 },
+  hashLabel: { fontSize: 10, fontWeight: 800, letterSpacing: 2, color: "var(--neon-cyan)" },
+  hash: { fontSize: 11, color: "var(--text)", wordBreak: "break-all", padding: "10px 16px", background: "rgba(0,0,0,0.4)", borderRadius: 8, display: "inline-block", fontFamily: "var(--font-mono)", border: "1px solid rgba(255,255,255,0.05)" },
   copyBtn: {
-    background: "rgba(0,212,170,0.1)", border: "1px solid rgba(0,212,170,0.3)",
-    color: "var(--accent2)", padding: "6px 12px", borderRadius: 6,
-    fontSize: 11, cursor: "pointer", fontFamily: "'DM Mono',monospace"
+    background: "rgba(168, 85, 247, 0.2)", border: "1px solid rgba(168, 85, 247, 0.5)",
+    color: "white", padding: "8px 16px", borderRadius: 8,
+    fontSize: 12, cursor: "pointer", fontFamily: "'Space Grotesk',monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: 1
   }
 };

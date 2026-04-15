@@ -184,21 +184,20 @@ export default function App() {
 
   return (
     <div style={styles.app}>
-      <div style={styles.gridBg} />
-      <div style={{ ...styles.glowOrb, top: -200, right: -100, background: "rgba(108,99,255,0.12)" }} />
-      <div style={{ ...styles.glowOrb, bottom: -200, left: -100, background: "rgba(0,212,170,0.08)" }} />
+      {/* Premium Aurora Background */}
+      <div className="aurora-bg" />
 
       <ToastContainer toasts={toasts} />
 
       <div style={styles.container}>
         <Header />
         <div style={styles.hero}>
-          <div style={styles.heroTag}>Decentralized Credentials</div>
+          <div style={styles.heroTag}>Web3 Decentralized Credentials</div>
           <h1 style={styles.h1}>
             Issue <span style={styles.highlight}>Tamper-Proof</span><br />Certificates On-Chain
           </h1>
           <p style={styles.heroP}>
-            Permanently record academic credentials on the Stellar blockchain.
+            Permanently and securely record academic or professional credentials on the Stellar blockchain network.
           </p>
         </div>
 
@@ -212,75 +211,73 @@ export default function App() {
           onDisconnect={handleDisconnect}
         />
 
-        <div style={styles.tabs}>
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              style={{ ...styles.tab, ...(tab === t.id ? styles.tabActive : {}) }}
-              onClick={() => { setTab(t.id); setPreviewCert(null); }}
-            >
-              {t.label}
-            </button>
-          ))}
+        <div style={styles.tabsContainer}>
+          <div style={styles.tabsInner}>
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                style={{ ...styles.tab, ...(tab === t.id ? styles.tabActive : {}) }}
+                onClick={() => { setTab(t.id); setPreviewCert(null); }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {tab === "dashboard" && <DashboardTab />}
-        {tab === "issue" && (
-          <IssueTab
-            walletConnected={connected}
-            onIssue={handleIssue}
-            isIssuing={isIssuing}
-            previewCert={previewCert}
-            form={form}
-            onChange={handleFormChange}
-          />
-        )}
-        {tab === "verify" && <VerifyTab certs={certs} />}
-        {tab === "records" && <RecordsTab certs={certs} />}
+        <div className="animated-enter" key={tab}>
+          {tab === "dashboard" && <DashboardTab />}
+          {tab === "issue" && (
+            <IssueTab
+              walletConnected={connected}
+              onIssue={handleIssue}
+              isIssuing={isIssuing}
+              previewCert={previewCert}
+              form={form}
+              onChange={handleFormChange}
+            />
+          )}
+          {tab === "verify" && <VerifyTab certs={certs} />}
+          {tab === "records" && <RecordsTab certs={certs} />}
+        </div>
 
-        <div style={{ height: 48 }} />
+        <div style={{ height: 80 }} />
       </div>
     </div>
   );
 }
 
 const styles = {
-  app: { minHeight: "100vh", background: "var(--bg)", position: "relative", overflow: "hidden" },
-  gridBg: {
-    position: "fixed", inset: 0,
-    backgroundImage: "linear-gradient(rgba(108,99,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,0.03) 1px,transparent 1px)",
-    backgroundSize: "60px 60px", pointerEvents: "none", zIndex: 0,
-  },
-  glowOrb: {
-    position: "fixed", width: 800, height: 800, borderRadius: "50%",
-    filter: "blur(150px)", pointerEvents: "none", zIndex: 0,
-    animation: "floatOrb 10s ease-in-out infinite",
-  },
-  container: { maxWidth: 960, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "slideInUp 0.8s ease-out" },
-  hero: { textAlign: "center", marginBottom: 64 },
+  app: { minHeight: "100vh", position: "relative", overflow: "hidden" },
+  container: { maxWidth: 1000, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "slideInUp 0.8s ease-out" },
+  hero: { textAlign: "center", marginBottom: 70, marginTop: 20 },
   heroTag: {
-    display: "inline-block", background: "rgba(108,99,255,0.15)",
-    border: "1px solid rgba(108,99,255,0.3)", borderRadius: 8,
-    padding: "6px 16px", fontSize: 12, letterSpacing: 3, fontWeight: 600,
-    textTransform: "uppercase", color: "var(--accent-light)", marginBottom: 24,
-    backdropFilter: "blur(4px)",
+    display: "inline-block", background: "rgba(168, 85, 247, 0.15)",
+    border: "1px solid rgba(168, 85, 247, 0.4)", borderRadius: 30,
+    padding: "8px 20px", fontSize: 13, letterSpacing: 4, fontWeight: 800,
+    textTransform: "uppercase", color: "var(--neon-purple)", marginBottom: 30,
+    backdropFilter: "blur(6px)",
+    boxShadow: "0 0 20px rgba(168, 85, 247, 0.2)",
   },
-  h1: { fontFamily: "var(--font-primary)", fontSize: 64, fontWeight: 800, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: 18 },
+  h1: { fontFamily: "var(--font-primary)", fontSize: 72, fontWeight: 800, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: 24, textShadow: "0 10px 30px rgba(0,0,0,0.5)" },
   highlight: {
-    background: "linear-gradient(135deg, var(--accent), var(--accent2))",
+    background: "linear-gradient(135deg, var(--neon-purple), var(--neon-pink), var(--neon-cyan))",
     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+    backgroundSize: "200% 200%",
+    animation: "aurora-shift 5s ease infinite alternate",
   },
-  heroP: { color: "var(--text-muted)", fontSize: 16, maxWidth: 520, margin: "0 auto", lineHeight: 1.6, fontWeight: 300 },
-  tabs: {
-    display: "flex", gap: 8, background: "rgba(17,17,24,0.6)", backdropFilter: "blur(12px)",
-    border: "1px solid var(--surface-border)", borderRadius: 16, padding: 6, marginBottom: 48,
-    boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+  heroP: { color: "var(--text-muted)", fontSize: 18, maxWidth: 560, margin: "0 auto", lineHeight: 1.6, fontWeight: 400 },
+  tabsContainer: { display: "flex", justifyContent: "center", marginBottom: 50 },
+  tabsInner: {
+    display: "inline-flex", gap: 10, background: "var(--surface)", backdropFilter: "var(--glass-blur)",
+    border: "1px solid var(--surface-border)", borderRadius: 30, padding: 8,
+    boxShadow: "var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.1)",
   },
   tab: {
-    flex: 1, padding: "12px 20px", border: "none", borderRadius: 12,
+    padding: "14px 28px", border: "none", borderRadius: 24,
     background: "transparent", color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)", fontWeight: 500, fontSize: 14, cursor: "pointer", letterSpacing: "0.5px",
-    transition: "all 0.3s ease",
+    fontFamily: "var(--font-primary)", fontWeight: 600, fontSize: 15, cursor: "pointer", letterSpacing: "0.5px",
+    transition: "all var(--transition-bounce)",
   },
-  tabActive: { background: "var(--accent)", color: "#fff", boxShadow: "0 4px 12px rgba(108,99,255,0.3)" },
+  tabActive: { background: "rgba(255,255,255,0.1)", color: "#fff", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" },
 };

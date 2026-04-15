@@ -3,14 +3,14 @@ import React from "react";
 export default function StatsRow({ totalCerts }) {
   const stats = [
     { value: totalCerts, label: "Certificates Issued" },
-    { value: "100%", label: "Tamper Proof" },
-    { value: "~3s", label: "Issue Time" },
+    { value: "100%", label: "On-Chain Verified" },
+    { value: "~3s", label: "Finality Time" },
   ];
 
   return (
     <div style={styles.row}>
       {stats.map((s) => (
-        <div key={s.label} style={styles.card}>
+        <div key={s.label} className="glass-container" style={styles.card}>
           <div style={styles.value}>{s.value}</div>
           <div style={styles.label}>{s.label}</div>
         </div>
@@ -20,15 +20,15 @@ export default function StatsRow({ totalCerts }) {
 }
 
 const styles = {
-  row: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 32 },
+  row: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, marginBottom: 40 },
   card: {
-    background: "var(--surface)", border: "1px solid var(--border)",
-    borderRadius: 12, padding: 20, textAlign: "center",
+    padding: "30px 20px", textAlign: "center",
   },
   value: {
-    fontFamily: "'Syne', sans-serif", fontSize: 28, fontWeight: 800,
-    background: "linear-gradient(90deg, var(--accent), var(--accent2))",
+    fontFamily: "var(--font-mono)", fontSize: 38, fontWeight: 800,
+    background: "linear-gradient(90deg, var(--text), var(--text-muted))",
     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+    marginBottom: 8, textShadow: "0 4px 20px rgba(255,255,255,0.1)"
   },
-  label: { fontSize: 10, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 1, marginTop: 4 },
+  label: { fontSize: 11, color: "var(--neon-cyan)", fontWeight: 700, textTransform: "uppercase", letterSpacing: 2 },
 };

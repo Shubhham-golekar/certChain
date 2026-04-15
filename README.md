@@ -7,7 +7,7 @@ A full-stack decentralized application built on **Stellar Soroban** that allows 
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
-![Dashboard]<img width="1902" height="885" alt="Screenshot 2026-03-30 152710" src="https://github.com/user-attachments/assets/59078d7b-f210-468a-b971-c5074f0c4c97" />
+![Dashboard](./ui-updated-dashboard.png)
 
 ### 🌐 Live Application
 🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-a8e7.vercel.app/)**

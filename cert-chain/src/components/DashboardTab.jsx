@@ -17,7 +17,6 @@ export default function DashboardTab() {
                 const certs = data.certificates || [];
                 setTotal(certs.length);
 
-                // Group by course for a chart
                 const courseCounts = {};
                 for (const cert of certs) {
                     courseCounts[cert.course] = (courseCounts[cert.course] || 0) + 1;
@@ -30,7 +29,6 @@ export default function DashboardTab() {
 
                 setMetrics(chartData);
             } catch (err) {
-                console.error("Dashboard error:", err);
                 setError("Make sure cert-chain-backend is running to load metrics.");
             } finally {
                 setLoading(false);
@@ -40,7 +38,7 @@ export default function DashboardTab() {
     }, []);
 
     return (
-        <div style={styles.card}>
+        <div className="glass-container" style={styles.card}>
             <div style={styles.title}>📊 Live Metrics Dashboard</div>
             <div style={styles.subtitle}>Real-time statistics sourced from the decentralized certs indexer.</div>
 
@@ -56,23 +54,30 @@ export default function DashboardTab() {
             </div>
 
             <div style={styles.chartContainer}>
-                <div style={{ ...styles.title, fontSize: 14, marginBottom: 16 }}>Issuances by Course</div>
+                <div style={{ ...styles.title, fontSize: 16, marginBottom: 20 }}>Issuances by Course</div>
                 {loading ? (
-                    <p style={{ color: "var(--muted)" }}>Loading metrics...</p>
+                    <p style={{ color: "var(--text-muted)", padding: 20 }}>Loading metrics...</p>
                 ) : error ? (
-                    <p style={{ color: "var(--accent)" }}>{error}</p>
+                    <p style={{ color: "var(--neon-pink)", padding: 20 }}>{error}</p>
                 ) : metrics.length === 0 ? (
-                    <p style={{ color: "var(--muted)" }}>No data to display.</p>
+                    <p style={{ color: "var(--text-muted)", padding: 20 }}>No data to display.</p>
                 ) : (
-                    <ResponsiveContainer width="100%" height={250}>
+                    <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={metrics} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                            <XAxis dataKey="name" stroke="var(--muted)" fontSize={11} />
-                            <YAxis allowDecimals={false} stroke="var(--muted)" fontSize={11} />
+                            <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+                            <YAxis allowDecimals={false} stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
                             <Tooltip
-                                contentStyle={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8 }}
-                                itemStyle={{ color: "var(--text)" }}
+                                contentStyle={{ background: "rgba(15,10,30,0.9)", border: "1px solid var(--neon-purple)", borderRadius: 12, backdropFilter: "blur(10px)", boxShadow: "0 4px 20px rgba(0,0,0,0.5)" }}
+                                itemStyle={{ color: "var(--text)", fontWeight: "bold" }}
+                                cursor={{ fill: "rgba(255,255,255,0.05)" }}
                             />
-                            <Bar dataKey="Issuances" fill="var(--accent)" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="Issuances" fill="url(#colorUv)" radius={[6, 6, 0, 0]} />
+                            <defs>
+                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="var(--neon-purple)" stopOpacity={1}/>
+                                    <stop offset="95%" stopColor="var(--neon-pink)" stopOpacity={0.8}/>
+                                </linearGradient>
+                            </defs>
                         </BarChart>
                     </ResponsiveContainer>
                 )}
@@ -82,12 +87,19 @@ export default function DashboardTab() {
 }
 
 const styles = {
-    card: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 32, marginBottom: 24 },
-    title: { fontFamily: "'Syne',sans-serif", fontSize: 16, fontWeight: 700, marginBottom: 6 },
-    subtitle: { color: "var(--muted)", fontSize: 12, marginBottom: 28, lineHeight: 1.6 },
-    statsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 },
-    statBox: { background: "var(--surface2)", padding: 20, borderRadius: 12, textAlign: "center", border: "1px solid var(--border)" },
-    statValue: { fontSize: 32, fontWeight: 800, fontFamily: "'Syne',sans-serif", color: "var(--accent)" },
-    statLabel: { fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 1, marginTop: 4 },
-    chartContainer: { background: "var(--surface2)", padding: 24, borderRadius: 12, border: "1px solid var(--border)" }
+    card: { padding: 40, marginBottom: 24 },
+    title: { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, marginBottom: 8, letterSpacing: "-0.5px" },
+    subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
+    statsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 40 },
+    statBox: { 
+        background: "rgba(255,255,255,0.03)", padding: 30, borderRadius: 16, 
+        textAlign: "center", border: "1px solid var(--border)",
+        boxShadow: "inset 0 2px 10px rgba(0,0,0,0.2)"
+    },
+    statValue: { fontSize: 42, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", color: "var(--neon-cyan)", textShadow: "0 0 20px rgba(6, 182, 212, 0.4)" },
+    statLabel: { fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: 2, marginTop: 8 },
+    chartContainer: { 
+        background: "rgba(0,0,0,0.2)", padding: 30, borderRadius: 16, 
+        border: "1px solid var(--border)", boxShadow: "inset 0 2px 10px rgba(0,0,0,0.3)" 
+    }
 };

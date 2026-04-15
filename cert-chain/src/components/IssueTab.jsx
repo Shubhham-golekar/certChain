@@ -11,10 +11,10 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
   ];
 
   return (
-    <div style={styles.card}>
+    <div className="glass-container" style={styles.card}>
       <div style={styles.title}>📤 Issue New Certificate</div>
       <div style={styles.subtitle}>
-        Fill in the details below. The certificate will be recorded on Stellar Testnet as a transaction.
+        Fill in the details below. The certificate will be recorded on Stellar Testnet as a tamper-proof transaction.
       </div>
 
       <div style={styles.grid}>
@@ -41,7 +41,8 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
 
       <div style={styles.submitRow}>
         <button
-          style={{ ...styles.btn, ...(isIssuing || !walletConnected ? styles.btnDisabled : styles.btnPrimary) }}
+          className={isIssuing || !walletConnected ? "" : "btn-primary"}
+          style={{ ...styles.btn, ...(isIssuing || !walletConnected ? styles.btnDisabled : {}) }}
           onClick={onIssue}
           disabled={isIssuing || !walletConnected}
         >
@@ -55,13 +56,12 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
 }
 
 const styles = {
-  card: { background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 32, marginBottom: 24 },
-  title: { fontFamily: "'Syne',sans-serif", fontSize: 16, fontWeight: 700, marginBottom: 6 },
-  subtitle: { color: "var(--muted)", fontSize: 12, marginBottom: 28, lineHeight: 1.6 },
-  grid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 },
-  field: { display: "flex", flexDirection: "column", gap: 8 },
-  submitRow: { display: "flex", justifyContent: "flex-end", marginTop: 8 },
-  btn: { padding: "14px 32px", borderRadius: 8, border: "none", fontFamily: "'DM Mono',monospace", fontSize: 13, cursor: "pointer", letterSpacing: "0.5px" },
-  btnPrimary: { background: "var(--accent)", color: "white" },
-  btnDisabled: { background: "var(--border)", color: "var(--muted)", cursor: "not-allowed" },
+  card: { padding: 40, marginBottom: 24 },
+  title: { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, marginBottom: 8 },
+  subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
+  grid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 24 },
+  field: { display: "flex", flexDirection: "column", gap: 10 },
+  submitRow: { display: "flex", justifyContent: "flex-end", marginTop: 20 },
+  btn: { padding: "16px 36px", borderRadius: 14, border: "none", fontFamily: "'Space Grotesk',monospace", fontSize: 15, cursor: "pointer", letterSpacing: "1px", fontWeight: 700 },
+  btnDisabled: { background: "rgba(255,255,255,0.05)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
 };

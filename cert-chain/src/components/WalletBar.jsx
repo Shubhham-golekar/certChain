@@ -2,11 +2,11 @@ import React from "react";
 
 export default function WalletBar({ connected, address, loading, onConnect, onDisconnect }) {
     return (
-        <div style={styles.bar}>
+        <div className="glass-container" style={styles.bar}>
             <div style={styles.info}>
-                <div style={styles.avatar}>{connected ? "🔓" : "🔒"}</div>
+                <div style={styles.avatar}>{connected ? "✨" : "🔒"}</div>
                 <div>
-                    <div style={styles.label}>Freighter Wallet</div>
+                    <div style={styles.label}>Stellar Freighter Wallet</div>
                     <div style={styles.address}>{connected ? address : "Not Connected"}</div>
                 </div>
             </div>
@@ -15,7 +15,7 @@ export default function WalletBar({ connected, address, loading, onConnect, onDi
                     Disconnect
                 </button>
             ) : (
-                <button style={{ ...styles.btn, ...styles.btnPrimary }} onClick={onConnect} disabled={loading}>
+                <button className="btn-primary" onClick={onConnect} disabled={loading}>
                     {loading ? "Connecting..." : "Connect Wallet"}
                 </button>
             )}
@@ -25,24 +25,24 @@ export default function WalletBar({ connected, address, loading, onConnect, onDi
 
 const styles = {
     bar: {
-        background: "var(--surface)", border: "1px solid var(--border)",
-        borderRadius: 16, padding: 24, marginBottom: 32,
+        padding: "24px 32px", marginBottom: 40,
         display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
     },
-    info: { display: "flex", alignItems: "center", gap: 14 },
+    info: { display: "flex", alignItems: "center", gap: 20 },
     avatar: {
-        width: 44, height: 44, borderRadius: "50%",
-        background: "linear-gradient(135deg, var(--accent), var(--accent2))",
+        width: 52, height: 52, borderRadius: "16px",
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid var(--border)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: 18, flexShrink: 0,
+        fontSize: 22, flexShrink: 0,
+        boxShadow: "inset 0 2px 4px rgba(255,255,255,0.05)"
     },
-    label: { fontSize: 10, textTransform: "uppercase", letterSpacing: 1, color: "var(--muted)", marginBottom: 4 },
-    address: { fontSize: 13, color: "var(--text)", fontWeight: 500 },
+    label: { fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2, color: "var(--text-muted)", marginBottom: 6 },
+    address: { fontSize: 15, color: "var(--text)", fontWeight: 600, fontFamily: "var(--font-mono)" },
     btn: {
-        padding: "10px 20px", borderRadius: 8, border: "none",
-        fontFamily: "'DM Mono', monospace", fontSize: 12,
-        cursor: "pointer", letterSpacing: "0.5px",
+        padding: "12px 24px", borderRadius: 12, border: "none",
+        fontFamily: "var(--font-mono)", fontSize: 14, fontWeight: 600,
+        cursor: "pointer", letterSpacing: "1px",
     },
-    btnPrimary: { background: "var(--accent)", color: "white" },
-    btnOutline: { background: "transparent", color: "var(--accent3)", border: "1px solid var(--accent3)" },
+    btnOutline: { background: "rgba(255,255,255,0.05)", color: "var(--text)", border: "1px solid var(--border)" },
 };
