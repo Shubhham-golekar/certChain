@@ -86,7 +86,7 @@ export default function VerifyTab({ certs = [] }) {
   };
 
   return (
-    <div className="glass-container" style={styles.card}>
+    <div className="card" style={styles.card}>
       <div style={styles.title}>🔍 Verify Certificate</div>
       <div style={styles.subtitle}>Enter a Stellar transaction hash to verify a certificate on-chain.</div>
 
@@ -121,7 +121,7 @@ export default function VerifyTab({ certs = [] }) {
       {result && (
         <div style={{ marginTop: 32 }}>
           {result.valid ? (
-            <div style={{ animation: "slideInUp 0.5s ease-out" }}>
+            <div style={{ animation: "fadeIn 0.5s ease-out" }}>
               <div style={styles.verifiedHeader}>
                 ✅ Certificate Verified {result.source === "blockchain" ? "On-Chain" : "from Local Records"}!
               </div>
@@ -143,26 +143,26 @@ export default function VerifyTab({ certs = [] }) {
 }
 
 const styles = {
-  card: { padding: 40, marginBottom: 24 },
-  title: { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, marginBottom: 8 },
+  card: { padding: 40, marginBottom: 24, background: "var(--bg-card)" },
+  title: { fontFamily: "var(--font-primary)", fontSize: 22, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
   subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
-  field: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 },
+  field: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 },
   submitRow: { display: "flex", justifyContent: "flex-end" },
   copyBtn: {
-    background: "rgba(255,255,255,0.05)",
+    background: "var(--bg-main)",
     border: "1px solid var(--border)",
-    borderRadius: 12,
-    color: "var(--text)",
+    borderRadius: 8,
+    color: "var(--text-main)",
     padding: "0 16px",
     cursor: "pointer",
     fontSize: 20
   },
-  btn: { padding: "16px 36px", borderRadius: 14, border: "none", fontFamily: "'Space Grotesk',monospace", fontSize: 15, cursor: "pointer", letterSpacing: "1px", fontWeight: 700 },
-  btnDisabled: { background: "rgba(255,255,255,0.05)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
-  result: { borderRadius: 16, padding: "24px", marginTop: 24, display: "flex", alignItems: "flex-start", gap: 20 },
-  invalid: { background: "rgba(236, 72, 153, 0.1)", border: "1px solid rgba(236, 72, 153, 0.4)", boxShadow: "0 0 20px rgba(236, 72, 153, 0.2)" },
+  btn: { padding: "12px 28px", borderRadius: 8, border: "none", fontFamily: "var(--font-primary)", fontSize: 14, cursor: "pointer", fontWeight: 600 },
+  btnDisabled: { background: "var(--bg-main)", color: "var(--text-light)", border: "1px solid var(--border)", cursor: "not-allowed" },
+  result: { borderRadius: 12, padding: "24px", marginTop: 24, display: "flex", alignItems: "flex-start", gap: 20 },
+  invalid: { background: "#fef2f2", border: "1px solid #fecaca", boxShadow: "var(--shadow-sm)" },
   icon: { fontSize: 32, flexShrink: 0 },
-  resultTitle: { fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 18, color: "var(--text)", marginBottom: 8 },
+  resultTitle: { fontFamily: "var(--font-primary)", fontWeight: 700, fontSize: 18, color: "var(--danger)", marginBottom: 8 },
   detail: { fontSize: 14, color: "var(--text-muted)", lineHeight: 1.8 },
-  verifiedHeader: { textAlign: "center", marginBottom: 12, color: "var(--neon-cyan)", fontSize: 18, fontWeight: 800, textTransform: "uppercase", letterSpacing: 2, textShadow: "0 0 10px rgba(6, 182, 212, 0.4)" }
+  verifiedHeader: { textAlign: "center", marginBottom: 12, color: "var(--success)", fontSize: 16, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }
 };

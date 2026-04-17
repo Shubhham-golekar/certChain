@@ -184,8 +184,8 @@ export default function App() {
 
   return (
     <div style={styles.app}>
-      {/* Premium Aurora Background */}
-      <div className="aurora-bg" />
+      {/* Premium Enterprise Background */}
+      <div className="enterprise-bg" />
 
       <ToastContainer toasts={toasts} />
 
@@ -249,35 +249,30 @@ export default function App() {
 
 const styles = {
   app: { minHeight: "100vh", position: "relative", overflow: "hidden" },
-  container: { maxWidth: 1000, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "slideInUp 0.8s ease-out" },
-  hero: { textAlign: "center", marginBottom: 70, marginTop: 20 },
+  container: { maxWidth: 1000, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "fadeIn 0.6s ease-out" },
+  hero: { textAlign: "center", marginBottom: 60, marginTop: 40 },
   heroTag: {
-    display: "inline-block", background: "rgba(168, 85, 247, 0.15)",
-    border: "1px solid rgba(168, 85, 247, 0.4)", borderRadius: 30,
-    padding: "8px 20px", fontSize: 13, letterSpacing: 4, fontWeight: 800,
-    textTransform: "uppercase", color: "var(--neon-purple)", marginBottom: 30,
-    backdropFilter: "blur(6px)",
-    boxShadow: "0 0 20px rgba(168, 85, 247, 0.2)",
+    display: "inline-block", background: "var(--primary-light)",
+    border: "1px solid var(--border-focus)", borderRadius: 20,
+    padding: "6px 16px", fontSize: 13, letterSpacing: 1, fontWeight: 600,
+    textTransform: "uppercase", color: "var(--primary)", marginBottom: 24,
   },
-  h1: { fontFamily: "var(--font-primary)", fontSize: 72, fontWeight: 800, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: 24, textShadow: "0 10px 30px rgba(0,0,0,0.5)" },
+  h1: { fontFamily: "var(--font-primary)", fontSize: 56, fontWeight: 800, lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 20, color: "var(--text-main)" },
   highlight: {
-    background: "linear-gradient(135deg, var(--neon-purple), var(--neon-pink), var(--neon-cyan))",
-    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-    backgroundSize: "200% 200%",
-    animation: "aurora-shift 5s ease infinite alternate",
+    color: "var(--primary)",
   },
-  heroP: { color: "var(--text-muted)", fontSize: 18, maxWidth: 560, margin: "0 auto", lineHeight: 1.6, fontWeight: 400 },
-  tabsContainer: { display: "flex", justifyContent: "center", marginBottom: 50 },
+  heroP: { color: "var(--text-muted)", fontSize: 18, maxWidth: 600, margin: "0 auto", lineHeight: 1.6, fontWeight: 400 },
+  tabsContainer: { display: "flex", justifyContent: "center", marginBottom: 40 },
   tabsInner: {
-    display: "inline-flex", gap: 10, background: "var(--surface)", backdropFilter: "var(--glass-blur)",
-    border: "1px solid var(--surface-border)", borderRadius: 30, padding: 8,
-    boxShadow: "var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.1)",
+    display: "inline-flex", gap: 8, background: "var(--bg-card)",
+    border: "1px solid var(--border)", borderRadius: 12, padding: 6,
+    boxShadow: "var(--shadow-sm)",
   },
   tab: {
-    padding: "14px 28px", border: "none", borderRadius: 24,
+    padding: "10px 20px", border: "none", borderRadius: 8,
     background: "transparent", color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)", fontWeight: 600, fontSize: 15, cursor: "pointer", letterSpacing: "0.5px",
-    transition: "all var(--transition-bounce)",
+    fontFamily: "var(--font-primary)", fontWeight: 500, fontSize: 14, cursor: "pointer",
+    transition: "all var(--transition-fast)",
   },
-  tabActive: { background: "rgba(255,255,255,0.1)", color: "#fff", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" },
+  tabActive: { background: "var(--primary)", color: "#fff", boxShadow: "var(--shadow-sm)" },
 };

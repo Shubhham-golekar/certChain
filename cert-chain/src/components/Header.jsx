@@ -1,12 +1,13 @@
 import React from "react";
+import logoImg from "../certchain_logo.png";
 
 export default function Header() {
   return (
     <header style={styles.header}>
       <div style={styles.logo}>
-        <div style={styles.logoIcon}>C</div>
+        <img src={logoImg} alt="CertChain Logo" style={styles.logoImg} />
         <div style={styles.logoText}>
-          Cert<span style={{ color: "var(--neon-purple)" }}>Chain</span>
+          Cert<span style={{ color: "var(--primary)" }}>Chain</span>
         </div>
       </div>
       <div style={styles.badge}>
@@ -19,41 +20,34 @@ export default function Header() {
 
 const styles = {
   header: {
-    padding: "40px 0 30px",
-    borderBottom: "1px solid var(--surface-border)",
-    marginBottom: "40px",
+    padding: "30px 0",
+    borderBottom: "1px solid var(--border)",
+    marginBottom: "30px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  logo: { display: "flex", alignItems: "center", gap: 14 },
-  logoIcon: {
-    width: 48, height: 48,
-    borderRadius: 14,
-    background: "linear-gradient(135deg, var(--neon-purple), var(--neon-pink))",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 28, fontWeight: 800, color: "white",
-    boxShadow: "0 0 20px rgba(168, 85, 247, 0.4)",
-    fontFamily: "var(--font-primary)"
+  logo: { display: "flex", alignItems: "center", gap: 12 },
+  logoImg: {
+    width: 44,
+    height: 44,
+    objectFit: "contain",
   },
   logoText: {
     fontFamily: "var(--font-primary)",
-    fontWeight: 800, fontSize: 32, letterSpacing: "-1px",
-    textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+    fontWeight: 700, fontSize: 26, letterSpacing: "-0.5px",
+    color: "var(--text-main)",
   },
   badge: {
-    display: "flex", alignItems: "center", gap: 10,
-    background: "rgba(6, 182, 212, 0.15)",
-    border: "1px solid rgba(6, 182, 212, 0.3)",
-    borderRadius: 30, padding: "8px 18px",
-    fontSize: 12, color: "var(--neon-cyan)", fontWeight: 700,
-    letterSpacing: 2, textTransform: "uppercase",
-    boxShadow: "0 0 15px rgba(6, 182, 212, 0.2)",
-    backdropFilter: "blur(5px)"
+    display: "flex", alignItems: "center", gap: 8,
+    background: "var(--primary-light)",
+    border: "1px solid var(--border-focus)",
+    borderRadius: 20, padding: "6px 14px",
+    fontSize: 12, color: "var(--primary)", fontWeight: 600,
+    letterSpacing: 1, textTransform: "uppercase",
   },
   dot: {
-    width: 8, height: 8, borderRadius: "50%",
-    background: "var(--neon-cyan)", animation: "pulse 2s infinite",
-    boxShadow: "0 0 8px var(--neon-cyan)"
+    width: 6, height: 6, borderRadius: "50%",
+    background: "var(--primary)",
   },
 };

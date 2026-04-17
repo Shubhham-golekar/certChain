@@ -10,7 +10,7 @@ export default function StatsRow({ totalCerts }) {
   return (
     <div style={styles.row}>
       {stats.map((s) => (
-        <div key={s.label} className="glass-container" style={styles.card}>
+        <div key={s.label} className="card" style={styles.card}>
           <div style={styles.value}>{s.value}</div>
           <div style={styles.label}>{s.label}</div>
         </div>
@@ -22,13 +22,11 @@ export default function StatsRow({ totalCerts }) {
 const styles = {
   row: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24, marginBottom: 40 },
   card: {
-    padding: "30px 20px", textAlign: "center",
+    padding: "30px 20px", textAlign: "center", background: "var(--bg-card)"
   },
   value: {
-    fontFamily: "var(--font-mono)", fontSize: 38, fontWeight: 800,
-    background: "linear-gradient(90deg, var(--text), var(--text-muted))",
-    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-    marginBottom: 8, textShadow: "0 4px 20px rgba(255,255,255,0.1)"
+    fontFamily: "var(--font-primary)", fontSize: 38, fontWeight: 800,
+    color: "var(--text-main)", marginBottom: 4
   },
-  label: { fontSize: 11, color: "var(--neon-cyan)", fontWeight: 700, textTransform: "uppercase", letterSpacing: 2 },
+  label: { fontSize: 12, color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 },
 };
