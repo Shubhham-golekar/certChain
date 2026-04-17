@@ -1,9 +1,14 @@
-# 🎓 CertChain — Blockchain Certificate Issuance & Verification dApp
+<p align="center">
+  <img src="./certchain_logo.png" alt="CertChain Logo" width="120" />
+</p>
 
-A full-stack decentralized application built on **Stellar Soroban** that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them without needing a wallet. 
+<h1 align="center">CertChain — Blockchain Certificate Platform</h1>
+<p align="center">A full-stack decentralized application built on <strong>Stellar Soroban</strong> that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them instantly.</p>
+
+---
 
 ### 🚀 What's New? (Recent Updates)
-- 🎨 **Premium UI/UX:** Complete visual overhaul featuring a futuristic Glassmorphism theme, dynamic floating background orbs, and a custom logo.
+- 🏢 **Enterprise UI Overhaul:** Complete redesign with a clean, professional SaaS-grade light theme, custom logo, and card-based layouts.
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
