@@ -17,8 +17,6 @@ A full-stack decentralized application built on **Stellar Soroban** that allows 
 
 ---
 
-### 📊 Live Metrics Dashboard
-![Live Metrics Dashboard] <img width="1588" height="901" alt="Screenshot 2026-04-10 110249" src="https://github.com/user-attachments/assets/221adb94-b927-4338-bf74-3aae752a0df4" />
 
 
 
