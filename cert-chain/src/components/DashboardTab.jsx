@@ -24,7 +24,7 @@ export default function DashboardTab() {
 
                 const chartData = Object.keys(courseCounts).map(course => ({
                     name: course,
-                    Issuances: courseCounts[course]
+                    Count: courseCounts[course]
                 }));
 
                 setMetrics(chartData);
@@ -39,39 +39,43 @@ export default function DashboardTab() {
 
     return (
         <div className="card" style={styles.card}>
-            <div style={styles.title}>📊 Live Metrics Dashboard</div>
-            <div style={styles.subtitle}>Real-time statistics sourced from the decentralized certs indexer.</div>
+            <div style={styles.header}>
+                <div style={styles.title}>Project Overview 🔭</div>
+                <div style={styles.subtitle}>
+                    A quick peek at how many people have earned their credentials so far. Everything is live and sourced from the network.
+                </div>
+            </div>
 
             <div style={styles.statsGrid}>
                 <div style={styles.statBox}>
                     <div style={styles.statValue}>{loading ? "..." : total}</div>
-                    <div style={styles.statLabel}>Total Certificates Issued</div>
+                    <div style={styles.statLabel}>Total Certificates Distributed</div>
                 </div>
                 <div style={styles.statBox}>
-                    <div style={styles.statValue}>100%</div>
-                    <div style={styles.statLabel}>On-Chain Verified</div>
+                    <div style={{ ...styles.statValue, color: "var(--success)" }}>100%</div>
+                    <div style={styles.statLabel}>Verified on Blockchain</div>
                 </div>
             </div>
 
             <div style={styles.chartContainer}>
-                <div style={{ ...styles.title, fontSize: 16, marginBottom: 20 }}>Issuances by Course</div>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 20 }}>Breakdown by Category</div>
                 {loading ? (
-                    <p style={{ color: "var(--text-muted)", padding: 20 }}>Loading metrics...</p>
+                    <p style={{ color: "var(--text-muted)", padding: 20 }}>Loading up the numbers...</p>
                 ) : error ? (
                     <p style={{ color: "var(--danger)", padding: 20 }}>{error}</p>
                 ) : metrics.length === 0 ? (
-                    <p style={{ color: "var(--text-muted)", padding: 20 }}>No data to display.</p>
+                    <p style={{ color: "var(--text-muted)", padding: 20 }}>Empty so far.</p>
                 ) : (
-                    <ResponsiveContainer width="100%" height={280}>
+                    <ResponsiveContainer width="100%" height={260}>
                         <BarChart data={metrics} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                            <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis allowDecimals={false} stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+                            <XAxis dataKey="name" stroke="var(--border-strong)" fontSize={12} tickLine={false} axisLine={false} />
+                            <YAxis allowDecimals={false} stroke="var(--border-strong)" fontSize={12} tickLine={false} axisLine={false} />
                             <Tooltip
-                                contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8, boxShadow: "var(--shadow-md)" }}
-                                itemStyle={{ color: "var(--primary)", fontWeight: "bold" }}
-                                cursor={{ fill: "rgba(0,0,0,0.03)" }}
+                                contentStyle={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 12, boxShadow: "var(--shadow-md)" }}
+                                itemStyle={{ color: "var(--accent)", fontWeight: "bold" }}
+                                cursor={{ fill: "var(--bg-subtle)", radius: 8 }}
                             />
-                            <Bar dataKey="Issuances" fill="var(--primary)" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="Count" fill="var(--accent)" radius={6} />
                         </BarChart>
                     </ResponsiveContainer>
                 )}
@@ -81,18 +85,19 @@ export default function DashboardTab() {
 }
 
 const styles = {
-    card: { padding: 40, marginBottom: 24, background: "var(--bg-card)" },
-    title: { fontFamily: "var(--font-primary)", fontSize: 22, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-    subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
-    statsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 40 },
+    card: { padding: "40px 48px", marginBottom: 24 },
+    header: { marginBottom: 32 },
+    title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+    subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
+    statsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 32 },
     statBox: { 
-        background: "var(--bg-main)", padding: 30, borderRadius: 12, 
-        textAlign: "center", border: "1px solid var(--border)"
+        background: "var(--bg-subtle)", padding: 32, borderRadius: 16, 
+        border: "1px solid var(--border)"
     },
-    statValue: { fontSize: 42, fontWeight: 800, fontFamily: "var(--font-primary)", color: "var(--primary)" },
-    statLabel: { fontSize: 12, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: 1, marginTop: 8, fontWeight: 600 },
+    statValue: { fontSize: 48, fontWeight: 800, letterSpacing: "-1px", color: "var(--accent)", lineHeight: 1 },
+    statLabel: { fontSize: 14, color: "var(--text-sub)", marginTop: 12, fontWeight: 500 },
     chartContainer: { 
-        background: "var(--bg-card)", padding: 30, borderRadius: 12, 
+        padding: 32, borderRadius: 16, 
         border: "1px solid var(--border)"
     }
 };

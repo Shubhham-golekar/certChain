@@ -13,12 +13,12 @@ export default function ToastContainer({ toasts }) {
 }
 
 const styles = {
-  wrap: { position: "fixed", top: 24, right: 24, zIndex: 1000, display: "flex", flexDirection: "column", gap: 8 },
+  wrap: { position: "fixed", top: 24, right: 24, zIndex: 1000, display: "flex", flexDirection: "column", gap: 12 },
   toast: {
-    padding: "16px 24px", borderRadius: 12, fontSize: 13, fontFamily: "var(--font-primary)", fontWeight: 600,
-    animation: "fadeIn 0.3s ease", maxWidth: 320,
-    boxShadow: "var(--shadow-lg)",
+    padding: "16px 24px", borderRadius: 16, fontSize: 13, fontFamily: "var(--font-sans)", fontWeight: 600,
+    animation: "fadeUp 0.3s ease", maxWidth: 360,
+    boxShadow: "var(--shadow-md)",
   },
-  success: { background: "#dcfce7", border: "1px solid #bbf7d0", color: "#166534" },
-  error: { background: "#fef2f2", border: "1px solid #fecaca", color: "var(--danger)" },
+  success: { background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-main)" },
+  error: { background: "var(--danger-bg)", border: "1px solid var(--danger-border)", color: "var(--danger)" },
 };

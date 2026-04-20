@@ -14,7 +14,7 @@ export default function VerifyTab({ certs = [] }) {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    addToast("📋 Hash copied to clipboard!");
+    addToast("📋 Copied to clipboard!");
   };
 
   const verify = async () => {
@@ -40,11 +40,11 @@ export default function VerifyTab({ certs = [] }) {
           fullHash: searchHash,
           source: "local",
         });
-        addToast("✅ Certificate verified from local records!");
+        addToast("Found it in the community records! 🎉");
         return;
       }
 
-      addToast("Querying Soroban Smart Contract...");
+      addToast("Checking the blockchain...");
       const callerKey = publicKey || "GAX5NPUQJ7R6ZJ3WPKVIVZ2UQLNTSWNTZ2XOYEFT5B6NYYF7BOM6CQ4W";
       const dummyAccount = new Account(callerKey, "0");
 
@@ -59,7 +59,7 @@ export default function VerifyTab({ certs = [] }) {
       const simResponse = await server.simulateTransaction(tx);
 
       if (!simResponse.result || !simResponse.result.retval) {
-        throw new Error("Certificate not found on blockchain. Make sure the hash is correct.");
+        throw new Error("We couldn't find this certificate. Double check the hash.");
       }
 
       const certData = scValToNative(simResponse.result.retval);
@@ -75,7 +75,7 @@ export default function VerifyTab({ certs = [] }) {
         source: "blockchain",
       });
 
-      addToast("✅ Verification complete from blockchain!");
+      addToast("Verified directly from the blockchain! 🔒");
     } catch (err) {
       console.error("Verify error:", err);
       setResult({ valid: false, fullHash: searchHash });
@@ -87,17 +87,19 @@ export default function VerifyTab({ certs = [] }) {
 
   return (
     <div className="card" style={styles.card}>
-      <div style={styles.title}>🔍 Verify Certificate</div>
-      <div style={styles.subtitle}>Enter a Stellar transaction hash to verify a certificate on-chain.</div>
+      <div style={styles.header}>
+        <div style={styles.title}>Check Authenticity 🔍</div>
+        <div style={styles.subtitle}>Curious if a certificate is real? Paste the transaction hash below and we'll check the blockchain for you.</div>
+      </div>
 
       <div style={styles.field}>
-        <label>Transaction Hash (TX ID)</label>
+        <label>Transaction Hash</label>
         <div style={{ display: "flex", gap: 14 }}>
           <input
-            style={{ flex: 1 }}
+            style={{ flex: 1, fontFamily: "var(--font-mono)", fontSize: 13 }}
             value={hash}
             onChange={(e) => setHash(e.target.value)}
-            placeholder="Paste Stellar transaction hash..."
+            placeholder="Paste exactly as it appears..."
           />
           {hash && (
             <button style={styles.copyBtn} onClick={() => copyToClipboard(hash)}>
@@ -114,25 +116,25 @@ export default function VerifyTab({ certs = [] }) {
             onClick={verify}
             disabled={loading}
           >
-            {loading ? "⏳ Verifying..." : "🔍 Verify Certificate"}
+            {loading ? "Checking..." : "Verify Authentic Record"}
           </button>
       </div>
 
       {result && (
-        <div style={{ marginTop: 32 }}>
+        <div style={{ marginTop: 40 }}>
           {result.valid ? (
-            <div style={{ animation: "fadeIn 0.5s ease-out" }}>
+            <div style={{ animation: "fadeUp 0.4s ease-out" }}>
               <div style={styles.verifiedHeader}>
-                ✅ Certificate Verified {result.source === "blockchain" ? "On-Chain" : "from Local Records"}!
+                ✨ Verified Authentic {result.source === "blockchain" ? "(On-Chain)" : "(From Index)"}
               </div>
               <CertificatePreview cert={result} />
             </div>
           ) : (
             <div style={{ ...styles.result, ...styles.invalid }}>
-              <div style={styles.icon}>❌</div>
+              <div style={styles.icon}>🤔</div>
               <div style={{ flex: 1 }}>
-                <div style={styles.resultTitle}>Certificate Not Found</div>
-                <div style={styles.detail}>No certificate matched this hash. Make sure you copied the full hash correctly. If it was just issued, ensure the blockchain transaction succeeded.</div>
+                <div style={styles.resultTitle}>Nothing found</div>
+                <div style={styles.detail}>We looked around but couldn't find any certificate matching this hash. Make sure you copied the entire hash correctly.</div>
               </div>
             </div>
           )}
@@ -143,26 +145,28 @@ export default function VerifyTab({ certs = [] }) {
 }
 
 const styles = {
-  card: { padding: 40, marginBottom: 24, background: "var(--bg-card)" },
-  title: { fontFamily: "var(--font-primary)", fontSize: 22, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
+  card: { padding: "40px 48px", marginBottom: 24 },
+  header: { marginBottom: 32 },
+  title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+  subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
   field: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 },
-  submitRow: { display: "flex", justifyContent: "flex-end" },
+  submitRow: { display: "flex", justifyContent: "flex-start", marginTop: 10 },
   copyBtn: {
-    background: "var(--bg-main)",
+    background: "var(--bg-subtle)",
     border: "1px solid var(--border)",
     borderRadius: 8,
     color: "var(--text-main)",
     padding: "0 16px",
     cursor: "pointer",
-    fontSize: 20
+    fontSize: 20,
+    transition: "var(--t)"
   },
-  btn: { padding: "12px 28px", borderRadius: 8, border: "none", fontFamily: "var(--font-primary)", fontSize: 14, cursor: "pointer", fontWeight: 600 },
-  btnDisabled: { background: "var(--bg-main)", color: "var(--text-light)", border: "1px solid var(--border)", cursor: "not-allowed" },
-  result: { borderRadius: 12, padding: "24px", marginTop: 24, display: "flex", alignItems: "flex-start", gap: 20 },
-  invalid: { background: "#fef2f2", border: "1px solid #fecaca", boxShadow: "var(--shadow-sm)" },
-  icon: { fontSize: 32, flexShrink: 0 },
-  resultTitle: { fontFamily: "var(--font-primary)", fontWeight: 700, fontSize: 18, color: "var(--danger)", marginBottom: 8 },
-  detail: { fontSize: 14, color: "var(--text-muted)", lineHeight: 1.8 },
-  verifiedHeader: { textAlign: "center", marginBottom: 12, color: "var(--success)", fontSize: 16, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }
+  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, cursor: "pointer", fontWeight: 600 },
+  btnDisabled: { background: "var(--bg-main)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
+  result: { borderRadius: 16, padding: "24px", marginTop: 32, display: "flex", alignItems: "flex-start", gap: 20 },
+  invalid: { background: "var(--danger-bg)", border: "1px solid var(--danger-border)" },
+  icon: { fontSize: 36, flexShrink: 0 },
+  resultTitle: { fontWeight: 700, fontSize: 18, color: "var(--danger)", marginBottom: 8 },
+  detail: { fontSize: 14, color: "var(--danger)", opacity: 0.8, lineHeight: 1.6 },
+  verifiedHeader: { textAlign: "center", marginBottom: 16, color: "var(--success)", fontSize: 15, fontWeight: 700 }
 };

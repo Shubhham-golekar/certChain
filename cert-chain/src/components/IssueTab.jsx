@@ -4,17 +4,19 @@ import { CERT_TYPES } from "../utils/constants";
 
 export default function IssueTab({ walletConnected, onIssue, isIssuing, previewCert, form, onChange }) {
   const fields = [
-    { name: "studentName", label: "Student Full Name *", placeholder: "e.g. Shubham Golekar" },
-    { name: "studentWallet", label: "Student Wallet Address *", placeholder: "e.g. G..." },
-    { name: "issuer", label: "Issuing Institution *", placeholder: "e.g. IIT Bombay" },
-    { name: "grade", label: "Grade / Score (optional)", placeholder: "e.g. A+, 95/100" },
+    { name: "studentName", label: "Who is receiving this?", placeholder: "e.g. Priya Sharma" },
+    { name: "studentWallet", label: "Their Stellar Wallet (Public Key)", placeholder: "G..." },
+    { name: "issuer", label: "Issued By (Organization / Individual)", placeholder: "e.g. Code For India" },
+    { name: "grade", label: "Grade or Note (Optional)", placeholder: "e.g. A+, Completed with Honors" },
   ];
 
   return (
     <div className="card" style={styles.card}>
-      <div style={styles.title}>📤 Issue New Certificate</div>
-      <div style={styles.subtitle}>
-        Fill in the details below. The certificate will be recorded on Stellar Testnet as a tamper-proof transaction.
+      <div style={styles.header}>
+        <div style={styles.title}>Hand Out a Certificate 📝</div>
+        <div style={styles.subtitle}>
+          Jot down the details below. Once you issue it, it's permanently recorded on the Stellar network.
+        </div>
       </div>
 
       <div style={styles.grid}>
@@ -26,15 +28,15 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
         ))}
 
         <div style={styles.field}>
-          <label>Course / Certification *</label>
+          <label>What's this for?</label>
           <select name="course" value={form.course} onChange={onChange}>
-            <option value="">Select course...</option>
+            <option value="">Select an option...</option>
             {CERT_TYPES.map((c) => <option key={c}>{c}</option>)}
           </select>
         </div>
 
         <div style={styles.field}>
-          <label>Issue Date</label>
+          <label>Date Issued</label>
           <input type="date" name="date" value={form.date} onChange={onChange} />
         </div>
       </div>
@@ -46,7 +48,7 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
           onClick={onIssue}
           disabled={isIssuing || !walletConnected}
         >
-          {isIssuing ? "Recording on Blockchain..." : !walletConnected ? "Connect Wallet First" : "🎓 Issue Certificate"}
+          {isIssuing ? "Jotting it down..." : !walletConnected ? "Connect Wallet To Start" : "Issue & Record on Blockchain"}
         </button>
       </div>
 
@@ -56,12 +58,13 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
 }
 
 const styles = {
-  card: { padding: 40, marginBottom: 24, background: "var(--bg-card)" },
-  title: { fontFamily: "var(--font-primary)", fontSize: 22, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
-  grid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 24 },
+  card: { padding: "40px 48px", marginBottom: 24 },
+  header: { marginBottom: 32 },
+  title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+  subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
+  grid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px 32px", marginBottom: 32 },
   field: { display: "flex", flexDirection: "column", gap: 6 },
-  submitRow: { display: "flex", justifyContent: "flex-end", marginTop: 20 },
-  btn: { padding: "12px 28px", borderRadius: 8, border: "none", fontFamily: "var(--font-primary)", fontSize: 14, cursor: "pointer", fontWeight: 600 },
-  btnDisabled: { background: "var(--bg-main)", color: "var(--text-light)", border: "1px solid var(--border)", cursor: "not-allowed" },
+  submitRow: { display: "flex", justifyContent: "flex-end", marginTop: 10, paddingTop: 30, borderTop: "1px dashed var(--border)" },
+  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, fontWeight: 600 },
+  btnDisabled: { background: "var(--bg-main)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
 };

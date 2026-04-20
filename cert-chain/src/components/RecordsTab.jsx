@@ -12,7 +12,7 @@ function CopyHash({ hash }) {
 
   return (
     <button onClick={handleCopy} style={styles.copyBtn}>
-      {copied ? "Copied!" : "Copy Full Hash"}
+      {copied ? "Copied!" : "Copy"}
     </button>
   );
 }
@@ -20,69 +20,76 @@ function CopyHash({ hash }) {
 export default function RecordsTab({ certs }) {
   return (
     <div className="card" style={styles.card}>
-      <div style={styles.title}>📋 Issued Certificates</div>
-      <div style={styles.subtitle}>All certificates issued on the Stellar Testnet.</div>
+      <div style={styles.header}>
+        <div style={styles.title}>Community Records 📋</div>
+        <div style={styles.subtitle}>A public ledger of all the credentials issued through this node onto the Stellar Testnet.</div>
+      </div>
 
       {certs.length === 0 ? (
         <div style={styles.empty}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
-          <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.8 }}>
-            No certificates yet. Go to Issue tab to create your first one.
+          <div style={{ fontSize: 48, marginBottom: 16 }}>📭</div>
+          <p style={{ fontSize: 15, color: "var(--text-sub)", lineHeight: 1.6 }}>
+            Nothing here yet. Head over to the issue tab to record the first one.
           </p>
         </div>
       ) : (
-        certs.map((cert) => (
-          <div key={cert.id} style={styles.item}>
-            <div style={styles.icon}>🎓</div>
-            <div style={styles.info}>
-              <div style={styles.name}>{cert.studentName}</div>
-              <div style={styles.meta}>
-                <span style={{ color: "var(--primary)", marginRight: 12, fontWeight: 600 }}>{cert.course}</span>
-                {cert.issuer} · {cert.date}
+        <div style={styles.list}>
+          {certs.map((cert) => (
+            <div key={cert.id} style={styles.item}>
+              <div style={styles.icon}>🎓</div>
+              <div style={styles.info}>
+                <div style={styles.name}>{cert.studentName}</div>
+                <div style={styles.meta}>
+                  <span style={{ color: "var(--accent)", marginRight: 12, fontWeight: 700 }}>{cert.course}</span>
+                  Issued by {cert.issuer} · {cert.date}
+                </div>
+                <div style={{ ...styles.meta, marginTop: 10, fontFamily: "var(--font-mono)", fontSize: 12 }}>User Wallet: {cert.studentWallet}</div>
+                <div style={{ ...styles.meta, marginTop: 6, display: 'flex', alignItems: 'center', gap: '12px', fontFamily: "var(--font-mono)", fontSize: 12 }}>
+                  TX: {cert.txHash}
+                  <CopyHash hash={cert.fullHash || cert.txHash} />
+                </div>
               </div>
-              <div style={{ ...styles.meta, marginTop: 6, fontFamily: "var(--font-mono)" }}>Wallet: {cert.studentWallet}</div>
-              <div style={{ ...styles.meta, marginTop: 6, display: 'flex', alignItems: 'center', gap: '10px', fontFamily: "var(--font-mono)" }}>
-                TX: {cert.txHash}
-                <CopyHash hash={cert.fullHash || cert.txHash} />
-              </div>
+              <div style={styles.badge}>Live on network</div>
             </div>
-            <div style={styles.badge}>Verified</div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
 }
 
 const styles = {
-  card: { padding: 40, marginBottom: 24, background: "var(--bg-card)" },
-  title: { fontFamily: "var(--font-primary)", fontSize: 22, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-muted)", fontSize: 14, marginBottom: 36, lineHeight: 1.6 },
-  empty: { textAlign: "center", padding: "48px 24px", color: "var(--text-muted)" },
+  card: { padding: "40px 48px", marginBottom: 24 },
+  header: { marginBottom: 32 },
+  title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+  subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
+  empty: { textAlign: "center", padding: "64px 24px" },
+  list: { display: "flex", flexDirection: "column", gap: 16 },
   item: {
-    background: "var(--bg-main)", border: "1px solid var(--border)",
-    borderRadius: 12, padding: 24, marginBottom: 16,
-    display: "flex", alignItems: "center", gap: 20,
-    transition: "all var(--transition-fast)"
+    background: "var(--bg-subtle)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: "24px",
+    display: "flex", alignItems: "flex-start", gap: 20,
+    transition: "all var(--t)",
+    boxShadow: "var(--shadow-xs)"
   },
   icon: {
-    width: 50, height: 50, borderRadius: 12, flexShrink: 0,
-    background: "var(--primary-light)",
-    border: "1px solid var(--border-focus)",
+    width: 48, height: 48, borderRadius: 12, flexShrink: 0,
+    background: "var(--accent-dim)",
     display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24,
   },
   info: { flex: 1, minWidth: 0 },
-  name: { fontFamily: "var(--font-primary)", fontWeight: 600, fontSize: 16, marginBottom: 4, color: "var(--text-main)" },
-  meta: { fontSize: 13, color: "var(--text-muted)" },
+  name: { fontWeight: 700, fontSize: 18, marginBottom: 6, color: "var(--text-main)", letterSpacing: "-0.3px" },
+  meta: { fontSize: 14, color: "var(--text-sub)" },
   badge: {
-    padding: "6px 14px", borderRadius: 20, fontSize: 11, fontWeight: 600,
-    letterSpacing: 1, textTransform: "uppercase", flexShrink: 0,
-    background: "#dcfce7", color: "#166534",
-    border: "1px solid #bbf7d0",
+    padding: "6px 14px", borderRadius: 99, fontSize: 12, fontWeight: 600,
+    background: "var(--success-bg)", color: "var(--success)",
+    border: "1px solid var(--success-border)", flexShrink: 0,
+    marginTop: 4
   },
   copyBtn: {
     background: "var(--bg-card)", border: "1px solid var(--border)",
-    color: "var(--text-main)", padding: "4px 10px", borderRadius: 6,
-    fontSize: 11, cursor: "pointer", fontFamily: "var(--font-mono)"
+    color: "var(--text-sub)", padding: "4px 10px", borderRadius: 6,
+    fontSize: 12, cursor: "pointer", fontFamily: "var(--font-mono)",
+    transition: "var(--t)"
   }
 };

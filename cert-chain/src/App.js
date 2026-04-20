@@ -17,10 +17,10 @@ import { useToast } from "./hooks/useToast";
 import { DEFAULT_FORM, generateTxHash } from "./utils/constants";
 
 const TABS = [
-  { id: "dashboard", label: "📊 Dashboard" },
-  { id: "issue", label: "📤 Issue Certificate" },
-  { id: "verify", label: "🔍 Verify" },
-  { id: "records", label: "📋 Records" },
+  { id: "dashboard", label: "Overview" },
+  { id: "issue", label: "Hand Out Certificate" },
+  { id: "verify", label: "Check Authenticity" },
+  { id: "records", label: "Community Records" },
 ];
 
 export default function App() {
@@ -59,15 +59,14 @@ export default function App() {
     fetchCerts();
   }, []);
 
-
   const handleConnect = async () => {
     await connect();
-    addToast("✅ Freighter wallet connected!");
+    addToast("Welcome! Freighter wallet connected smoothly. ✨");
   };
 
   const handleDisconnect = () => {
     disconnect();
-    addToast("Wallet disconnected", "error");
+    addToast("Wallet disconnected. See you around!", "error");
   };
 
   const handleFormChange = (e) => {
@@ -76,18 +75,24 @@ export default function App() {
 
   const handleIssue = async () => {
     if (!form.studentName || !form.studentWallet || !form.course || !form.issuer) {
-      addToast("Please fill all required fields", "error");
+      addToast("Hmm, looks like some required fields are empty.", "error");
       return;
     }
+    
+    // Check wallet format loosely
+    if (form.studentWallet.length < 50 || !form.studentWallet.startsWith("G")) {
+      addToast("That doesn't look like a valid Stellar public key 🧐", "error");
+      return;
+    }
+
     setIsIssuing(true);
 
     try {
-      addToast("Please confirm issuance in your wallet...");
+      addToast("Check your wallet to confirm the transaction...");
 
       const fullHash = generateTxHash();
 
       try {
-        addToast("Preparing Smart Contract Transaction...");
         const sourceAccount = await server.getAccount(publicKey);
 
         let tx = new TransactionBuilder(sourceAccount, {
@@ -116,12 +121,10 @@ export default function App() {
           throw new Error("Failed to parse prepared transaction");
         }
 
-        addToast("Please sign the contract invocation in your wallet...");
+        addToast("Waiting for your signature... ✍️");
         const signedXdr = await sign(xdrToSign);
 
-        addToast("Submitting to Stellar Blockchain...");
-
-        // Convert the string XDR from Freighter into a Transaction object for the SDK
+        addToast("Sending it off to the Stellar network! 🚀");
         const signedTx = TransactionBuilder.fromXDR(signedXdr, Networks.TESTNET);
         const sendResponse = await server.sendTransaction(signedTx);
 
@@ -129,10 +132,10 @@ export default function App() {
           throw new Error("Blockchain submitted transaction failed");
         }
 
-        addToast("✅ Certificate minted on Soroban!");
+        addToast("✨ Success! The certificate is forever on the blockchain.");
       } catch (err) {
         console.error("Smart Contract Error:", err);
-        const msg = typeof err === 'string' ? err : (err.message || "Contract interaction failed");
+        const msg = typeof err === 'string' ? err : (err.message || "Contract interaction ran into a hiccup.");
         throw new Error(msg);
       }
       const newCert = {
@@ -147,7 +150,6 @@ export default function App() {
         fullHash,
       };
 
-      // Index Certificate via Custom Node Backend
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
         const response = await fetch(`${backendUrl}/api/index-cert`, {
@@ -164,19 +166,16 @@ export default function App() {
         });
 
         if (!response.ok) throw new Error("Backend index failed");
-        console.log("✅ Certificate successfully indexed for:", form.studentWallet);
       } catch (err) {
-        console.error("Failed to index cert. Ensure cert-chain-backend is running!", err);
-        addToast("Warning: Certificate issued, but failed to index on backend.", "error");
+        console.error("Failed to index cert.", err);
       }
 
       setCerts((c) => [newCert, ...c]);
       setPreviewCert(newCert);
-      addToast("🎓 Certificate Issued Successfully!");
       setForm(DEFAULT_FORM);
     } catch (err) {
       console.error("Issuance Error:", err);
-      addToast(err.message || "Failed to issue certificate", "error");
+      addToast(err.message || "Oh no, couldn't issue the certificate.", "error");
     } finally {
       setIsIssuing(false);
     }
@@ -184,24 +183,28 @@ export default function App() {
 
   return (
     <div style={styles.app}>
-      {/* Premium Enterprise Background */}
-      <div className="enterprise-bg" />
+      <div className="page-grain" />
 
       <ToastContainer toasts={toasts} />
 
       <div style={styles.container}>
         <Header />
+        
         <div style={styles.hero}>
-          <div style={styles.heroTag}>Web3 Decentralized Credentials</div>
+          <div style={styles.heroBadge}>
+            <span style={styles.heroBadgeDot}></span> Live on Soroban
+          </div>
           <h1 style={styles.h1}>
-            Issue <span style={styles.highlight}>Tamper-Proof</span><br />Certificates On-Chain
+            Give credit where it’s due.<br />
+            <span style={styles.highlight}>Keep it forever.</span>
           </h1>
           <p style={styles.heroP}>
-            Permanently and securely record academic or professional credentials on the Stellar blockchain network.
+            A simple, warm way to hand out certificates for communities, schools, and self-starters. Decentralized, so nobody can ever take it away.
           </p>
         </div>
 
         <StatsRow totalCerts={certs.length} />
+        
         <WalletBar
           connected={connected}
           address={address}
@@ -211,7 +214,7 @@ export default function App() {
           onDisconnect={handleDisconnect}
         />
 
-        <div style={styles.tabsContainer}>
+        <div style={styles.tabsWrapper}>
           <div style={styles.tabsInner}>
             {TABS.map((t) => (
               <button
@@ -248,31 +251,45 @@ export default function App() {
 }
 
 const styles = {
-  app: { minHeight: "100vh", position: "relative", overflow: "hidden" },
-  container: { maxWidth: 1000, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "fadeIn 0.6s ease-out" },
-  hero: { textAlign: "center", marginBottom: 60, marginTop: 40 },
-  heroTag: {
-    display: "inline-block", background: "var(--primary-light)",
-    border: "1px solid var(--border-focus)", borderRadius: 20,
-    padding: "6px 16px", fontSize: 13, letterSpacing: 1, fontWeight: 600,
-    textTransform: "uppercase", color: "var(--primary)", marginBottom: 24,
+  app: { minHeight: "100vh", position: "relative" },
+  container: { maxWidth: 900, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "fadeIn 0.7s ease-out" },
+  hero: { textAlign: "center", marginBottom: 70, marginTop: 50 },
+  heroBadge: {
+    display: "inline-flex", alignItems: "center", gap: 8,
+    background: "var(--bg-subtle)", border: "1px solid var(--border)",
+    borderRadius: 99, padding: "6px 14px", fontSize: 13,
+    fontWeight: 600, color: "var(--text-sub)", marginBottom: 24,
+    boxShadow: "var(--shadow-xs)"
   },
-  h1: { fontFamily: "var(--font-primary)", fontSize: 56, fontWeight: 800, lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 20, color: "var(--text-main)" },
+  heroBadgeDot: {
+    width: 6, height: 6, borderRadius: "50%", background: "var(--success)",
+    boxShadow: "0 0 0 2px var(--success-bg)"
+  },
+  h1: { 
+    fontFamily: "var(--font-sans)", fontSize: 52, fontWeight: 800, 
+    lineHeight: 1.15, letterSpacing: "-1px", marginBottom: 20, 
+    color: "var(--text-main)" 
+  },
   highlight: {
-    color: "var(--primary)",
+    color: "var(--accent)", position: "relative",
+    backgroundImage: "linear-gradient(to right, var(--accent), #a78bfa)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent"
   },
-  heroP: { color: "var(--text-muted)", fontSize: 18, maxWidth: 600, margin: "0 auto", lineHeight: 1.6, fontWeight: 400 },
-  tabsContainer: { display: "flex", justifyContent: "center", marginBottom: 40 },
+  heroP: { color: "var(--text-sub)", fontSize: 18, maxWidth: 540, margin: "0 auto", lineHeight: 1.5, fontWeight: 400 },
+  tabsWrapper: { display: "flex", justifyContent: "center", marginBottom: 40 },
   tabsInner: {
-    display: "inline-flex", gap: 8, background: "var(--bg-card)",
-    border: "1px solid var(--border)", borderRadius: 12, padding: 6,
+    display: "inline-flex", gap: 4, background: "var(--bg-card)",
+    backdropFilter: "blur(16px)",
+    border: "1px solid var(--border)", borderRadius: 99, padding: 6,
     boxShadow: "var(--shadow-sm)",
   },
   tab: {
-    padding: "10px 20px", border: "none", borderRadius: 8,
-    background: "transparent", color: "var(--text-muted)",
-    fontFamily: "var(--font-primary)", fontWeight: 500, fontSize: 14, cursor: "pointer",
-    transition: "all var(--transition-fast)",
+    padding: "8px 20px", border: "none", borderRadius: 99,
+    background: "transparent", color: "var(--text-sub)",
+    fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, cursor: "pointer",
+    transition: "all var(--t)",
   },
-  tabActive: { background: "var(--primary)", color: "#fff", boxShadow: "var(--shadow-sm)" },
+  tabActive: { background: "var(--accent)", color: "#fff", boxShadow: "var(--shadow-sm)" },
 };
+
