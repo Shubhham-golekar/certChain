@@ -121,6 +121,11 @@ When a certificate is issued:
 3. Backend securely lists this into its robust SQLite database mapping the student's wallet address.
 4. The React dashboard instantly pulls the indexed dataset and renders interactive charts using `recharts`!
 
+### 🚀 What's New? (Recent Updates)
+- 🌌 **Premium Dark Aurora UI:** Complete redesign with a sleek, web3-native Dark Aurora Glassmorphism theme featuring subtle noise textures, dynamic neon styling, and organic human-centric copy.
+- 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance safely via `scVal`.
+- ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
+
 > **💡 Terminal Logs:** You can monitor the backend SQL injection indexing rate directly via terminal, as well as the `/status` resource monitor mapping server resources.
 
 ---
