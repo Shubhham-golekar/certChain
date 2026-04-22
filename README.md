@@ -16,7 +16,7 @@
 <img width="1113" height="880" alt="image" src="https://github.com/user-attachments/assets/2ddc79cc-5d7e-4fb1-a7a0-24900be61699" />
 
 ### 🌐 Live Application
-🌍 **[Access the Live CertChain App on Vercel]((https://cert-chain-xnbu.vercel.app/))**
+🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-xnbu.vercel.app/)**
 
 ### 🎥 Live Video Demo
 ▶️ [Watch the full CertChain dApp Demo on Loom](https://www.loom.com/share/e91247c07fcb47348ba4b8ac09a8f8d1)
