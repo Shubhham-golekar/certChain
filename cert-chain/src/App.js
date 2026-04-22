@@ -272,7 +272,7 @@ const styles = {
   },
   highlight: {
     color: "var(--accent)", position: "relative",
-    backgroundImage: "linear-gradient(to right, var(--accent), #a78bfa)",
+    backgroundImage: "linear-gradient(to right, #38bdf8, #818cf8)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent"
   },

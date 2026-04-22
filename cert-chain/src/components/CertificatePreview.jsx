@@ -40,8 +40,8 @@ export default function CertificatePreview({ cert }) {
             <QRCodeCanvas
                 value={hashVal}
                 size={70}
-                bgColor="transparent"
-                fgColor="#1c1917"
+                bgColor="#ffffff"
+                fgColor="#111827"
                 level="L"
                 includeMargin={false}
             />
@@ -61,40 +61,40 @@ export default function CertificatePreview({ cert }) {
 
 const styles = {
   wrap: {
-    background: "linear-gradient(135deg, rgba(20, 20, 25, 0.9) 0%, rgba(15, 15, 20, 0.98) 100%)",
-    border: "1px solid var(--border)",
+    background: "linear-gradient(135deg, #ffffff 0%, #f9f8f6 100%)",
+    border: "1px solid #e5e7eb",
     borderRadius: 20, 
     position: "relative", overflow: "hidden", 
     marginTop: 40, boxShadow: "var(--shadow-lg)",
   },
-  topRibbon: { display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 32 },
+  topRibbon: { display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "clamp(20px, 4vw, 32px)" },
   seal: {
-    width: 48, height: 48, borderRadius: "50%",
-    background: "var(--accent-dim)",
-    border: "1px solid var(--accent)",
+    width: "clamp(36px, 8vw, 48px)", height: "clamp(36px, 8vw, 48px)", borderRadius: "50%",
+    background: "var(--accent-light)",
+    border: "2px solid var(--accent)",
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 24, margin: "0 auto 16px",
+    fontSize: "clamp(18px, 4vw, 24px)", margin: "0 auto 16px",
     color: "var(--accent)"
   },
-  issuer: { fontSize: 14, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "var(--accent)", textAlign: "center" },
-  body: { textAlign: "center", marginBottom: 40 },
-  subtitle: { fontSize: 13, textTransform: "uppercase", color: "var(--text-muted)", letterSpacing: 1, marginBottom: 12, fontWeight: 600 },
+  issuer: { fontSize: "clamp(12px, 2.5vw, 14px)", fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "var(--accent)", textAlign: "center" },
+  body: { textAlign: "center", marginBottom: "clamp(24px, 5vw, 40px)", padding: "0 clamp(12px, 3vw, 24px)" },
+  subtitle: { fontSize: "clamp(11px, 2.5vw, 13px)", textTransform: "uppercase", color: "#6b7280", letterSpacing: 1, marginBottom: 12, fontWeight: 600 },
   name: {
-    fontFamily: "var(--font-sans)", fontSize: 44, fontWeight: 800, marginBottom: 24,
-    color: "var(--text-main)", letterSpacing: "-1px"
+    fontFamily: "var(--font-sans)", fontSize: "clamp(28px, 8vw, 44px)", fontWeight: 800, marginBottom: 24,
+    color: "#111827", letterSpacing: "-1px"
   },
-  completed: { fontSize: 15, color: "var(--text-sub)", marginBottom: 8 },
-  course: { fontSize: 24, color: "var(--text-main)", fontWeight: 700, marginBottom: 20, letterSpacing: "-0.5px" },
-  date: { fontSize: 14, color: "var(--text-muted)", fontWeight: 500 },
-  divider: { width: 60, height: 3, background: "var(--border)", margin: "0 auto 32px", borderRadius: 3 },
-  footerWrap: { display: "flex", alignItems: "center", justifyContent: "center", gap: 24 },
-  qrColumn: { padding: 8, background: "rgba(255,255,255,0.9)", borderRadius: 12, display: "flex", border: "1px solid var(--border)", boxShadow: "0 0 15px rgba(255,255,255,0.1)" },
-  hashWrap: { display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8 },
-  hashLabel: { fontSize: 12, fontWeight: 700, letterSpacing: 0.5, color: "var(--text-sub)", textTransform: "uppercase" },
-  hash: { fontSize: 12, color: "var(--text-sub)", wordBreak: "break-all", padding: "8px 12px", background: "var(--bg-subtle)", borderRadius: 8, display: "inline-block", fontFamily: "var(--font-mono)", border: "1px solid var(--border)", boxShadow: "var(--shadow-xs)" },
+  completed: { fontSize: "clamp(13px, 3vw, 15px)", color: "#4b5563", marginBottom: 8 },
+  course: { fontSize: "clamp(18px, 5vw, 24px)", color: "#111827", fontWeight: 700, marginBottom: 20, letterSpacing: "-0.5px" },
+  date: { fontSize: "clamp(12px, 2.5vw, 14px)", color: "#6b7280", fontWeight: 500 },
+  divider: { width: 60, height: 3, background: "#e5e7eb", margin: "0 auto 32px", borderRadius: 3 },
+  footerWrap: { display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(12px, 3vw, 24px)", flexWrap: "wrap", padding: "0 clamp(12px, 3vw, 24px)" },
+  qrColumn: { padding: 8, background: "#ffffff", borderRadius: 12, display: "flex", border: "1px solid #e5e7eb", boxShadow: "0 2px 4px rgba(0,0,0,0.05)" },
+  hashWrap: { display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8, minWidth: 0 },
+  hashLabel: { fontSize: "clamp(10px, 2.5vw, 12px)", fontWeight: 700, letterSpacing: 0.5, color: "#6b7280", textTransform: "uppercase" },
+  hash: { fontSize: "clamp(10px, 2.5vw, 12px)", color: "#4b5563", wordBreak: "break-all", padding: "8px 12px", background: "#f3f4f6", borderRadius: 8, display: "inline-block", fontFamily: "var(--font-mono)", border: "1px solid #e5e7eb", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", maxWidth: "200px" },
   copyBtn: {
-    background: "var(--bg-subtle)", border: "1px solid var(--border)",
-    color: "var(--text-main)", padding: "4px 12px", borderRadius: 6,
-    fontSize: 12, cursor: "pointer", fontWeight: 600, transition: "var(--t)"
+    background: "#ffffff", border: "1px solid #d1d5db",
+    color: "#111827", padding: "4px 12px", borderRadius: 6,
+    fontSize: "clamp(10px, 2.5vw, 12px)", cursor: "pointer", fontWeight: 600, transition: "var(--t)", minHeight: 28
   }
 };
