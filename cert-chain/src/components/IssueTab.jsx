@@ -58,13 +58,13 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
 }
 
 const styles = {
-  card: { padding: "40px 48px", marginBottom: 24 },
-  header: { marginBottom: 32 },
-  title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
-  grid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px 32px", marginBottom: 32 },
+  card: { padding: "clamp(24px, 5vw, 48px)", marginBottom: 24 },
+  header: { marginBottom: "clamp(20px, 5vw, 32px)" },
+  title: { fontSize: "clamp(20px, 6vw, 24px)", fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+  subtitle: { color: "var(--text-sub)", fontSize: "clamp(13px, 4vw, 15px)", lineHeight: 1.5, maxWidth: "100%" },
+  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "clamp(16px, 3vw, 32px)", marginBottom: 32 },
   field: { display: "flex", flexDirection: "column", gap: 6 },
-  submitRow: { display: "flex", justifyContent: "flex-end", marginTop: 10, paddingTop: 30, borderTop: "1px dashed var(--border)" },
-  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, fontWeight: 600 },
-  btnDisabled: { background: "var(--bg-main)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
+  submitRow: { display: "flex", justifyContent: "flex-end", marginTop: 10, paddingTop: 30, borderTop: "1px dashed var(--border)", flexWrap: "wrap", gap: 10 },
+  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, fontWeight: 600, minHeight: 44 },
+  btnDisabled: { background: "var(--bg-subtle)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
 };

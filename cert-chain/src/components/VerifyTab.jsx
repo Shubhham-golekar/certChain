@@ -145,12 +145,12 @@ export default function VerifyTab({ certs = [] }) {
 }
 
 const styles = {
-  card: { padding: "40px 48px", marginBottom: 24 },
-  header: { marginBottom: 32 },
-  title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
+  card: { padding: "clamp(24px, 5vw, 48px)", marginBottom: 24 },
+  header: { marginBottom: "clamp(20px, 5vw, 32px)" },
+  title: { fontSize: "clamp(20px, 6vw, 24px)", fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+  subtitle: { color: "var(--text-sub)", fontSize: "clamp(13px, 4vw, 15px)", lineHeight: 1.5, maxWidth: "100%" },
   field: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 },
-  submitRow: { display: "flex", justifyContent: "flex-start", marginTop: 10 },
+  submitRow: { display: "flex", justifyContent: "flex-start", marginTop: 10, flexWrap: "wrap", gap: 10 },
   copyBtn: {
     background: "var(--bg-subtle)",
     border: "1px solid var(--border)",
@@ -158,15 +158,16 @@ const styles = {
     color: "var(--text-main)",
     padding: "0 16px",
     cursor: "pointer",
-    fontSize: 20,
-    transition: "var(--t)"
+    fontSize: "clamp(18px, 4vw, 20px)",
+    transition: "var(--t)",
+    minHeight: 42,
   },
-  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, cursor: "pointer", fontWeight: 600 },
-  btnDisabled: { background: "var(--bg-main)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
-  result: { borderRadius: 16, padding: "24px", marginTop: 32, display: "flex", alignItems: "flex-start", gap: 20 },
+  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, cursor: "pointer", fontWeight: 600, minHeight: 44 },
+  btnDisabled: { background: "var(--bg-subtle)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
+  result: { borderRadius: 16, padding: "clamp(16px, 3vw, 24px)", marginTop: 32, display: "flex", alignItems: "flex-start", gap: "clamp(12px, 3vw, 20px)", flexWrap: "wrap", transition: "all 0.24s cubic-bezier(0.4, 0, 0.2, 1)" },
   invalid: { background: "var(--danger-bg)", border: "1px solid var(--danger-border)" },
-  icon: { fontSize: 36, flexShrink: 0 },
-  resultTitle: { fontWeight: 700, fontSize: 18, color: "var(--danger)", marginBottom: 8 },
-  detail: { fontSize: 14, color: "var(--danger)", opacity: 0.8, lineHeight: 1.6 },
-  verifiedHeader: { textAlign: "center", marginBottom: 16, color: "var(--success)", fontSize: 15, fontWeight: 700 }
+  icon: { fontSize: "clamp(28px, 6vw, 36px)", flexShrink: 0 },
+  resultTitle: { fontWeight: 700, fontSize: "clamp(16px, 4vw, 18px)", color: "var(--danger)", marginBottom: 8 },
+  detail: { fontSize: "clamp(13px, 3vw, 14px)", color: "var(--danger)", opacity: 0.8, lineHeight: 1.6 },
+  verifiedHeader: { textAlign: "center", marginBottom: 16, color: "var(--success)", fontSize: "clamp(13px, 3vw, 15px)", fontWeight: 700 }
 };

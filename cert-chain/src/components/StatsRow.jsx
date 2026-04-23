@@ -20,15 +20,15 @@ export default function StatsRow({ totalCerts }) {
 }
 
 const styles = {
-  row: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20, marginBottom: 40 },
+  row: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "clamp(12px, 3vw, 20px)", marginBottom: 40 },
   card: {
-    padding: "24px 20px", textAlign: "center", background: "var(--bg-card)",
+    padding: "clamp(16px, 4vw, 24px) clamp(12px, 3vw, 20px)", textAlign: "center", background: "var(--bg-card)",
     border: "1px solid var(--border)", borderRadius: "var(--radius-xl)",
-    backdropFilter: "blur(12px)", boxShadow: "var(--shadow-xs)"
+    boxShadow: "var(--shadow-sm)", transition: "all var(--t)"
   },
   value: {
-    fontFamily: "var(--font-sans)", fontSize: 32, fontWeight: 800,
+    fontFamily: "var(--font-sans)", fontSize: "clamp(24px, 6vw, 32px)", fontWeight: 800,
     color: "var(--accent)", marginBottom: 4, letterSpacing: "-0.5px"
   },
-  label: { fontSize: 13, color: "var(--text-sub)", fontWeight: 600 },
+  label: { fontSize: "clamp(11px, 2.5vw, 13px)", color: "var(--text-sub)", fontWeight: 600 },
 };

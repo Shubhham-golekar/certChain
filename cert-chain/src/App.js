@@ -253,17 +253,18 @@ export default function App() {
 const styles = {
   app: { minHeight: "100vh", position: "relative" },
   container: { maxWidth: 900, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "fadeIn 0.7s ease-out" },
-  hero: { textAlign: "center", marginBottom: 70, marginTop: 50 },
+  hero: { textAlign: "center", marginBottom: 70, marginTop: 50, position: "relative", zIndex: 2 },
   heroBadge: {
     display: "inline-flex", alignItems: "center", gap: 8,
-    background: "var(--bg-subtle)", border: "1px solid var(--border)",
+    background: "rgba(99, 102, 241, 0.1)", border: "1px solid rgba(99, 102, 241, 0.3)",
     borderRadius: 99, padding: "6px 14px", fontSize: 13,
-    fontWeight: 600, color: "var(--text-sub)", marginBottom: 24,
-    boxShadow: "var(--shadow-xs)"
+    fontWeight: 600, color: "var(--accent-light)", marginBottom: 24,
+    boxShadow: "0 0 16px rgba(99, 102, 241, 0.15)"
   },
   heroBadgeDot: {
     width: 6, height: 6, borderRadius: "50%", background: "var(--success)",
-    boxShadow: "0 0 0 2px var(--success-bg)"
+    boxShadow: "0 0 8px var(--success)",
+    animation: "pulse-dot 2s infinite"
   },
   h1: { 
     fontFamily: "var(--font-sans)", fontSize: 52, fontWeight: 800, 
@@ -272,7 +273,7 @@ const styles = {
   },
   highlight: {
     color: "var(--accent)", position: "relative",
-    backgroundImage: "linear-gradient(to right, #38bdf8, #818cf8)",
+    backgroundImage: "linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #6366f1 100%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent"
   },

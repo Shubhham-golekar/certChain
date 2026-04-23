@@ -85,19 +85,20 @@ export default function DashboardTab() {
 }
 
 const styles = {
-    card: { padding: "40px 48px", marginBottom: 24 },
-    header: { marginBottom: 32 },
-    title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-    subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
-    statsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 32 },
+    card: { padding: "clamp(24px, 5vw, 48px)", marginBottom: 24 },
+    header: { marginBottom: "clamp(20px, 5vw, 32px)" },
+    title: { fontSize: "clamp(20px, 6vw, 24px)", fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+    subtitle: { color: "var(--text-sub)", fontSize: "clamp(13px, 4vw, 15px)", lineHeight: 1.5, maxWidth: "100%" },
+    statsGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24, marginBottom: 32 },
     statBox: { 
-        background: "var(--bg-subtle)", padding: 32, borderRadius: 16, 
+        background: "var(--bg-subtle)", padding: "24px 20px", borderRadius: 16, 
         border: "1px solid var(--border)"
     },
-    statValue: { fontSize: 48, fontWeight: 800, letterSpacing: "-1px", color: "var(--accent)", lineHeight: 1 },
+    statValue: { fontSize: "clamp(32px, 8vw, 48px)", fontWeight: 800, letterSpacing: "-1px", color: "var(--accent)", lineHeight: 1 },
     statLabel: { fontSize: 14, color: "var(--text-sub)", marginTop: 12, fontWeight: 500 },
     chartContainer: { 
-        padding: 32, borderRadius: 16, 
-        border: "1px solid var(--border)"
+        padding: "24px 20px", borderRadius: 16, 
+        border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)",
+        transition: "all 0.24s cubic-bezier(0.4, 0, 0.2, 1)"
     }
 };

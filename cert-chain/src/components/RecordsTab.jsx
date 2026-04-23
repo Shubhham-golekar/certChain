@@ -59,37 +59,38 @@ export default function RecordsTab({ certs }) {
 }
 
 const styles = {
-  card: { padding: "40px 48px", marginBottom: 24 },
-  header: { marginBottom: 32 },
-  title: { fontSize: 24, fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-sub)", fontSize: 15, lineHeight: 1.5, maxWidth: "90%" },
-  empty: { textAlign: "center", padding: "64px 24px" },
-  list: { display: "flex", flexDirection: "column", gap: 16 },
+  card: { padding: "clamp(24px, 5vw, 48px)", marginBottom: 24 },
+  header: { marginBottom: "clamp(20px, 5vw, 32px)" },
+  title: { fontSize: "clamp(20px, 6vw, 24px)", fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
+  subtitle: { color: "var(--text-sub)", fontSize: "clamp(13px, 4vw, 15px)", lineHeight: 1.5, maxWidth: "100%" },
+  empty: { textAlign: "center", padding: "clamp(40px, 8vw, 64px) 24px" },
+  list: { display: "flex", flexDirection: "column", gap: "clamp(12px, 3vw, 16px)" },
   item: {
-    background: "var(--bg-subtle)", border: "1px solid var(--border)",
-    borderRadius: 16, padding: "24px",
-    display: "flex", alignItems: "flex-start", gap: 20,
-    transition: "all var(--t)",
-    boxShadow: "var(--shadow-xs)"
+    background: "var(--bg-card)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: "clamp(16px, 3vw, 24px)",
+    display: "flex", alignItems: "flex-start", gap: "clamp(12px, 3vw, 20px)",
+    transition: "all 0.24s cubic-bezier(0.4, 0, 0.2, 1)",
+    boxShadow: "var(--shadow-xs)",
+    flexWrap: "wrap",
   },
   icon: {
-    width: 48, height: 48, borderRadius: 12, flexShrink: 0,
-    background: "var(--accent-dim)",
-    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24,
+    width: "clamp(36px, 8vw, 48px)", height: "clamp(36px, 8vw, 48px)", borderRadius: 12, flexShrink: 0,
+    background: "var(--accent-light)",
+    display: "flex", alignItems: "center", justifyContent: "center", fontSize: "clamp(18px, 5vw, 24px)",
   },
   info: { flex: 1, minWidth: 0 },
-  name: { fontWeight: 700, fontSize: 18, marginBottom: 6, color: "var(--text-main)", letterSpacing: "-0.3px" },
-  meta: { fontSize: 14, color: "var(--text-sub)" },
+  name: { fontWeight: 700, fontSize: "clamp(16px, 4vw, 18px)", marginBottom: 6, color: "var(--text-main)", letterSpacing: "-0.3px" },
+  meta: { fontSize: "clamp(12px, 2.5vw, 14px)", color: "var(--text-sub)", wordBreak: "break-all" },
   badge: {
-    padding: "6px 14px", borderRadius: 99, fontSize: 12, fontWeight: 600,
+    padding: "clamp(4px, 1.5vw, 6px) clamp(10px, 2.5vw, 14px)", borderRadius: 99, fontSize: "clamp(11px, 2vw, 12px)", fontWeight: 600,
     background: "var(--success-bg)", color: "var(--success)",
     border: "1px solid var(--success-border)", flexShrink: 0,
-    marginTop: 4
+    marginTop: 4, whiteSpace: "nowrap"
   },
   copyBtn: {
-    background: "var(--bg-card)", border: "1px solid var(--border)",
+    background: "var(--bg-subtle)", border: "1px solid var(--border)",
     color: "var(--text-sub)", padding: "4px 10px", borderRadius: 6,
-    fontSize: 12, cursor: "pointer", fontFamily: "var(--font-mono)",
-    transition: "var(--t)"
+    fontSize: "clamp(10px, 2vw, 12px)", cursor: "pointer", fontFamily: "var(--font-mono)",
+    transition: "var(--t)", minHeight: 28
   }
 };
