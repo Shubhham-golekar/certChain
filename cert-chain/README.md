@@ -1,5 +1,9 @@
 # 🎓 CertChain — Blockchain Certificate Issuance & Verification dApp
 
+<div align="center">
+  <img src="./screenshots/logo.png" alt="CertChain Logo" width="160" style="border-radius: 20px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); margin-bottom: 20px;" />
+</div>
+
 ## Overview
 Cert-Chain is a full-stack, decentralized web application for issuing, managing, and verifying tamper-proof certificates using the Soroban smart contracts on the Stellar blockchain.
 
@@ -122,8 +126,8 @@ When a certificate is issued:
 4. The React dashboard instantly pulls the indexed dataset and renders interactive charts using `recharts`!
 
 ### 🚀 What's New? (Recent Updates)
-- 🌌 **Premium Cosmic Midnight UI:** Complete redesign with a sleek, deep space blue theme featuring animated aurora gradients, frosted glass panels, and vibrant cyan-to-indigo highlights to give a highly professional, Web3-native aesthetic.
-- 🖼️ **Live UI Demo**: Check out the updated design in our new recording:  
+- 🌌 **Hybrid Executive Glass Theme:** Complete redesign with a solid, ultra-dark slate background (`#020617`), subtle floating neon orbs, high-blur frosted glass cards (`backdrop-filter: blur(32px)`), and a brand-new glowing Emerald Shield logo.
+- 🖼️ **Live UI Demo**: Check out the stunning new interface in our recent recording:  
   ![UI Demo](./screenshots/demo.webp)
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance safely via `scVal`.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
