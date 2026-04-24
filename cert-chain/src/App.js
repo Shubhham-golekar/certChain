@@ -263,8 +263,6 @@ const styles = {
   },
   heroBadgeDot: {
     width: 6, height: 6, borderRadius: "50%", background: "var(--success)",
-    boxShadow: "0 0 8px var(--success)",
-    animation: "pulse-dot 2s infinite"
   },
   h1: { 
     fontFamily: "var(--font-sans)", fontSize: 52, fontWeight: 800, 
@@ -272,10 +270,7 @@ const styles = {
     color: "var(--text-main)" 
   },
   highlight: {
-    color: "var(--accent)", position: "relative",
-    backgroundImage: "linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #6366f1 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent"
+    color: "var(--text-main)",
   },
   heroP: { color: "var(--text-sub)", fontSize: 18, maxWidth: 540, margin: "0 auto", lineHeight: 1.5, fontWeight: 400 },
   tabsWrapper: { display: "flex", justifyContent: "center", marginBottom: 40 },
