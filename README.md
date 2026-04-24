@@ -8,7 +8,7 @@
 ---
 
 ### 🚀 What's New? (Recent Updates)
-- 🌌 **Hybrid Executive Glass Theme:** Complete redesign with a solid, ultra-dark slate background (`#020617`), subtle floating neon orbs, high-blur frosted glass cards (`backdrop-filter: blur(32px)`), and a brand-new glowing Emerald Shield logo.
+- 🏢 **Minimal Enterprise UI:** Complete overhaul removing the previous "vibecoded" aesthetics. Features a sleek, solid dark background, crisp 1px borders, high-contrast typography, and a brand-new professional geometric logo.
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
