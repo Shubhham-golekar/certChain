@@ -12,7 +12,7 @@
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
-![UI Demo](./cert-chain/screenshots/demo.webp)
+![UI Demo](./cert-chain/screenshots/demo.png)
 
 ### 🌐 Live Application
 🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-xnbu.vercel.app/)**

@@ -128,7 +128,7 @@ When a certificate is issued:
 ### 🚀 What's New? (Recent Updates)
 - 🏢 **Minimal Enterprise UI:** Complete overhaul removing the previous "vibecoded" aesthetics. Features a sleek, solid dark background, crisp 1px borders, high-contrast typography, and a brand-new professional geometric logo.
 - 🖼️ **Live UI Demo**: Check out the stunning new interface in our recent recording:  
-  ![UI Demo](./screenshots/demo.webp)
+  ![UI Demo](./screenshots/demo.png)
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance safely via `scVal`.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
