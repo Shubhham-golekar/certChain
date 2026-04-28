@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./certchain_logo.png" alt="CertChain Logo" width="120" />
+  <img src="./certchain_logo.png" alt="CertChain Logo" width="100" />
 </p>
 
 <h1 align="center">CertChain — Blockchain Certificate Platform</h1>
@@ -8,7 +8,7 @@
 ---
 
 ### 🚀 What's New? (Recent Updates)
-- 🏢 **Minimal Enterprise UI:** Complete overhaul removing the previous "vibecoded" aesthetics. Features a sleek, solid dark background, crisp 1px borders, high-contrast typography, and a brand-new professional geometric logo.
+- 🎨 **Corporate Blue + Cyan UI:** Professional redesign using a single Blue+Cyan color palette, solid `#0d1117` charcoal dark background, Inter sans-serif typography, no animations or gradients — enterprise-grade standard.
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 

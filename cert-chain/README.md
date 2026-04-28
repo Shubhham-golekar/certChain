@@ -1,7 +1,7 @@
 # 🎓 CertChain — Blockchain Certificate Issuance & Verification dApp
 
 <div align="center">
-  <img src="./screenshots/logo.png" alt="CertChain Logo" width="160" style="border-radius: 20px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); margin-bottom: 20px;" />
+  <img src="./screenshots/logo.png" alt="CertChain Logo" width="120" />
 </div>
 
 ## Overview
@@ -126,8 +126,8 @@ When a certificate is issued:
 4. The React dashboard instantly pulls the indexed dataset and renders interactive charts using `recharts`!
 
 ### 🚀 What's New? (Recent Updates)
-- 🏢 **Minimal Enterprise UI:** Complete overhaul removing the previous "vibecoded" aesthetics. Features a sleek, solid dark background, crisp 1px borders, high-contrast typography, and a brand-new professional geometric logo.
-- 🖼️ **Live UI Demo**: Check out the stunning new interface in our recent recording:  
+- 🎨 **Corporate Blue + Cyan UI:** Professional redesign using a single Blue+Cyan color palette, solid charcoal dark theme, Inter typography, no gradients or animations — built to enterprise standards.
+- 🖼️ **Updated Interface:**  
   ![UI Demo](./screenshots/demo.png)
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance safely via `scVal`.
 - ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
