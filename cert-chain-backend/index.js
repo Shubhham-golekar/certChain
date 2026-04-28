@@ -78,6 +78,8 @@ app.get('/api/certificates', (req, res) => {
     });
 });
 
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`✅ CertChain Backend running on http://localhost:${PORT}`);

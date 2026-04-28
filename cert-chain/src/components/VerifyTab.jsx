@@ -8,19 +8,19 @@ import CertificatePreview from "./CertificatePreview";
 export default function VerifyTab({ certs = [] }) {
   const { publicKey } = useWallet();
   const { addToast } = useToast();
-  const [hash, setHash] = useState("");
+  const [hash, setHash]     = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    addToast("📋 Copied to clipboard!");
+    addToast("Copied to clipboard.");
   };
 
   const verify = async () => {
     const searchHash = hash.trim();
     if (!searchHash) {
-      addToast("Please paste a certificate hash", "error");
+      addToast("Please enter a certificate hash.", "error");
       return;
     }
 
@@ -32,19 +32,19 @@ export default function VerifyTab({ certs = [] }) {
       if (localMatch) {
         setResult({
           valid: true,
-          studentName: localMatch.studentName || "Verified Holder",
+          studentName:   localMatch.studentName   || "Verified Holder",
           studentWallet: localMatch.studentWallet || "",
-          course: localMatch.course || "",
-          issuer: localMatch.issuer || "",
-          date: localMatch.date || "",
-          fullHash: searchHash,
-          source: "local",
+          course:        localMatch.course        || "",
+          issuer:        localMatch.issuer        || "",
+          date:          localMatch.date          || "",
+          fullHash:      searchHash,
+          source:        "local",
         });
-        addToast("Found it in the community records! 🎉");
+        addToast("Certificate found in records.");
         return;
       }
 
-      addToast("Checking the blockchain...");
+      addToast("Querying the blockchain...");
       const callerKey = publicKey || "GAX5NPUQJ7R6ZJ3WPKVIVZ2UQLNTSWNTZ2XOYEFT5B6NYYF7BOM6CQ4W";
       const dummyAccount = new Account(callerKey, "0");
 
@@ -59,27 +59,26 @@ export default function VerifyTab({ certs = [] }) {
       const simResponse = await server.simulateTransaction(tx);
 
       if (!simResponse.result || !simResponse.result.retval) {
-        throw new Error("We couldn't find this certificate. Double check the hash.");
+        throw new Error("Certificate not found. Verify the hash is correct.");
       }
 
       const certData = scValToNative(simResponse.result.retval);
-
       setResult({
-        valid: certData.valid !== undefined ? certData.valid : true,
-        studentName: "Verified Blockchain Record",
+        valid:         certData.valid !== undefined ? certData.valid : true,
+        studentName:   "Verified Blockchain Record",
         studentWallet: certData.student_wallet || certData[1] || "",
-        course: certData.course || certData[2] || "",
-        issuer: certData.issuer || certData[0] || "",
-        date: certData.date || certData[3] || "",
-        fullHash: searchHash,
-        source: "blockchain",
+        course:        certData.course || certData[2] || "",
+        issuer:        certData.issuer || certData[0] || "",
+        date:          certData.date   || certData[3] || "",
+        fullHash:      searchHash,
+        source:        "blockchain",
       });
 
-      addToast("Verified directly from the blockchain! 🔒");
+      addToast("Verified on-chain.");
     } catch (err) {
       console.error("Verify error:", err);
       setResult({ valid: false, fullHash: searchHash });
-      addToast(err.message || "Verification failed", "error");
+      addToast(err.message || "Verification failed.", "error");
     } finally {
       setLoading(false);
     }
@@ -88,54 +87,62 @@ export default function VerifyTab({ certs = [] }) {
   return (
     <div className="card" style={styles.card}>
       <div style={styles.header}>
-        <div style={styles.title}>Check Authenticity 🔍</div>
-        <div style={styles.subtitle}>Curious if a certificate is real? Paste the transaction hash below and we'll check the blockchain for you.</div>
+        <h2 style={styles.title}>Verify Certificate</h2>
+        <p style={styles.subtitle}>
+          Paste a certificate transaction hash to confirm its authenticity on the Stellar blockchain.
+        </p>
       </div>
 
       <div style={styles.field}>
         <label>Transaction Hash</label>
-        <div style={{ display: "flex", gap: 14 }}>
+        <div style={{ display: "flex", gap: 10 }}>
           <input
-            style={{ flex: 1, fontFamily: "var(--font-mono)", fontSize: 13 }}
+            style={{ fontFamily: "var(--font-mono)", fontSize: 13 }}
             value={hash}
             onChange={(e) => setHash(e.target.value)}
-            placeholder="Paste exactly as it appears..."
+            placeholder="Enter the full certificate hash..."
           />
           {hash && (
-            <button style={styles.copyBtn} onClick={() => copyToClipboard(hash)}>
-              📋
+            <button style={styles.iconBtn} onClick={() => copyToClipboard(hash)} title="Copy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
             </button>
           )}
         </div>
       </div>
 
-      <div style={styles.submitRow}>
-          <button
-            className={loading ? "" : "btn-primary"}
-            style={{ ...styles.btn, ...(loading ? styles.btnDisabled : {}) }}
-            onClick={verify}
-            disabled={loading}
-          >
-            {loading ? "Checking..." : "Verify Authentic Record"}
-          </button>
+      <div style={{ marginTop: 20 }}>
+        <button
+          className={loading ? "" : "btn-primary"}
+          style={loading ? styles.btnDisabled : {}}
+          onClick={verify}
+          disabled={loading}
+        >
+          {loading ? "Verifying..." : "Verify Certificate"}
+        </button>
       </div>
 
       {result && (
         <div style={{ marginTop: 40 }}>
           {result.valid ? (
-            <div style={{ animation: "fadeUp 0.4s ease-out" }}>
-              <div style={styles.verifiedHeader}>
-                ✨ Verified Authentic {result.source === "blockchain" ? "(On-Chain)" : "(From Index)"}
+            <div>
+              <div style={styles.verifiedBanner}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                Certificate Verified
+                {result.source === "blockchain" ? " — On-Chain" : " — From Index"}
               </div>
               <CertificatePreview cert={result} />
             </div>
           ) : (
-            <div style={{ ...styles.result, ...styles.invalid }}>
-              <div style={styles.icon}>🤔</div>
-              <div style={{ flex: 1 }}>
-                <div style={styles.resultTitle}>Nothing found</div>
-                <div style={styles.detail}>We looked around but couldn't find any certificate matching this hash. Make sure you copied the entire hash correctly.</div>
-              </div>
+            <div style={styles.invalidBox}>
+              <div style={styles.invalidTitle}>Not Found</div>
+              <p style={styles.invalidText}>
+                No certificate matching this hash was found. Ensure you copied the complete hash correctly.
+              </p>
             </div>
           )}
         </div>
@@ -145,29 +152,56 @@ export default function VerifyTab({ certs = [] }) {
 }
 
 const styles = {
-  card: { padding: "clamp(24px, 5vw, 48px)", marginBottom: 24 },
-  header: { marginBottom: "clamp(20px, 5vw, 32px)" },
-  title: { fontSize: "clamp(20px, 6vw, 24px)", fontWeight: 700, marginBottom: 8, color: "var(--text-main)", letterSpacing: "-0.5px" },
-  subtitle: { color: "var(--text-sub)", fontSize: "clamp(13px, 4vw, 15px)", lineHeight: 1.5, maxWidth: "100%" },
-  field: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 },
-  submitRow: { display: "flex", justifyContent: "flex-start", marginTop: 10, flexWrap: "wrap", gap: 10 },
-  copyBtn: {
+  card:     { padding: "40px 40px 36px", marginBottom: 24 },
+  header:   { marginBottom: 28, paddingBottom: 24, borderBottom: "1px solid var(--border)" },
+  title:    { fontSize: 20, fontWeight: 700, color: "var(--text-main)", marginBottom: 8, letterSpacing: "-0.3px" },
+  subtitle: { color: "var(--text-sub)", fontSize: 14, lineHeight: 1.6 },
+  field:    { display: "flex", flexDirection: "column" },
+
+  iconBtn: {
     background: "var(--bg-subtle)",
     border: "1px solid var(--border)",
-    borderRadius: 8,
-    color: "var(--text-main)",
-    padding: "0 16px",
+    borderRadius: "var(--radius-sm)",
+    color: "var(--text-sub)",
+    padding: "0 14px",
     cursor: "pointer",
-    fontSize: "clamp(18px, 4vw, 20px)",
+    display: "flex",
+    alignItems: "center",
+    minWidth: 44,
+    justifyContent: "center",
     transition: "var(--t)",
-    minHeight: 42,
+    flexShrink: 0,
   },
-  btn: { padding: "12px 28px", borderRadius: "100px", border: "none", fontSize: 14, cursor: "pointer", fontWeight: 600, minHeight: 44 },
-  btnDisabled: { background: "var(--bg-subtle)", color: "var(--text-muted)", border: "1px solid var(--border)", cursor: "not-allowed" },
-  result: { borderRadius: 16, padding: "clamp(16px, 3vw, 24px)", marginTop: 32, display: "flex", alignItems: "flex-start", gap: "clamp(12px, 3vw, 20px)", flexWrap: "wrap", transition: "all 0.24s cubic-bezier(0.4, 0, 0.2, 1)" },
-  invalid: { background: "var(--danger-bg)", border: "1px solid var(--danger-border)" },
-  icon: { fontSize: "clamp(28px, 6vw, 36px)", flexShrink: 0 },
-  resultTitle: { fontWeight: 700, fontSize: "clamp(16px, 4vw, 18px)", color: "var(--danger)", marginBottom: 8 },
-  detail: { fontSize: "clamp(13px, 3vw, 14px)", color: "var(--danger)", opacity: 0.8, lineHeight: 1.6 },
-  verifiedHeader: { textAlign: "center", marginBottom: 16, color: "var(--success)", fontSize: "clamp(13px, 3vw, 15px)", fontWeight: 700 }
+  btnDisabled: {
+    padding: "10px 22px",
+    borderRadius: "var(--radius-sm)",
+    background: "var(--bg-subtle)",
+    color: "var(--text-muted)",
+    border: "1px solid var(--border)",
+    fontSize: 14,
+    fontWeight: 500,
+    cursor: "not-allowed",
+  },
+
+  verifiedBanner: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "10px 16px",
+    background: "var(--success-bg)",
+    border: "1px solid var(--success-border)",
+    borderRadius: "var(--radius-sm)",
+    color: "var(--success)",
+    fontSize: 13,
+    fontWeight: 600,
+    marginBottom: 24,
+  },
+  invalidBox: {
+    padding: "24px",
+    background: "var(--danger-bg)",
+    border: "1px solid var(--danger-border)",
+    borderRadius: "var(--radius-md)",
+  },
+  invalidTitle: { fontSize: 15, fontWeight: 700, color: "var(--danger)", marginBottom: 8 },
+  invalidText:  { fontSize: 14, color: "var(--danger)", opacity: 0.85, lineHeight: 1.6 },
 };

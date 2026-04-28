@@ -2,9 +2,9 @@ import React from "react";
 
 export default function StatsRow({ totalCerts }) {
   const stats = [
-    { value: totalCerts, label: "Total Issued" },
-    { value: "100%", label: "On-Chain Verified" },
-    { value: "~3s", label: "Network Finality" },
+    { value: totalCerts,  label: "Certificates Issued" },
+    { value: "100%",      label: "On-Chain Verified" },
+    { value: "~3s",       label: "Network Finality" },
   ];
 
   return (
@@ -20,15 +20,31 @@ export default function StatsRow({ totalCerts }) {
 }
 
 const styles = {
-  row: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "clamp(12px, 3vw, 20px)", marginBottom: 40 },
+  row: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+    gap: 12,
+    marginBottom: 32,
+  },
   card: {
-    padding: "clamp(16px, 4vw, 24px) clamp(12px, 3vw, 20px)", textAlign: "center", background: "var(--bg-card)",
-    border: "1px solid var(--border)", borderRadius: "var(--radius-xl)",
-    boxShadow: "var(--shadow-sm)", transition: "all var(--t)"
+    padding: "20px 24px",
+    background: "var(--bg-card)",
+    border: "1px solid var(--border)",
+    borderRadius: "var(--radius-md)",
   },
   value: {
-    fontFamily: "var(--font-sans)", fontSize: "clamp(24px, 6vw, 32px)", fontWeight: 800,
-    color: "var(--accent)", marginBottom: 4, letterSpacing: "-0.5px"
+    fontFamily: "var(--font-sans)",
+    fontSize: 28,
+    fontWeight: 700,
+    color: "#60a5fa",
+    marginBottom: 4,
+    letterSpacing: "-0.5px",
+    lineHeight: 1,
   },
-  label: { fontSize: "clamp(11px, 2.5vw, 13px)", color: "var(--text-sub)", fontWeight: 600 },
+  label: {
+    fontSize: 12,
+    color: "var(--text-muted)",
+    fontWeight: 500,
+    marginTop: 6,
+  },
 };

@@ -18,18 +18,18 @@ import { DEFAULT_FORM, generateTxHash } from "./utils/constants";
 
 const TABS = [
   { id: "dashboard", label: "Overview" },
-  { id: "issue", label: "Hand Out Certificate" },
-  { id: "verify", label: "Check Authenticity" },
-  { id: "records", label: "Community Records" },
+  { id: "issue",     label: "Issue Certificate" },
+  { id: "verify",    label: "Verify" },
+  { id: "records",   label: "Records" },
 ];
 
 export default function App() {
   const { connected, address, publicKey, loading, error, connect, disconnect, sign } = useWallet();
   const { toasts, addToast } = useToast();
 
-  const [tab, setTab] = useState("dashboard");
-  const [certs, setCerts] = useState([]);
-  const [form, setForm] = useState(DEFAULT_FORM);
+  const [tab, setTab]             = useState("dashboard");
+  const [certs, setCerts]         = useState([]);
+  const [form, setForm]           = useState(DEFAULT_FORM);
   const [isIssuing, setIsIssuing] = useState(false);
   const [previewCert, setPreviewCert] = useState(null);
 
@@ -61,12 +61,12 @@ export default function App() {
 
   const handleConnect = async () => {
     await connect();
-    addToast("Welcome! Freighter wallet connected smoothly. ✨");
+    addToast("Freighter wallet connected.");
   };
 
   const handleDisconnect = () => {
     disconnect();
-    addToast("Wallet disconnected. See you around!", "error");
+    addToast("Wallet disconnected.", "error");
   };
 
   const handleFormChange = (e) => {
@@ -75,21 +75,18 @@ export default function App() {
 
   const handleIssue = async () => {
     if (!form.studentName || !form.studentWallet || !form.course || !form.issuer) {
-      addToast("Hmm, looks like some required fields are empty.", "error");
+      addToast("Please fill in all required fields.", "error");
       return;
     }
-    
-    // Check wallet format loosely
     if (form.studentWallet.length < 50 || !form.studentWallet.startsWith("G")) {
-      addToast("That doesn't look like a valid Stellar public key 🧐", "error");
+      addToast("Invalid Stellar public key.", "error");
       return;
     }
 
     setIsIssuing(true);
 
     try {
-      addToast("Check your wallet to confirm the transaction...");
-
+      addToast("Awaiting wallet confirmation...");
       const fullHash = generateTxHash();
 
       try {
@@ -105,9 +102,7 @@ export default function App() {
 
         let preparedTx = await server.prepareTransaction(tx);
 
-        if (preparedTx.error) {
-          throw new Error(preparedTx.error);
-        }
+        if (preparedTx.error) throw new Error(preparedTx.error);
 
         let xdrToSign;
         if (typeof preparedTx.toXDR === 'function') {
@@ -121,23 +116,21 @@ export default function App() {
           throw new Error("Failed to parse prepared transaction");
         }
 
-        addToast("Waiting for your signature... ✍️");
+        addToast("Signing transaction...");
         const signedXdr = await sign(xdrToSign);
 
-        addToast("Sending it off to the Stellar network! 🚀");
+        addToast("Broadcasting to Stellar network...");
         const signedTx = TransactionBuilder.fromXDR(signedXdr, Networks.TESTNET);
         const sendResponse = await server.sendTransaction(signedTx);
 
-        if (sendResponse.status === "ERROR") {
-          throw new Error("Blockchain submitted transaction failed");
-        }
+        if (sendResponse.status === "ERROR") throw new Error("Transaction failed on blockchain");
 
-        addToast("✨ Success! The certificate is forever on the blockchain.");
+        addToast("Certificate issued successfully.");
       } catch (err) {
         console.error("Smart Contract Error:", err);
-        const msg = typeof err === 'string' ? err : (err.message || "Contract interaction ran into a hiccup.");
-        throw new Error(msg);
+        throw new Error(typeof err === 'string' ? err : (err.message || "Contract interaction failed."));
       }
+
       const newCert = {
         id: "cert_" + Date.now(),
         studentName: form.studentName,
@@ -164,7 +157,6 @@ export default function App() {
             hash: fullHash,
           }),
         });
-
         if (!response.ok) throw new Error("Backend index failed");
       } catch (err) {
         console.error("Failed to index cert.", err);
@@ -175,7 +167,7 @@ export default function App() {
       setForm(DEFAULT_FORM);
     } catch (err) {
       console.error("Issuance Error:", err);
-      addToast(err.message || "Oh no, couldn't issue the certificate.", "error");
+      addToast(err.message || "Failed to issue certificate.", "error");
     } finally {
       setIsIssuing(false);
     }
@@ -183,28 +175,28 @@ export default function App() {
 
   return (
     <div style={styles.app}>
-      <div className="page-grain" />
-
       <ToastContainer toasts={toasts} />
 
       <div style={styles.container}>
         <Header />
-        
+
+        {/* Hero */}
         <div style={styles.hero}>
           <div style={styles.heroBadge}>
-            <span style={styles.heroBadgeDot}></span> Live on Soroban
+            <span style={styles.heroBadgeDot} />
+            Live on Soroban Testnet
           </div>
           <h1 style={styles.h1}>
-            Give credit where it’s due.<br />
-            <span style={styles.highlight}>Keep it forever.</span>
+            Blockchain-Verified<br />
+            <span style={styles.highlight}>Certificate Infrastructure</span>
           </h1>
           <p style={styles.heroP}>
-            A simple, warm way to hand out certificates for communities, schools, and self-starters. Decentralized, so nobody can ever take it away.
+            Issue tamper-proof credentials on the Stellar network. Every certificate is permanently recorded on-chain and publicly verifiable.
           </p>
         </div>
 
         <StatsRow totalCerts={certs.length} />
-        
+
         <WalletBar
           connected={connected}
           address={address}
@@ -214,7 +206,8 @@ export default function App() {
           onDisconnect={handleDisconnect}
         />
 
-        <div style={styles.tabsWrapper}>
+        {/* Tabs */}
+        <div style={styles.tabsWrap}>
           <div style={styles.tabsInner}>
             {TABS.map((t) => (
               <button
@@ -240,7 +233,7 @@ export default function App() {
               onChange={handleFormChange}
             />
           )}
-          {tab === "verify" && <VerifyTab certs={certs} />}
+          {tab === "verify"  && <VerifyTab certs={certs} />}
           {tab === "records" && <RecordsTab certs={certs} />}
         </div>
 
@@ -251,41 +244,93 @@ export default function App() {
 }
 
 const styles = {
-  app: { minHeight: "100vh", position: "relative" },
-  container: { maxWidth: 900, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1, animation: "fadeIn 0.7s ease-out" },
-  hero: { textAlign: "center", marginBottom: 70, marginTop: 50, position: "relative", zIndex: 2 },
+  app: {
+    minHeight: "100vh",
+    background: "var(--bg-main)",
+  },
+  container: {
+    maxWidth: 960,
+    margin: "0 auto",
+    padding: "0 32px",
+  },
+
+  /* Hero */
+  hero: {
+    textAlign: "center",
+    padding: "64px 0 56px",
+  },
   heroBadge: {
-    display: "inline-flex", alignItems: "center", gap: 8,
-    background: "rgba(99, 102, 241, 0.1)", border: "1px solid rgba(99, 102, 241, 0.3)",
-    borderRadius: 99, padding: "6px 14px", fontSize: 13,
-    fontWeight: 600, color: "var(--accent-light)", marginBottom: 24,
-    boxShadow: "0 0 16px rgba(99, 102, 241, 0.15)"
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    background: "var(--accent-dim)",
+    border: "1px solid rgba(37,99,235,0.25)",
+    borderRadius: 99,
+    padding: "5px 14px",
+    fontSize: 12,
+    fontWeight: 600,
+    color: "#60a5fa",
+    marginBottom: 28,
+    letterSpacing: "0.2px",
   },
   heroBadgeDot: {
-    width: 6, height: 6, borderRadius: "50%", background: "var(--success)",
+    width: 6,
+    height: 6,
+    borderRadius: "50%",
+    background: "var(--success)",
+    display: "inline-block",
+    flexShrink: 0,
   },
-  h1: { 
-    fontFamily: "var(--font-sans)", fontSize: 52, fontWeight: 800, 
-    lineHeight: 1.15, letterSpacing: "-1px", marginBottom: 20, 
-    color: "var(--text-main)" 
+  h1: {
+    fontFamily: "var(--font-sans)",
+    fontSize: "clamp(32px, 6vw, 52px)",
+    fontWeight: 800,
+    lineHeight: 1.15,
+    letterSpacing: "-1.5px",
+    color: "var(--text-main)",
+    marginBottom: 20,
   },
   highlight: {
-    color: "var(--text-main)",
+    color: "#60a5fa",          /* Blue-400 — single accent, no gradient */
   },
-  heroP: { color: "var(--text-sub)", fontSize: 18, maxWidth: 540, margin: "0 auto", lineHeight: 1.5, fontWeight: 400 },
-  tabsWrapper: { display: "flex", justifyContent: "center", marginBottom: 40 },
+  heroP: {
+    color: "var(--text-sub)",
+    fontSize: 16,
+    maxWidth: 520,
+    margin: "0 auto",
+    lineHeight: 1.65,
+    fontWeight: 400,
+  },
+
+  /* Tabs */
+  tabsWrap: {
+    display: "flex",
+    justifyContent: "flex-start",
+    marginBottom: 32,
+  },
   tabsInner: {
-    display: "inline-flex", gap: 4, background: "var(--bg-card)",
-    backdropFilter: "blur(16px)",
-    border: "1px solid var(--border)", borderRadius: 99, padding: 6,
-    boxShadow: "var(--shadow-sm)",
+    display: "inline-flex",
+    gap: 2,
+    background: "var(--bg-card)",
+    border: "1px solid var(--border)",
+    borderRadius: 6,
+    padding: 4,
   },
   tab: {
-    padding: "8px 20px", border: "none", borderRadius: 99,
-    background: "transparent", color: "var(--text-sub)",
-    fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, cursor: "pointer",
+    padding: "7px 18px",
+    border: "none",
+    borderRadius: 4,
+    background: "transparent",
+    color: "var(--text-sub)",
+    fontFamily: "var(--font-sans)",
+    fontWeight: 500,
+    fontSize: 13,
+    cursor: "pointer",
     transition: "all var(--t)",
+    whiteSpace: "nowrap",
   },
-  tabActive: { background: "var(--accent)", color: "#fff", boxShadow: "var(--shadow-sm)" },
+  tabActive: {
+    background: "var(--accent)",
+    color: "#ffffff",
+  },
 };
-

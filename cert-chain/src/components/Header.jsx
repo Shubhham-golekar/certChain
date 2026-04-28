@@ -4,15 +4,13 @@ import logoImg from "../certchain_logo.png";
 export default function Header() {
   return (
     <header style={styles.header}>
-      <div style={styles.brandGroup}>
-        <div style={styles.logoWrapper}>
-          <img src={logoImg} alt="CertChain Logo" style={styles.logoImg} />
-        </div>
-        <div style={styles.logoText}>CertChain</div>
+      <div style={styles.brand}>
+        <img src={logoImg} alt="CertChain" style={styles.logo} />
+        <span style={styles.name}>CertChain</span>
       </div>
       <div style={styles.badge}>
-        <div style={styles.dot} />
-        <div>Stellar Testnet</div>
+        <span style={styles.dot} />
+        Stellar Testnet
       </div>
     </header>
   );
@@ -20,40 +18,49 @@ export default function Header() {
 
 const styles = {
   header: {
-    padding: "clamp(20px, 5vw, 36px) 0",
-    marginBottom: "24px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    flexWrap: "wrap",
-    gap: 12,
+    padding: "20px 0 24px",
+    borderBottom: "1px solid var(--border)",
+    marginBottom: "40px",
   },
-  brandGroup: { display: "flex", alignItems: "center", gap: "clamp(10px, 3vw, 16px)", cursor: "pointer" },
-  logoWrapper: {
+  brand: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    gap: 12,
   },
-  logoImg: {
-    width: "clamp(32px, 6vw, 42px)",
-    height: "clamp(32px, 6vw, 42px)",
+  logo: {
+    width: 36,
+    height: 36,
     objectFit: "contain",
+    borderRadius: 8,
   },
-  logoText: {
+  name: {
     fontFamily: "var(--font-sans)",
-    fontWeight: 800, fontSize: "clamp(20px, 5vw, 26px)", letterSpacing: "-0.5px",
+    fontSize: 18,
+    fontWeight: 700,
     color: "var(--text-main)",
+    letterSpacing: "-0.3px",
   },
   badge: {
-    display: "flex", alignItems: "center", gap: 6,
+    display: "flex",
+    alignItems: "center",
+    gap: 7,
     background: "var(--bg-subtle)",
     border: "1px solid var(--border)",
-    borderRadius: 99, padding: "clamp(5px, 2vw, 6px) clamp(10px, 3vw, 12px)",
-    fontSize: "clamp(11px, 2vw, 12px)", color: "var(--text-sub)", fontWeight: 600,
-    whiteSpace: "nowrap",
+    borderRadius: 99,
+    padding: "5px 12px",
+    fontSize: 12,
+    fontWeight: 500,
+    color: "var(--text-sub)",
   },
   dot: {
-    width: 6, height: 6, borderRadius: "50%",
+    width: 7,
+    height: 7,
+    borderRadius: "50%",
     background: "var(--success)",
+    display: "inline-block",
+    flexShrink: 0,
   },
 };
