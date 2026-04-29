@@ -28,7 +28,7 @@ export default function VerifyTab({ certs = [] }) {
     setResult(null);
 
     try {
-      const localMatch = certs.find((c) => c.fullHash === searchHash);
+      const localMatch = certs.find(c => c.fullHash === searchHash);
       if (localMatch) {
         setResult({
           valid: true,
@@ -84,124 +84,143 @@ export default function VerifyTab({ certs = [] }) {
     }
   };
 
-  return (
-    <div className="card" style={styles.card}>
-      <div style={styles.header}>
-        <h2 style={styles.title}>Verify Certificate</h2>
-        <p style={styles.subtitle}>
-          Paste a certificate transaction hash to confirm its authenticity on the Stellar blockchain.
-        </p>
-      </div>
+  const handleKey = (e) => {
+    if (e.key === "Enter" && !loading) verify();
+  };
 
-      <div style={styles.field}>
-        <label>Transaction Hash</label>
-        <div style={{ display: "flex", gap: 10 }}>
-          <input
-            style={{ fontFamily: "var(--font-mono)", fontSize: 13 }}
-            value={hash}
-            onChange={(e) => setHash(e.target.value)}
-            placeholder="Enter the full certificate hash..."
-          />
-          {hash && (
-            <button style={styles.iconBtn} onClick={() => copyToClipboard(hash)} title="Copy">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-              </svg>
-            </button>
-          )}
+  return (
+    <div style={{ maxWidth: 720 }}>
+      {/* Search card */}
+      <div className="card" style={{ marginBottom: 20 }}>
+        <div className="card-header">
+          <div className="card-title">Certificate Verification</div>
+          <div className="card-subtitle">
+            Enter a certificate hash to verify its authenticity directly on the Stellar blockchain. No account required.
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="form-group" style={{ marginBottom: 16 }}>
+            <label>Certificate Hash</label>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div className="input-wrap" style={{ flex: 1 }}>
+                <span className="input-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                  </svg>
+                </span>
+                <input
+                  value={hash}
+                  onChange={e => setHash(e.target.value)}
+                  onKeyDown={handleKey}
+                  placeholder="Paste the full certificate hash here..."
+                  style={{ fontFamily: "var(--font-mono)", fontSize: 12.5 }}
+                />
+              </div>
+              {hash && (
+                <button
+                  className="btn-icon"
+                  onClick={() => copyToClipboard(hash)}
+                  title="Copy hash"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+              )}
+            </div>
+            <span className="form-hint">The hash is generated at issuance time and uniquely identifies each certificate on-chain</span>
+          </div>
+
+          <button
+            className={loading ? "btn-secondary" : "btn-primary"}
+            onClick={verify}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <div style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin 0.75s linear infinite" }} />
+                Verifying...
+              </>
+            ) : (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <polyline points="9 12 11 14 15 10"/>
+                </svg>
+                Verify Certificate
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      <div style={{ marginTop: 20 }}>
-        <button
-          className={loading ? "" : "btn-primary"}
-          style={loading ? styles.btnDisabled : {}}
-          onClick={verify}
-          disabled={loading}
-        >
-          {loading ? "Verifying..." : "Verify Certificate"}
-        </button>
-      </div>
+      {/* How it works */}
+      {!result && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+          {[
+            { n: "01", title: "Enter Hash", body: "Paste the full 64-character certificate hash that was generated at issuance." },
+            { n: "02", title: "Query Chain", body: "The system first checks the local index, then queries the Stellar smart contract directly." },
+            { n: "03", title: "View Result", body: "The certificate details are returned with on-chain proof, with a preview and QR code." },
+          ].map(s => (
+            <div key={s.n} style={{ padding: "16px 18px", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "var(--radius-md)" }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--text-muted)", letterSpacing: "0.5px", marginBottom: 8 }}>{s.n}</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text-main)", marginBottom: 6 }}>{s.title}</div>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.6 }}>{s.body}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
+      {/* Result */}
       {result && (
-        <div style={{ marginTop: 40 }}>
+        <div style={{ animation: "fade-in 0.22s ease-out" }}>
           {result.valid ? (
             <div>
-              <div style={styles.verifiedBanner}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <div className="alert alert-success" style={{ marginBottom: 20 }}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ flexShrink: 0 }}>
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                   <polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
-                Certificate Verified
-                {result.source === "blockchain" ? " — On-Chain" : " — From Index"}
+                <span>
+                  <strong>Certificate Verified</strong>
+                  {result.source === "blockchain" ? " — Confirmed on Stellar Testnet" : " — Found in certificate index"}
+                </span>
               </div>
               <CertificatePreview cert={result} />
             </div>
           ) : (
-            <div style={styles.invalidBox}>
-              <div style={styles.invalidTitle}>Not Found</div>
-              <p style={styles.invalidText}>
-                No certificate matching this hash was found. Ensure you copied the complete hash correctly.
-              </p>
+            <div style={{
+              padding: "28px 24px",
+              background: "var(--danger-bg)",
+              border: "1px solid var(--danger-border)",
+              borderRadius: "var(--radius-lg)",
+              display: "flex",
+              gap: 16,
+              alignItems: "flex-start",
+            }}>
+              <div style={{ width: 40, height: 40, borderRadius: "var(--radius-md)", background: "rgba(244,63,94,0.12)", border: "1px solid var(--danger-border)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="15" y1="9" x2="9" y2="15"/>
+                  <line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "var(--danger)", marginBottom: 6 }}>Certificate Not Found</div>
+                <p style={{ fontSize: 13, color: "var(--danger)", opacity: 0.85, lineHeight: 1.6 }}>
+                  No certificate matching this hash was found on the blockchain or in the index. Ensure you copied the complete hash without extra whitespace.
+                </p>
+              </div>
             </div>
           )}
         </div>
       )}
+
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
     </div>
   );
 }
-
-const styles = {
-  card:     { padding: "40px 40px 36px", marginBottom: 24 },
-  header:   { marginBottom: 28, paddingBottom: 24, borderBottom: "1px solid var(--border)" },
-  title:    { fontSize: 20, fontWeight: 700, color: "var(--text-main)", marginBottom: 8, letterSpacing: "-0.3px" },
-  subtitle: { color: "var(--text-sub)", fontSize: 14, lineHeight: 1.6 },
-  field:    { display: "flex", flexDirection: "column" },
-
-  iconBtn: {
-    background: "var(--bg-subtle)",
-    border: "1px solid var(--border)",
-    borderRadius: "var(--radius-sm)",
-    color: "var(--text-sub)",
-    padding: "0 14px",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    minWidth: 44,
-    justifyContent: "center",
-    transition: "var(--t)",
-    flexShrink: 0,
-  },
-  btnDisabled: {
-    padding: "10px 22px",
-    borderRadius: "var(--radius-sm)",
-    background: "var(--bg-subtle)",
-    color: "var(--text-muted)",
-    border: "1px solid var(--border)",
-    fontSize: 14,
-    fontWeight: 500,
-    cursor: "not-allowed",
-  },
-
-  verifiedBanner: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    padding: "10px 16px",
-    background: "var(--success-bg)",
-    border: "1px solid var(--success-border)",
-    borderRadius: "var(--radius-sm)",
-    color: "var(--success)",
-    fontSize: 13,
-    fontWeight: 600,
-    marginBottom: 24,
-  },
-  invalidBox: {
-    padding: "24px",
-    background: "var(--danger-bg)",
-    border: "1px solid var(--danger-border)",
-    borderRadius: "var(--radius-md)",
-  },
-  invalidTitle: { fontSize: 15, fontWeight: 700, color: "var(--danger)", marginBottom: 8 },
-  invalidText:  { fontSize: 14, color: "var(--danger)", opacity: 0.85, lineHeight: 1.6 },
-};

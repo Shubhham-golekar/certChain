@@ -5,7 +5,6 @@ import "./styles/global.css";
 
 import Header from "./components/Header";
 import WalletBar from "./components/WalletBar";
-import StatsRow from "./components/StatsRow";
 import IssueTab from "./components/IssueTab";
 import VerifyTab from "./components/VerifyTab";
 import RecordsTab from "./components/RecordsTab";
@@ -17,11 +16,56 @@ import { useToast } from "./hooks/useToast";
 import { DEFAULT_FORM, generateTxHash } from "./utils/constants";
 
 const TABS = [
-  { id: "dashboard", label: "Overview" },
-  { id: "issue",     label: "Issue Certificate" },
-  { id: "verify",    label: "Verify" },
-  { id: "records",   label: "Records" },
+  {
+    id: "dashboard",
+    label: "Overview",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+    ),
+  },
+  {
+    id: "issue",
+    label: "Issue Certificate",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/>
+        <line x1="9" y1="15" x2="15" y2="15"/>
+      </svg>
+    ),
+  },
+  {
+    id: "verify",
+    label: "Verify",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    ),
+  },
+  {
+    id: "records",
+    label: "Records",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+    ),
+  },
 ];
+
+const TAB_META = {
+  dashboard: { title: "Overview", subtitle: "Certificate metrics and network status" },
+  issue:     { title: "Issue Certificate", subtitle: "Create and record a new credential on the Stellar blockchain" },
+  verify:    { title: "Verify Certificate", subtitle: "Authenticate a credential by its blockchain hash" },
+  records:   { title: "Certificate Records", subtitle: "Public ledger of all issued credentials" },
+};
 
 export default function App() {
   const { connected, address, publicKey, loading, error, connect, disconnect, sign } = useWallet();
@@ -70,7 +114,7 @@ export default function App() {
   };
 
   const handleFormChange = (e) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   };
 
   const handleIssue = async () => {
@@ -101,7 +145,6 @@ export default function App() {
           .build();
 
         let preparedTx = await server.prepareTransaction(tx);
-
         if (preparedTx.error) throw new Error(preparedTx.error);
 
         let xdrToSign;
@@ -124,7 +167,6 @@ export default function App() {
         const sendResponse = await server.sendTransaction(signedTx);
 
         if (sendResponse.status === "ERROR") throw new Error("Transaction failed on blockchain");
-
         addToast("Certificate issued successfully.");
       } catch (err) {
         console.error("Smart Contract Error:", err);
@@ -162,7 +204,7 @@ export default function App() {
         console.error("Failed to index cert.", err);
       }
 
-      setCerts((c) => [newCert, ...c]);
+      setCerts(c => [newCert, ...c]);
       setPreviewCert(newCert);
       setForm(DEFAULT_FORM);
     } catch (err) {
@@ -173,56 +215,41 @@ export default function App() {
     }
   };
 
+  const meta = TAB_META[tab];
+
   return (
-    <div style={styles.app}>
+    <div className="app-shell">
       <ToastContainer toasts={toasts} />
 
-      <div style={styles.container}>
-        <Header />
+      {/* ── Sidebar ── */}
+      <Header
+        tab={tab}
+        setTab={(t) => { setTab(t); setPreviewCert(null); }}
+        tabs={TABS}
+        connected={connected}
+      />
 
-        {/* Hero */}
-        <div style={styles.hero}>
-          <div style={styles.heroBadge}>
-            <span style={styles.heroBadgeDot} />
-            Live on Soroban Testnet
+      {/* ── Main ── */}
+      <div className="main-content">
+        {/* Topbar */}
+        <div className="topbar">
+          <div>
+            <div className="topbar-title">{meta.title}</div>
+            <div className="topbar-subtitle">{meta.subtitle}</div>
           </div>
-          <h1 style={styles.h1}>
-            Blockchain-Verified<br />
-            <span style={styles.highlight}>Certificate Infrastructure</span>
-          </h1>
-          <p style={styles.heroP}>
-            Issue tamper-proof credentials on the Stellar network. Every certificate is permanently recorded on-chain and publicly verifiable.
-          </p>
+          <WalletBar
+            connected={connected}
+            address={address}
+            loading={loading}
+            error={error}
+            onConnect={handleConnect}
+            onDisconnect={handleDisconnect}
+          />
         </div>
 
-        <StatsRow totalCerts={certs.length} />
-
-        <WalletBar
-          connected={connected}
-          address={address}
-          loading={loading}
-          error={error}
-          onConnect={handleConnect}
-          onDisconnect={handleDisconnect}
-        />
-
-        {/* Tabs */}
-        <div style={styles.tabsWrap}>
-          <div style={styles.tabsInner}>
-            {TABS.map((t) => (
-              <button
-                key={t.id}
-                style={{ ...styles.tab, ...(tab === t.id ? styles.tabActive : {}) }}
-                onClick={() => { setTab(t.id); setPreviewCert(null); }}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="animated-enter" key={tab}>
-          {tab === "dashboard" && <DashboardTab />}
+        {/* Page body */}
+        <div className="page-content animated-enter" key={tab}>
+          {tab === "dashboard" && <DashboardTab totalCerts={certs.length} />}
           {tab === "issue" && (
             <IssueTab
               walletConnected={connected}
@@ -236,101 +263,7 @@ export default function App() {
           {tab === "verify"  && <VerifyTab certs={certs} />}
           {tab === "records" && <RecordsTab certs={certs} />}
         </div>
-
-        <div style={{ height: 80 }} />
       </div>
     </div>
   );
 }
-
-const styles = {
-  app: {
-    minHeight: "100vh",
-    background: "var(--bg-main)",
-  },
-  container: {
-    maxWidth: 960,
-    margin: "0 auto",
-    padding: "0 32px",
-  },
-
-  /* Hero */
-  hero: {
-    textAlign: "center",
-    padding: "64px 0 56px",
-  },
-  heroBadge: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 8,
-    background: "var(--accent-dim)",
-    border: "1px solid rgba(37,99,235,0.25)",
-    borderRadius: 99,
-    padding: "5px 14px",
-    fontSize: 12,
-    fontWeight: 600,
-    color: "#60a5fa",
-    marginBottom: 28,
-    letterSpacing: "0.2px",
-  },
-  heroBadgeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: "50%",
-    background: "var(--success)",
-    display: "inline-block",
-    flexShrink: 0,
-  },
-  h1: {
-    fontFamily: "var(--font-sans)",
-    fontSize: "clamp(32px, 6vw, 52px)",
-    fontWeight: 800,
-    lineHeight: 1.15,
-    letterSpacing: "-1.5px",
-    color: "var(--text-main)",
-    marginBottom: 20,
-  },
-  highlight: {
-    color: "#60a5fa",          /* Blue-400 — single accent, no gradient */
-  },
-  heroP: {
-    color: "var(--text-sub)",
-    fontSize: 16,
-    maxWidth: 520,
-    margin: "0 auto",
-    lineHeight: 1.65,
-    fontWeight: 400,
-  },
-
-  /* Tabs */
-  tabsWrap: {
-    display: "flex",
-    justifyContent: "flex-start",
-    marginBottom: 32,
-  },
-  tabsInner: {
-    display: "inline-flex",
-    gap: 2,
-    background: "var(--bg-card)",
-    border: "1px solid var(--border)",
-    borderRadius: 6,
-    padding: 4,
-  },
-  tab: {
-    padding: "7px 18px",
-    border: "none",
-    borderRadius: 4,
-    background: "transparent",
-    color: "var(--text-sub)",
-    fontFamily: "var(--font-sans)",
-    fontWeight: 500,
-    fontSize: 13,
-    cursor: "pointer",
-    transition: "all var(--t)",
-    whiteSpace: "nowrap",
-  },
-  tabActive: {
-    background: "var(--accent)",
-    color: "#ffffff",
-  },
-};

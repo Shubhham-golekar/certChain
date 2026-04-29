@@ -126,13 +126,24 @@ When a certificate is issued:
 4. The React dashboard instantly pulls the indexed dataset and renders interactive charts using `recharts`!
 
 ### 🚀 What's New? (Recent Updates)
-- 🎨 **Corporate Blue + Cyan UI:** Professional redesign using a single Blue+Cyan color palette, solid charcoal dark theme, Inter typography, no gradients or animations — built to enterprise standards.
-- 🖼️ **Updated Interface:**  
-  ![UI Demo](./screenshots/demo.png)
+- 🏗️ **Enterprise Sidebar Layout:** Full UI overhaul with a fixed sidebar navigation, sticky topbar, proper content area, and professional dark theme (`#090e17`).
+- 📋 **3-Step Issue Wizard:** The Issue Certificate tab now features a guided step-by-step form (Recipient → Credential → Review) with icon inputs, field hints, and a summary review before signing.
+- 📊 **Live KPI Dashboard:** 4 KPI cards with colored accent bars, contextual icons, and a multi-color bar chart with custom tooltip.
+- 🗂️ **Searchable Records Table:** Certificate records are now displayed in a proper data table with search, truncated wallet addresses, copy buttons, and Stellar Explorer links.
 - 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance safely via `scVal`.
-- ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
 
-> **💡 Terminal Logs:** You can monitor the backend SQL injection indexing rate directly via terminal, as well as the `/status` resource monitor mapping server resources.
+### 📸 UI Screenshots
+
+**Dashboard (Overview)**
+![Dashboard](./screenshots/ui-dashboard.png)
+
+**Issue Certificate — 3-Step Wizard**
+![Issue Certificate](./screenshots/ui-issue.png)
+
+**Verify Certificate**
+![Verify](./screenshots/ui-verify.png)
+
+> **💡 Terminal Logs:** You can monitor the backend SQL indexing rate directly via terminal, as well as the `/status` resource monitor mapping server resources.
 
 ---
 

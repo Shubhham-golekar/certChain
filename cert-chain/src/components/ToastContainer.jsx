@@ -2,52 +2,27 @@ import React from "react";
 
 export default function ToastContainer({ toasts }) {
   return (
-    <div style={styles.wrap}>
-      {toasts.map((t) => (
+    <div className="toast-wrap">
+      {toasts.map(t => (
         <div
           key={t.id}
-          style={{
-            ...styles.toast,
-            ...(t.type === "error" ? styles.error : styles.info),
-          }}
+          className={`toast ${t.type === "error" ? "toast-error" : "toast-info"}`}
         >
-          {t.msg}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            {t.type === "error" ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ flexShrink: 0, marginTop: 1 }}>
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ flexShrink: 0, marginTop: 1, color: "var(--success)" }}>
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            )}
+            <span>{t.msg}</span>
+          </div>
         </div>
       ))}
     </div>
   );
 }
-
-const styles = {
-  wrap: {
-    position: "fixed",
-    bottom: 24,
-    right: 24,
-    zIndex: 1000,
-    display: "flex",
-    flexDirection: "column",
-    gap: 8,
-    maxWidth: "calc(100vw - 48px)",
-  },
-  toast: {
-    padding: "12px 18px",
-    borderRadius: "var(--radius-sm)",
-    fontSize: 13,
-    fontFamily: "var(--font-sans)",
-    fontWeight: 500,
-    lineHeight: 1.5,
-    maxWidth: 340,
-    boxShadow: "var(--shadow-md)",
-    animation: "fadeUp 0.2s ease-out",
-  },
-  info: {
-    background: "var(--bg-card)",
-    border: "1px solid var(--border-strong)",
-    color: "var(--text-main)",
-  },
-  error: {
-    background: "var(--danger-bg)",
-    border: "1px solid var(--danger-border)",
-    color: "var(--danger)",
-  },
-};
