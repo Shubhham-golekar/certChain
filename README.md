@@ -8,11 +8,22 @@
 ---
 
 ### 🚀 What's New? (Recent Updates)
-- 🎨 **Corporate Blue + Cyan UI:** Professional redesign using a single Blue+Cyan color palette, solid `#0d1117` charcoal dark background, Inter sans-serif typography, no animations or gradients — enterprise-grade standard.
-- 🎓 **Detailed Academic Records:** Smart contracts now support passing a designated `grade` to represent a student's performance.
-- ✏️ **Smart Certificate Modifications:** The Soroban contract introduces an `update_cert` method allowing trusted issuers to fix typographical errors seamlessly.
+- 🏗️ **Enterprise Sidebar Layout:** Full UI overhaul — fixed sidebar navigation, sticky topbar, and proper content area with professional dark theme.
+- 📋 **3-Step Issue Wizard:** Guided step-by-step form (Recipient → Credential → Review) with icon inputs, field hints, and summary review before signing.
+- 📊 **Live KPI Dashboard:** 4 KPI cards with colored accent bars, contextual icons, and multi-color bar chart.
+- 🗂️ **Searchable Records Table:** Data table with search, copy buttons, and Stellar Explorer links.
+- 🎓 **Detailed Academic Records:** Smart contracts support `grade` field via `scVal`.
 
-![UI Demo](./cert-chain/screenshots/demo.png)
+### 📸 UI Screenshots
+
+**Dashboard — KPI Cards + Live Chart**
+![Dashboard](./cert-chain/screenshots/ui-dashboard.png)
+
+**Issue Certificate — 3-Step Wizard**
+![Issue](./cert-chain/screenshots/ui-issue.png)
+
+**Verify Certificate**
+![Verify](./cert-chain/screenshots/ui-verify.png)
 
 ### 🌐 Live Application
 🌍 **[Access the Live CertChain App on Vercel](https://cert-chain-xnbu.vercel.app/)**
