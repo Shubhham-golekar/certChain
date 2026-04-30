@@ -9,13 +9,13 @@ export default function Header({ tab, setTab, tabs, connected }) {
         <img src={logoImg} alt="CertChain" className="sidebar-brand-logo" />
         <div>
           <div className="sidebar-brand-name">CertChain</div>
-          <div className="sidebar-brand-ver">Enterprise</div>
+          <div className="sidebar-brand-tag">Enterprise</div>
         </div>
       </div>
 
       {/* Nav */}
       <div className="sidebar-section">
-        <div className="sidebar-section-label">Navigation</div>
+        <div className="sidebar-section-label">Platform</div>
         <nav className="sidebar-nav">
           {tabs.map(t => (
             <button
@@ -32,28 +32,30 @@ export default function Header({ tab, setTab, tabs, connected }) {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <div className="network-badge">
-          <span className="network-dot" />
-          <span className="network-text">Stellar Testnet</span>
+        <div className="net-pill">
+          <span className="net-dot" />
+          <span className="net-text">Stellar Testnet</span>
         </div>
 
         {connected && (
           <div style={{
             marginTop: 10,
-            padding: "7px 12px",
-            borderRadius: "var(--radius-md)",
-            background: "var(--success-bg)",
-            border: "1px solid var(--success-border)",
+            padding: "8px 12px",
+            borderRadius: "var(--r-md)",
+            background: "var(--accent-dim)",
+            border: "1px solid var(--accent-border)",
             display: "flex",
             alignItems: "center",
-            gap: 7,
+            gap: 8,
           }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: "var(--success)", flexShrink: 0 }}>
-              <path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/>
-              <path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-            </svg>
-            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--success)" }}>Wallet Connected</span>
+            <div style={{
+              width: 6, height: 6,
+              borderRadius: "50%",
+              background: "var(--accent)",
+              boxShadow: "0 0 6px var(--accent-glow)",
+              flexShrink: 0,
+            }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: "#c4b5fd" }}>Wallet Connected</span>
           </div>
         )}
       </div>

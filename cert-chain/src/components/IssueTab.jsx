@@ -10,8 +10,7 @@ const FIELDS = [
     required: true,
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
       </svg>
     ),
     hint: "Legal name as it will appear on the certificate",
@@ -27,7 +26,7 @@ const FIELDS = [
         <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
       </svg>
     ),
-    hint: "The certificate will be assigned to this public key",
+    hint: "The certificate will be anchored to this public key",
   },
   {
     name: "issuer",
@@ -40,7 +39,7 @@ const FIELDS = [
         <polyline points="9 22 9 12 15 12 15 22"/>
       </svg>
     ),
-    hint: "Name of the institution or organization issuing this credential",
+    hint: "The institution or organization issuing this credential",
   },
   {
     name: "grade",
@@ -52,89 +51,89 @@ const FIELDS = [
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
       </svg>
     ),
-    hint: "Leave blank if no grade is applicable",
+    hint: "Leave blank if no grade applies",
   },
 ];
+
+function StepDot({ n, state }) {
+  return (
+    <div className={`step-circle ${state}`}>
+      {state === "done" ? (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      ) : n}
+    </div>
+  );
+}
 
 export default function IssueTab({ walletConnected, onIssue, isIssuing, previewCert, form, onChange }) {
   const [step, setStep] = useState(1);
 
-  const step1Complete =
-    form.studentName.trim() &&
-    form.studentWallet.trim().length >= 50 &&
-    form.studentWallet.trim().startsWith("G");
+  const step1Ok = form.studentName.trim() && form.studentWallet.trim().length >= 50 && form.studentWallet.trim().startsWith("G");
+  const step2Ok = form.course && form.date;
 
-  const step2Complete = form.course && form.date;
+  const steps = [
+    { n: "1", label: "Recipient", state: step > 1 ? "done" : step === 1 ? "active" : "" },
+    { n: "2", label: "Credential", state: step > 2 ? "done" : step === 2 ? "active" : "" },
+    { n: "3", label: "Review & Issue", state: step === 3 ? "active" : "" },
+  ];
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 20 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 20, maxWidth: 820 }}>
       {/* Wallet warning */}
       {!walletConnected && (
         <div className="alert alert-danger">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
             <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
           <span>
-            <strong style={{ color: "inherit" }}>Wallet required.</strong>{" "}
-            Connect your Freighter wallet using the button in the top-right corner before issuing a certificate.
+            <strong style={{ color: "inherit" }}>Wallet required. </strong>
+            Connect your Freighter wallet using the button in the top-right corner before issuing.
           </span>
         </div>
       )}
 
-      {/* Main form card */}
+      {/* Form card */}
       <div className="card">
         <div className="card-header">
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
             <div>
-              <div className="card-title">New Certificate</div>
-              <div className="card-subtitle">Complete all required fields to issue a blockchain-anchored credential</div>
+              <div className="card-title">New Credential</div>
+              <div className="card-subtitle">Complete all required fields to mint a blockchain-anchored certificate</div>
             </div>
             <span className="badge badge-blue">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
               </svg>
               Soroban
             </span>
           </div>
 
-          {/* Step bar */}
-          <div className="step-bar" style={{ marginTop: 24, marginBottom: 0 }}>
-            <div className="step-item">
-              <div className={`step-circle ${step >= 1 ? (step > 1 ? "done" : "active") : ""}`}>
-                {step > 1 ? (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                ) : "1"}
-              </div>
-              <span className={`step-label${step === 1 ? " active" : ""}`}>Recipient</span>
-            </div>
-            <div className={`step-line${step > 1 ? " done" : ""}`} />
-            <div className="step-item">
-              <div className={`step-circle ${step >= 2 ? (step > 2 ? "done" : "active") : ""}`}>
-                {step > 2 ? (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                ) : "2"}
-              </div>
-              <span className={`step-label${step === 2 ? " active" : ""}`}>Credential</span>
-            </div>
-            <div className={`step-line${step > 2 ? " done" : ""}`} />
-            <div className="step-item" style={{ flex: "none" }}>
-              <div className={`step-circle ${step === 3 ? "active" : ""}`}>3</div>
-              <span className={`step-label${step === 3 ? " active" : ""}`}>Review & Issue</span>
-            </div>
+          {/* Steps */}
+          <div className="step-bar" style={{ marginTop: 22, marginBottom: 0 }}>
+            {steps.map((s, i) => (
+              <React.Fragment key={s.n}>
+                <div className="step-item" style={i === steps.length - 1 ? { flex: "none" } : {}}>
+                  <StepDot n={s.n} state={s.state} />
+                  <span className={`step-label${s.state === "active" ? " active" : ""}`}>{s.label}</span>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className={`step-line${s.state === "done" ? " done" : ""}`} />
+                )}
+              </React.Fragment>
+            ))}
           </div>
         </div>
 
         <div className="card-body">
-          {/* ── Step 1: Recipient ── */}
+          {/* Step 1 */}
           {step === 1 && (
-            <div style={{ animation: "fade-in 0.18s ease-out" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <div style={{ animation: "fade-up 0.18s ease-out" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
                 {FIELDS.slice(0, 2).map(f => (
-                  <div key={f.name} className="form-group" style={{ gridColumn: f.name === "studentWallet" ? "1 / -1" : undefined }}>
+                  <div key={f.name} className="form-group"
+                    style={{ gridColumn: f.name === "studentWallet" ? "1 / -1" : undefined }}>
                     <label>
                       {f.label}
                       {f.required && <span style={{ color: "var(--danger)", marginLeft: 3 }}>*</span>}
@@ -153,13 +152,8 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                   </div>
                 ))}
               </div>
-
-              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 28 }}>
-                <button
-                  className="btn-primary"
-                  onClick={() => setStep(2)}
-                  disabled={!step1Complete}
-                >
+              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 26 }}>
+                <button className="btn-primary" onClick={() => setStep(2)} disabled={!step1Ok}>
                   Continue
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="9 18 15 12 9 6"/>
@@ -169,14 +163,12 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
             </div>
           )}
 
-          {/* ── Step 2: Credential details ── */}
+          {/* Step 2 */}
           {step === 2 && (
-            <div style={{ animation: "fade-in 0.18s ease-out" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <div style={{ animation: "fade-up 0.18s ease-out" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
                 <div className="form-group" style={{ gridColumn: "1 / -1" }}>
-                  <label>
-                    Certificate Type <span style={{ color: "var(--danger)" }}>*</span>
-                  </label>
+                  <label>Certificate Type <span style={{ color: "var(--danger)" }}>*</span></label>
                   <div className="input-wrap">
                     <span className="input-icon">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -184,7 +176,7 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                         <polyline points="14 2 14 8 20 8"/>
                       </svg>
                     </span>
-                    <select name="course" value={form.course} onChange={onChange} style={{ paddingLeft: 38 }}>
+                    <select name="course" value={form.course} onChange={onChange}>
                       <option value="">Select credential type...</option>
                       {CERT_TYPES.map(c => <option key={c}>{c}</option>)}
                     </select>
@@ -200,21 +192,14 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                     </label>
                     <div className="input-wrap">
                       <span className="input-icon">{f.icon}</span>
-                      <input
-                        name={f.name}
-                        value={form[f.name]}
-                        onChange={onChange}
-                        placeholder={f.placeholder}
-                      />
+                      <input name={f.name} value={form[f.name]} onChange={onChange} placeholder={f.placeholder} />
                     </div>
                     {f.hint && <span className="form-hint">{f.hint}</span>}
                   </div>
                 ))}
 
                 <div className="form-group">
-                  <label>
-                    Date Issued <span style={{ color: "var(--danger)" }}>*</span>
-                  </label>
+                  <label>Date Issued <span style={{ color: "var(--danger)" }}>*</span></label>
                   <div className="input-wrap">
                     <span className="input-icon">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -223,23 +208,18 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                         <line x1="3" y1="10" x2="21" y2="10"/>
                       </svg>
                     </span>
-                    <input type="date" name="date" value={form.date} onChange={onChange} style={{ paddingLeft: 38 }} />
+                    <input type="date" name="date" value={form.date} onChange={onChange} />
                   </div>
                 </div>
               </div>
-
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 28 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 26 }}>
                 <button className="btn-secondary" onClick={() => setStep(1)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="15 18 9 12 15 6"/>
                   </svg>
                   Back
                 </button>
-                <button
-                  className="btn-primary"
-                  onClick={() => setStep(3)}
-                  disabled={!step2Complete}
-                >
+                <button className="btn-primary" onClick={() => setStep(3)} disabled={!step2Ok}>
                   Review
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="9 18 15 12 9 6"/>
@@ -249,18 +229,18 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
             </div>
           )}
 
-          {/* ── Step 3: Review ── */}
+          {/* Step 3 */}
           {step === 3 && (
-            <div style={{ animation: "fade-in 0.18s ease-out" }}>
-              {/* Summary table */}
+            <div style={{ animation: "fade-up 0.18s ease-out" }}>
+              {/* Summary */}
               <div style={{
                 background: "var(--bg-subtle)",
                 border: "1px solid var(--border-strong)",
-                borderRadius: "var(--radius-md)",
+                borderRadius: "var(--r-md)",
                 overflow: "hidden",
-                marginBottom: 24,
+                marginBottom: 20,
               }}>
-                <div style={{ padding: "12px 18px", borderBottom: "1px solid var(--border)", fontSize: 11, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.6px" }}>
+                <div style={{ padding: "11px 18px", borderBottom: "1px solid var(--border)", fontSize: 10.5, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.7px" }}>
                   Certificate Summary
                 </div>
                 {[
@@ -273,11 +253,12 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                 ].map((row, i, arr) => (
                   <div key={row.label} style={{
                     display: "flex",
-                    padding: "13px 18px",
+                    padding: "12px 18px",
                     borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none",
                     gap: 16,
+                    alignItems: "center",
                   }}>
-                    <span style={{ width: 80, flexShrink: 0, fontSize: 11.5, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.4px", marginTop: 1 }}>
+                    <span style={{ width: 72, flexShrink: 0, fontSize: 11, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
                       {row.label}
                     </span>
                     <span style={{
@@ -287,7 +268,7 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                       overflow: "hidden",
                       textOverflow: row.truncate ? "ellipsis" : "unset",
                       whiteSpace: row.truncate ? "nowrap" : "normal",
-                      fontWeight: row.value === "—" ? 400 : 500,
+                      fontWeight: 500,
                     }}>
                       {row.value}
                     </span>
@@ -297,22 +278,21 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
 
               {/* Blockchain notice */}
               <div style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 12,
+                display: "flex", alignItems: "flex-start", gap: 12,
                 padding: "12px 16px",
-                background: "var(--accent-dim)",
-                border: "1px solid rgba(37,99,235,0.2)",
-                borderRadius: "var(--radius-md)",
-                marginBottom: 24,
+                background: "rgba(91,110,245,0.07)",
+                border: "1px solid var(--accent-border)",
+                borderRadius: "var(--r-md)",
+                marginBottom: 22,
                 fontSize: 12.5,
-                color: "#93c5fd",
+                color: "#aabbff",
                 lineHeight: 1.6,
               }}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: 1 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                  style={{ flexShrink: 0, marginTop: 2 }}>
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
-                This action will submit a transaction to the Stellar Testnet. Your Freighter wallet will prompt you to sign before broadcasting.
+                This will submit a transaction to Stellar Testnet. Your Freighter wallet will prompt you to sign before broadcasting.
               </div>
 
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -326,7 +306,7 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
                   className="btn-primary"
                   onClick={async () => { await onIssue(); if (!isIssuing) setStep(1); }}
                   disabled={isIssuing || !walletConnected}
-                  style={{ minWidth: 180 }}
+                  style={{ minWidth: 190 }}
                 >
                   {isIssuing ? (
                     <>
@@ -348,14 +328,17 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
         </div>
       </div>
 
-      {/* Certificate Preview */}
+      {/* Preview */}
       {previewCert && (
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-            <div style={{ width: 3, height: 18, background: "var(--success)", borderRadius: 2 }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--success)" }}>
-              Certificate issued successfully — preview below
+            <span className="badge badge-success">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Certificate Issued
             </span>
+            <span style={{ fontSize: 12.5, color: "var(--text-muted)" }}>— Preview below</span>
           </div>
           <CertificatePreview cert={previewCert} />
         </div>
@@ -363,7 +346,7 @@ export default function IssueTab({ walletConnected, onIssue, isIssuing, previewC
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </div>
   );
