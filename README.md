@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">CertChain — Blockchain Certificate Platform</h1>
-<p align="center">A full-stack decentralized application built on <strong>Stellar Soroban</strong> that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them instantly.</p>
+<p align="center">A full-stack decentralized application built on <strong>Stellar Soroban</strong> that allows institutions to issue tamper-proof certificates on-chain and lets anyone verify them instantly.</p> 
 
 ---
 
